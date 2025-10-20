@@ -1,8 +1,13 @@
 import { renderLayout } from "./layout-static.ts";
-import type { PostData, ProjectData, SiteConfig } from "./types.ts";
+import type { PostData, ProjectData, SiteConfig, UrlOptions } from "./types.ts";
 import { buildTagUrl } from "./url-utils.ts";
 
-export function renderPost(post: PostData, project?: ProjectData, config?: SiteConfig): string {
+export function renderPost(
+  post: PostData, 
+  project?: ProjectData, 
+  config?: SiteConfig,
+  urlOpts: UrlOptions = { absolute: false, htmlExt: true }
+): string {
   const additionalHead = post.frontmatter.gantt || post.frontmatter.timeline ? `
     <script src="../static/js/gantt.js" defer></script>
     <script src="../static/js/timeline.js" defer></script>
@@ -51,7 +56,7 @@ export function renderPost(post: PostData, project?: ProjectData, config?: SiteC
           <time>${new Date(post.frontmatter.date).toLocaleDateString()}</time>
           ${post.frontmatter.tags ? `
             <div class="tags">
-              ${post.frontmatter.tags.map((tag: string) => `<a href="../${buildTagUrl(tag, { absolute: false, htmlExt: true })}" class="tag">${tag}</a>`).join("")}
+              ${post.frontmatter.tags.map((tag: string) => `<a href="../${buildTagUrl(tag, urlOpts)}" class="tag">${tag}</a>`).join("")}
             </div>
           ` : ""}
         </div>
@@ -75,7 +80,7 @@ export function renderPost(post: PostData, project?: ProjectData, config?: SiteC
                     <time>${new Date(update.frontmatter.date).toLocaleDateString()}</time>
                     ${update.frontmatter.tags ? `
                       <div class="tags">
-                        ${update.frontmatter.tags.map((tag: string) => `<a href="../${buildTagUrl(tag, { absolute: false, htmlExt: true })}" class="tag">${tag}</a>`).join("")}
+                        ${update.frontmatter.tags.map((tag: string) => `<a href="../${buildTagUrl(tag, urlOpts)}" class="tag">${tag}</a>`).join("")}
                       </div>
                     ` : ""}
                   </div>

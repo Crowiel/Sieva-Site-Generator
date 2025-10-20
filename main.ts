@@ -16,6 +16,7 @@ import { renderPost } from "./src/modules/post-static.ts";
 import { renderAbout } from "./src/modules/about-static.ts";
 import { renderTagsPage, renderTagPage } from "./src/modules/tags-static.ts";
 import { renderBlogList, renderBlogPost } from "./src/modules/blog-static.ts";
+import { buildTagUrl } from "./src/modules/url-utils.ts";
 
 const PORT = 8000;
 
@@ -94,10 +95,12 @@ async function handler(req: Request): Promise<Response> {
   // Routes
   try {
     let content: string;
+    // Dev server URL options: absolute paths, no .html extensions
+    const devUrlOpts = { absolute: true, htmlExt: false };
 
     if (pathname === "/") {
       // Homepage - show recent projects and blog posts
-      content = renderHomepage(recentProjects.map(p => p.indexPost), recentBlogPosts);
+      content = renderHomepage(recentProjects.map(p => p.indexPost), recentBlogPosts, undefined, devUrlOpts);
     } else if (pathname === "/about") {
       // About page
       content = renderAbout(projects.length, blogPosts.length);
@@ -109,7 +112,7 @@ async function handler(req: Request): Promise<Response> {
       const project = getProjectBySlug(slug);
       if (project) {
         // Show project page with all updates included
-        content = renderPost(project.indexPost, project);
+        content = renderPost(project.indexPost, project, undefined, devUrlOpts);
       } else {
         // 404 for project not found
         content = renderLayout("Page Not Found", `
@@ -147,7 +150,7 @@ async function handler(req: Request): Promise<Response> {
                 ${project.latestUpdate ? `<p class="latest-update">Latest: ${new Date(project.latestUpdate.frontmatter.date).toLocaleDateString()}</p>` : ''}
                 ${project.indexPost.frontmatter.tags ? `
                   <div class="tags">
-                    ${project.indexPost.frontmatter.tags.map((tag: string) => `<a href="/tags/${encodeURIComponent(tag.toLowerCase())}" class="tag">${tag}</a>`).join("")}
+                    ${project.indexPost.frontmatter.tags.map((tag: string) => `<a href="${buildTagUrl(tag, devUrlOpts)}" class="tag">${tag}</a>`).join("")}
                   </div>
                 ` : ""}
               </article>
@@ -159,21 +162,21 @@ async function handler(req: Request): Promise<Response> {
     } else if (pathname === "/tags") {
       // Tags index page
       const allPosts = projects.flatMap(p => [p.indexPost, ...p.updates]);
-      content = renderTagsPage(allPosts);
+      content = renderTagsPage(allPosts, projects.length, blogPosts.length, undefined, devUrlOpts);
     } else if (pathname.startsWith("/topics/")) {
       // Individual tag page
       const tagName = decodeURIComponent(pathname.slice(8)); // Remove "/topics/" and decode URL
       const allPosts = projects.flatMap(p => [p.indexPost, ...p.updates]);
-      content = renderTagPage(tagName, allPosts);
+      content = renderTagPage(tagName, allPosts, undefined, devUrlOpts);
     } else if (pathname === "/blog") {
       // Blog index page
-      content = renderBlogList(blogPosts);
+      content = renderBlogList(blogPosts, projects.length, undefined, devUrlOpts);
     } else if (pathname.startsWith("/articles/")) {
       // Individual blog post
       const slug = pathname.slice(10); // Remove "/articles/"
       const post = getBlogPostBySlug(slug);
       if (post) {
-        content = renderBlogPost(post);
+        content = renderBlogPost(post, undefined, devUrlOpts);
       } else {
         // 404 for blog post not found
         content = renderLayout("Page Not Found", `

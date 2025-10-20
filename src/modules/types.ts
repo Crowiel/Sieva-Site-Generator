@@ -109,3 +109,18 @@ export interface LayoutOptions {
   showProjects?: boolean;
   showBlog?: boolean;
 }
+
+// URL generation options
+export interface UrlOptions {
+  /**
+   * Whether to use absolute paths (starting with /)
+   * Default: true for dev server, false for static build
+   */
+  absolute?: boolean;
+  
+  /**
+   * Whether to append .html extension
+   * Default: false for dev server, true for static build
+   */
+  htmlExt?: boolean;
+}
