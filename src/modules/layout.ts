@@ -1,12 +1,23 @@
-<!DOCTYPE html>
+// Base HTML layout for all pages
+import type { LayoutOptions } from "./types.ts";
+
+export function renderLayout(
+  title: string, 
+  content: string, 
+  additionalHead: string = "",
+  options: LayoutOptions = { showProjects: true, showBlog: true }
+): string {
+  const { showProjects = true, showBlog = true } = options;
+  
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>software architecture - Tags</title>
+  <title>${title}</title>
   <link rel="stylesheet" href="/styles/main.css">
   <link rel="stylesheet" href="/styles/components.css">
-  
+  ${additionalHead}
 </head>
 <body>
   <header class="site-header">
@@ -17,17 +28,15 @@
           <span class="brand-subtitle">Automation & Embedded Systems</span>
         </a>
       </div>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-        <span class="hamburger"></span>
-        <span class="hamburger"></span>
-        <span class="hamburger"></span>
-      </button>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/posts">Projects</a></li>
-        <li><a href="/blog">Blog</a></li>
+        ${showProjects ? '<li><a href="/posts">Projects</a></li>' : ''}
+        ${showBlog ? '<li><a href="/blog">Blog</a></li>' : ''}
         <li><a href="/about">About</a></li>
       </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        ☰
+      </button>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <div class="theme-toggle-track">
           <div class="theme-toggle-thumb"></div>
@@ -43,14 +52,14 @@
         <span class="btn-icon">🏠</span>
         <span class="btn-text">Home</span>
       </a>
-      <a href="/posts" class="floating-btn" title="Projects">
+      ${showProjects ? `<a href="/posts" class="floating-btn" title="Projects">
         <span class="btn-icon">💼</span>
         <span class="btn-text">Projects</span>
-      </a>
-      <a href="/blog" class="floating-btn" title="Blog">
+      </a>` : ''}
+      ${showBlog ? `<a href="/blog" class="floating-btn" title="Blog">
         <span class="btn-icon">📝</span>
         <span class="btn-text">Blog</span>
-      </a>
+      </a>` : ''}
       <a href="/about" class="floating-btn" title="About">
         <span class="btn-icon">👤</span>
         <span class="btn-text">About</span>
@@ -64,52 +73,11 @@
   </nav>
 
   <main class="main-content">
-    
-    <div class="container">
-      <header class="page-header">
-        <h1>Posts tagged with "software architecture"</h1>
-        <p class="page-description">1 post found</p>
-      </header>
-      
-      
-        <div class="posts-grid">
-          
-            <article class="post-card">
-              <header class="post-card-header">
-                <h2><a href="../projects/demo-typescript-best-practices.html">TypeScript Best Practices for Large Projects</a></h2>
-                <time class="post-date">10.9.2024</time>
-              </header>
-              
-                <p class="post-card-description">Proven patterns and practices for maintaining type safety and code quality in large-scale TypeScript applications.</p>
-              
-              <footer class="post-card-footer">
-                <div class="tags">
-                  
-                    <a href="topics/web%20development.html" class="tag">web development</a>
-                  
-                    <a href="topics/typescript.html" class="tag">typescript</a>
-                  
-                    <a href="topics/best%20practices.html" class="tag">best practices</a>
-                  
-                    <a href="topics/software%20architecture.html" class="tag">software architecture</a>
-                  
-                </div>
-              </footer>
-            </article>
-          
-        </div>
-      
-      
-      <nav class="page-nav">
-        <a href="../tags.html" class="btn-secondary">← All Tags</a>
-        <a href="../posts.html" class="btn-secondary">← Back to Projects</a>
-      </nav>
-    </div>
-  
+    ${content}
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2025 Your Name. Automation Engineer & Embedded Systems Developer</p>
+    <p>&copy; ${new Date().getFullYear()} Your Name. Automation Engineer & Embedded Systems Developer</p>
     <p class="generator-credit">
       Generated with <a href="https://github.com/Crowiel/Sieva-Site-Generator" target="_blank" rel="noopener">Sievä Site Generator</a>
     </p>
@@ -124,4 +92,5 @@
   Generated with Sievä Site Generator
   https://github.com/Crowiel/Sieva-Site-Generator
   A modern static site generator built with Deno, TypeScript, and MDX
--->
+-->`;
+}
