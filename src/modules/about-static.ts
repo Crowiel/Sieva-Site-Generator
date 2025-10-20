@@ -1,4 +1,5 @@
-import { renderLayout, SiteConfig } from "./layout-static.ts";
+import { renderLayout } from "./layout-static.ts";
+import type { SiteConfig } from "./types.ts";
 
 export function renderAbout(projectCount = 0, blogCount = 0, config?: SiteConfig): string {
   const content = `

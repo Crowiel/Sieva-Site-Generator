@@ -1,37 +1,5 @@
-import { renderLayout, SiteConfig } from "./layout-static.ts";
-
-interface PostData {
-  slug: string;
-  projectSlug?: string;
-  frontmatter: {
-    title: string;
-    date: string;
-    description?: string;
-    tags?: string[];
-    gantt?: boolean | Array<{
-      name: string;
-      start: string;
-      end: string;
-      progress?: number;
-      color?: string;
-    }>;
-    isIndex?: boolean;
-    timeline?: Array<{
-      title: string;
-      date: string;
-      link?: string;
-    }>;
-  };
-  html: string;
-  isIndex: boolean;
-}
-
-interface ProjectData {
-  slug: string;
-  indexPost: PostData;
-  updates: PostData[];
-  latestUpdate?: PostData;
-}
+import { renderLayout } from "./layout-static.ts";
+import type { PostData, ProjectData, SiteConfig } from "./types.ts";
 
 export function renderPost(post: PostData, project?: ProjectData, config?: SiteConfig): string {
   const additionalHead = post.frontmatter.gantt || post.frontmatter.timeline ? `

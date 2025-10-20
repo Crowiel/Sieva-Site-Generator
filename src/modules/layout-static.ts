@@ -1,24 +1,5 @@
 // Static layout for Apache hosting - generates proper relative paths
-export interface LayoutOptions {
-  showProjects?: boolean;
-  showBlog?: boolean;
-}
-
-export interface SiteConfig {
-  site: {
-    name: string;
-    subtitle: string;
-    footer: string;
-    showGeneratorCredit?: boolean;
-    domain?: string;
-  };
-  navigation: {
-    home: string;
-    projects: string;
-    blog: string;
-    about: string;
-  };
-}
+import type { LayoutOptions, SiteConfig } from "./types.ts";
 
 export function renderLayout(
   title: string, 

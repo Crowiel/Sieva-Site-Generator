@@ -1,35 +1,8 @@
-import { renderLayout, LayoutOptions, SiteConfig } from "./layout-static.ts";
+import { renderLayout } from "./layout-static.ts";
+import type { PostData, BlogPost, SiteConfig } from "./types.ts";
+import { buildProjectUrl, buildBlogUrl, buildPageUrl } from "./url-utils.ts";
 
-interface PostData {
-  slug: string;
-  projectSlug?: string;
-  frontmatter: {
-    title: string;
-    date: string;
-    description?: string;
-    tags?: string[];
-    featured?: boolean;
-    gantt?: boolean;
-    timeline?: Array<{
-      title: string;
-      date: string;
-      link?: string;
-    }>;
-  };
-  html: string;
-  isIndex: boolean;
-}
-
-interface BlogPost {
-  slug: string;
-  frontmatter: {
-    title: string;
-    date: string;
-    description?: string;
-    tags?: string[];
-  };
-  html: string;
-}
+const staticUrlOpts = { absolute: false, htmlExt: true };
 
 export function renderHomepage(
   recentProjects: PostData[], 
@@ -79,7 +52,7 @@ export function renderHomepage(
           ${displayProjects.map((post: PostData) => `
             <article class="post-card post-card-minimal">
               <div class="post-card-type">Project</div>
-              <h3><a href="posts/${post.projectSlug || post.slug}.html">${post.frontmatter.title}</a></h3>
+              <h3><a href="${buildProjectUrl(post.projectSlug || post.slug, staticUrlOpts)}">${post.frontmatter.title}</a></h3>
               <p>${post.frontmatter.description || ""}</p>
               <div class="post-card-meta">
                 <time>${new Date(post.frontmatter.date).toLocaleDateString()}</time>
@@ -90,7 +63,7 @@ export function renderHomepage(
           ${displayBlogPosts.map((post: BlogPost) => `
             <article class="post-card post-card-minimal">
               <div class="post-card-type">Blog</div>
-              <h3><a href="blog/${post.slug}.html">${post.frontmatter.title}</a></h3>
+              <h3><a href="${buildBlogUrl(post.slug, staticUrlOpts)}">${post.frontmatter.title}</a></h3>
               <p>${post.frontmatter.description || ""}</p>
               <div class="post-card-meta">
                 <time>${new Date(post.frontmatter.date).toLocaleDateString()}</time>
@@ -100,8 +73,8 @@ export function renderHomepage(
         </div>
         
         <div class="recent-posts-actions">
-          ${displayProjects.length > 0 ? '<a href="posts.html" class="btn-secondary">All Projects →</a>' : ''}
-          ${displayBlogPosts.length > 0 ? '<a href="blog.html" class="btn-secondary">All Blog Posts →</a>' : ''}
+          ${displayProjects.length > 0 ? `<a href="${buildPageUrl('posts', staticUrlOpts)}" class="btn-secondary">All Projects →</a>` : ''}
+          ${displayBlogPosts.length > 0 ? `<a href="${buildPageUrl('blog', staticUrlOpts)}" class="btn-secondary">All Blog Posts →</a>` : ''}
         </div>
       </div>
     </section>

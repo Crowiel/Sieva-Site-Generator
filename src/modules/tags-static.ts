@@ -1,31 +1,8 @@
-import { renderLayout, SiteConfig } from "./layout-static.ts";
+import { renderLayout } from "./layout-static.ts";
+import type { TagData, PostData, SiteConfig } from "./types.ts";
+import { buildTagUrl, buildProjectUrl, buildPageUrl } from "./url-utils.ts";
 
-interface TagData {
-  name: string;
-  count: number;
-  posts: Array<{
-    slug: string;
-    projectSlug?: string;
-    title: string;
-    date: string;
-    description?: string;
-    tags: string[];
-  }>;
-}
-
-interface PostData {
-  slug: string;
-  projectSlug?: string;
-  frontmatter: {
-    title: string;
-    date: string;
-    description?: string;
-    tags?: string[];
-    isIndex?: boolean;
-  };
-  html: string;
-  isIndex: boolean;
-}
+const staticUrlOpts = { absolute: false, htmlExt: true };
 
 // Generate all tags page (static)
 export function renderTagsPage(posts: PostData[], projectCount = 0, blogCount = 0, config?: SiteConfig): string {
@@ -69,7 +46,7 @@ export function renderTagsPage(posts: PostData[], projectCount = 0, blogCount = 
       
       <div class="tag-grid">
         ${sortedTags.map(tag => `
-          <a href="tags/${encodeURIComponent(tag.name.toLowerCase())}.html" class="tag-card">
+          <a href="${buildTagUrl(tag.name, staticUrlOpts)}" class="tag-card">
             <div class="tag-card-header">
               <h3 class="tag-card-name">${tag.name}</h3>
               <span class="tag-card-count">${tag.count} post${tag.count !== 1 ? 's' : ''}</span>
@@ -79,7 +56,7 @@ export function renderTagsPage(posts: PostData[], projectCount = 0, blogCount = 
       </div>
       
       <nav class="page-nav">
-        <a href="posts.html" class="btn-secondary">← Back to Projects</a>
+        <a href="${buildPageUrl('posts', staticUrlOpts)}" class="btn-secondary">← Back to Projects</a>
       </nav>
     </div>
   `;
@@ -118,7 +95,7 @@ export function renderTagPage(tagName: string, posts: PostData[], config?: SiteC
           ${tagPosts.map(post => `
             <article class="post-card">
               <header class="post-card-header">
-                <h2><a href="../posts/${post.projectSlug || post.slug}.html">${post.frontmatter.title}</a></h2>
+                <h2><a href="../${buildProjectUrl(post.projectSlug || post.slug, staticUrlOpts)}">${post.frontmatter.title}</a></h2>
                 <time class="post-date">${new Date(post.frontmatter.date).toLocaleDateString()}</time>
               </header>
               ${post.frontmatter.description ? `
@@ -142,11 +119,11 @@ export function renderTagPage(tagName: string, posts: PostData[], config?: SiteC
       `}
       
       <nav class="page-nav">
-        <a href="../tags.html" class="btn-secondary">← All Tags</a>
-        <a href="../posts.html" class="btn-secondary">← Back to Projects</a>
+        <a href="../${buildPageUrl('tags', staticUrlOpts)}" class="btn-secondary">← All Tags</a>
+        <a href="../${buildPageUrl('posts', staticUrlOpts)}" class="btn-secondary">← Back to Projects</a>
       </nav>
     </div>
   `;
-  
+
   return renderLayout(`${properTagName} - Tags`, content, "", {}, config);
 }

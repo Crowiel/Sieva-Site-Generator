@@ -6,39 +6,10 @@
  * config-user.json is gitignored and won't be overwritten by upstream updates
  */
 
-interface SiteConfig {
-  site: {
-    name: string;
-    subtitle: string;
-    footer: string;
-    showGeneratorCredit?: boolean;
-    domain?: string;
-  };
-  navigation: {
-    home: string;
-    projects: string;
-    blog: string;
-    about: string;
-  };
-  pages: {
-    blog: {
-      title: string;
-      description: string;
-    };
-    projects: {
-      title: string;
-      description: string;
-    };
-    about: {
-      title: string;
-      description: string;
-    };
-    tags: {
-      title: string;
-      description: string;
-    };
-  };
-}
+import type { SiteConfig } from "./types.ts";
+
+// Re-export for convenience
+export type { SiteConfig };
 
 let cachedConfig: SiteConfig | null = null;
 

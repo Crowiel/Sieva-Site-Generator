@@ -10,12 +10,12 @@ import {
   type ProjectData,
   type BlogPost
 } from "./src/generated/posts.ts";
-import { renderLayout } from "./src/modules/layout.ts";
-import { renderHomepage } from "./src/modules/homepage.ts";
-import { renderPost } from "./src/modules/post.ts";
-import { renderAbout } from "./src/modules/about.ts";
-import { renderTagsPage, renderTagPage } from "./src/modules/tags.ts";
-import { renderBlogList, renderBlogPost } from "./src/modules/blog.ts";
+import { renderLayout } from "./src/modules/layout-static.ts";
+import { renderHomepage } from "./src/modules/homepage-static.ts";
+import { renderPost } from "./src/modules/post-static.ts";
+import { renderAbout } from "./src/modules/about-static.ts";
+import { renderTagsPage, renderTagPage } from "./src/modules/tags-static.ts";
+import { renderBlogList, renderBlogPost } from "./src/modules/blog-static.ts";
 
 const PORT = 8000;
 

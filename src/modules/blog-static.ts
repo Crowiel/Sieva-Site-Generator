@@ -1,15 +1,8 @@
-import { renderLayout, LayoutOptions, SiteConfig } from "./layout-static.ts";
+import { renderLayout } from "./layout-static.ts";
+import type { BlogPost, SiteConfig } from "./types.ts";
+import { buildBlogUrl, buildTagUrl, buildBackToBlogUrl, buildRelativeTagUrl } from "./url-utils.ts";
 
-interface BlogPost {
-  slug: string;
-  frontmatter: {
-    title: string;
-    date: string;
-    description?: string;
-    tags?: string[];
-  };
-  html: string;
-}
+const staticUrlOpts = { absolute: false, htmlExt: true };
 
 export function renderBlogList(blogPosts: BlogPost[], projectCount = 0, config?: SiteConfig): string {
   const content = `
@@ -26,13 +19,13 @@ export function renderBlogList(blogPosts: BlogPost[], projectCount = 0, config?:
           </div>
         ` : blogPosts.map(post => `
           <article class="blog-post-card">
-            <h2><a href="articles/${post.slug}.html">${post.frontmatter.title}</a></h2>
+            <h2><a href="${buildBlogUrl(post.slug, staticUrlOpts)}">${post.frontmatter.title}</a></h2>
             <div class="post-meta">
               <time>${new Date(post.frontmatter.date).toLocaleDateString()}</time>
               ${post.frontmatter.tags ? `
                 <div class="tags">
                   ${post.frontmatter.tags.map((tag: string) => 
-                    `<a href="topics/${encodeURIComponent(tag.toLowerCase())}.html" class="tag">${tag}</a>`
+                    `<a href="${buildTagUrl(tag, staticUrlOpts)}" class="tag">${tag}</a>`
                   ).join("")}
                 </div>
               ` : ""}
@@ -40,7 +33,7 @@ export function renderBlogList(blogPosts: BlogPost[], projectCount = 0, config?:
             ${post.frontmatter.description ? `
               <p class="post-excerpt">${post.frontmatter.description}</p>
             ` : ""}
-            <a href="articles/${post.slug}.html" class="read-more">Read more →</a>
+            <a href="${buildBlogUrl(post.slug, staticUrlOpts)}" class="read-more">Read more →</a>
           </article>
         `).join("")}
       </section>
@@ -65,7 +58,7 @@ export function renderBlogPost(post: BlogPost, config?: SiteConfig): string {
           ${post.frontmatter.tags ? `
             <div class="tags">
               ${post.frontmatter.tags.map((tag: string) => 
-                `<a href="../tags/${encodeURIComponent(tag.toLowerCase())}.html" class="tag">${tag}</a>`
+                `<a href="${buildRelativeTagUrl(tag, staticUrlOpts)}" class="tag">${tag}</a>`
               ).join("")}
             </div>
           ` : ""}
@@ -80,7 +73,7 @@ export function renderBlogPost(post: BlogPost, config?: SiteConfig): string {
       </div>
 
       <footer class="post-footer">
-        <a href="../blog.html" class="back-link">← Back to Blog</a>
+        <a href="${buildBackToBlogUrl(staticUrlOpts)}" class="back-link">← Back to Blog</a>
       </footer>
     </article>
   `;
