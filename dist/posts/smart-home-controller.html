@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Home Automation Controller</title>
+  <link rel="stylesheet" href="../styles/main.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  
+    <script src="../static/js/gantt.js" defer></script>
+    <script src="../static/js/timeline.js" defer></script>
+  
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <div class="nav-brand">
+        <a href="../">
+          <span class="brand-name">Your Name</span>
+          <span class="brand-subtitle">Automation & Embedded Systems</span>
+        </a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="../">Home</a></li>
+        <li><a href="../posts.html">Projects</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <div class="theme-toggle-track">
+          <div class="theme-toggle-thumb"></div>
+        </div>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Floating Navigation (appears when scrolling) -->
+  <nav class="floating-nav" id="floatingNav">
+    <div class="floating-nav-buttons">
+      <a href="../" class="floating-btn" title="Home">
+        <span class="btn-icon">🏠</span>
+        <span class="btn-text">Home</span>
+      </a>
+      <a href="../posts.html" class="floating-btn" title="Projects">
+        <span class="btn-icon">💼</span>
+        <span class="btn-text">Projects</span>
+      </a>
+      <a href="../blog.html" class="floating-btn" title="Blog">
+        <span class="btn-icon">📝</span>
+        <span class="btn-text">Blog</span>
+      </a>
+      <a href="../about.html" class="floating-btn" title="About">
+        <span class="btn-icon">👤</span>
+        <span class="btn-text">About</span>
+      </a>
+      <button class="floating-btn theme-toggle" id="floatingThemeToggle" title="Toggle theme">
+        <div class="theme-toggle-track">
+          <div class="theme-toggle-thumb"></div>
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <article class="post">
+      <header class="post-header">
+        <div class="post-header-main">
+          <h1>Smart Home Automation Controller</h1>
+        </div>
+        
+          <div class="post-header-controls">
+            
+              <div class="gantt-header-controls">
+                <button class="gantt-toggle" onclick="toggleGanttDropdown()">Project Schedule</button>
+                <div class="gantt-dropdown" id="gantt-dropdown">
+                  <div class="gantt-dropdown-header">
+                    <h4>Project Timeline & Schedule</h4>
+                    <button class="gantt-dropdown-close" onclick="closeGanttDropdown()">×</button>
+                  </div>
+                  <div class="gantt-chart" id="gantt-chart" data-gantt='[{"name":"Project Planning","start":"2024-01-01","end":"2024-01-15","progress":100,"color":"#4CAF50"},{"name":"Hardware Design","start":"2024-01-10","end":"2024-02-28","progress":100,"color":"#2196F3"},{"name":"PCB Layout","start":"2024-02-15","end":"2024-03-15","progress":100,"color":"#FF9800"},{"name":"Component Sourcing","start":"2024-03-01","end":"2024-03-20","progress":100,"color":"#9C27B0"},{"name":"Assembly & Testing","start":"2024-03-15","end":"2024-04-30","progress":80,"color":"#F44336"},{"name":"Software Development","start":"2024-02-01","end":"2024-05-15","progress":60,"color":"#607D8B"}]'>
+                    <!-- Gantt chart will be rendered here by JavaScript -->
+                  </div>
+                </div>
+              </div>
+            
+            
+              <a href="#update-demo-smart-home-controller-voice-control" class="updates-indicator">
+                📝 Jump to Latest Update: 10.5.2024
+              </a>
+            
+            
+              <button class="timeline-indicator" onclick="toggleTimelineSidebar()">
+                📅 Project Timeline
+              </button>
+            
+          </div>
+        
+        <div class="post-meta">
+          <time>15.3.2024</time>
+          
+            <div class="tags">
+              <a href="../tags/iot.html" class="tag">IoT</a><a href="../tags/esp32.html" class="tag">ESP32</a><a href="../tags/pcb%20design.html" class="tag">PCB Design</a><a href="../tags/c%2B%2B.html" class="tag">C++</a><a href="../tags/web%20development.html" class="tag">Web Development</a>
+            </div>
+          
+        </div>
+        <p class="post-description">A comprehensive IoT-based home automation system with ESP32, custom PCB design, and web interface for controlling lights, temperature, and security systems.</p>
+      </header>
+
+      <div class="post-content">
+        <h1>Smart Home Automation Controller</h1>
+<p>This project showcases the development of a comprehensive IoT-based home automation system that combines embedded systems programming, electronics design, and modern web technologies to create an intelligent home control solution.</p>
+<h2>Project Overview</h2>
+<p>The Smart Home Automation Controller is designed to provide centralized control over various home systems including:</p>
+<ul>
+<li>
+<p><strong>Lighting Control</strong>: Dimming and switching capabilities for multiple zones</p>
+</li>
+<li>
+<p><strong>HVAC Management</strong>: Temperature monitoring and thermostat control</p>
+</li>
+<li>
+<p><strong>Security System</strong>: Door/window sensors, motion detection, and camera integration</p>
+</li>
+<li>
+<p><strong>Energy Monitoring</strong>: Real-time power consumption tracking</p>
+</li>
+<li>
+<p><strong>Remote Access</strong>: Web and mobile app interfaces for remote control</p>
+  <div class="gallery" id="gallery-0">
+  <div class="gallery-item">
+    <a href="/posts/smart-home-controller/img/test1.png" 
+       class="gallery-link" 
+       data-gallery="gallery-0"
+       data-index="0">
+      <img src="/posts/smart-home-controller/img/test1.png" 
+           alt="test1" 
+           loading="lazy"
+           class="gallery-image">
+      <div class="gallery-overlay">
+        <span class="gallery-icon">🔍</span>
+      </div>
+    </a>
+  </div>
+  <div class="gallery-item">
+    <a href="/posts/smart-home-controller/img/test2.png" 
+       class="gallery-link" 
+       data-gallery="gallery-0"
+       data-index="1">
+      <img src="/posts/smart-home-controller/img/test2.png" 
+           alt="test2" 
+           loading="lazy"
+           class="gallery-image">
+      <div class="gallery-overlay">
+        <span class="gallery-icon">🔍</span>
+      </div>
+    </a>
+  </div>
+  <div class="gallery-item">
+    <a href="/posts/smart-home-controller/img/test3.png" 
+       class="gallery-link" 
+       data-gallery="gallery-0"
+       data-index="2">
+      <img src="/posts/smart-home-controller/img/test3.png" 
+           alt="test3" 
+           loading="lazy"
+           class="gallery-image">
+      <div class="gallery-overlay">
+        <span class="gallery-icon">🔍</span>
+      </div>
+    </a>
+  </div>
+  </div>
+  <div class="gallery-lightbox" id="lightbox-gallery-0">
+    <button class="lightbox-close" onclick="closeLightbox('gallery-0')">&times;</button>
+    <button class="lightbox-prev" onclick="navigateLightbox('gallery-0', -1)">&#10094;</button>
+    <button class="lightbox-next" onclick="navigateLightbox('gallery-0', 1)">&#10095;</button>
+    <div class="lightbox-content">
+      <img src="" alt="" id="lightbox-image-gallery-0">
+    </div>
+    <div class="lightbox-caption" id="lightbox-caption-gallery-0"></div>
+  </div>
+</li>
+</ul>
+<h2><a id="requirements"></a>Requirements &#x26; Specifications</h2>
+<h3>Functional Requirements</h3>
+<ul>
+<li>Support for 16 lighting zones with dimming control</li>
+<li>Temperature monitoring in 8 different rooms</li>
+<li>Integration with existing HVAC systems</li>
+<li>Motion detection and security alerts</li>
+<li>Energy consumption monitoring</li>
+<li>Web-based configuration interface</li>
+<li>Mobile app for iOS and Android</li>
+<li>Local and cloud-based operation modes</li>
+</ul>
+<h3>Technical Specifications</h3>
+<ul>
+<li><strong>Microcontroller</strong>: ESP32-S3 (dual-core, WiFi, Bluetooth)</li>
+<li><strong>Communication</strong>: WiFi 802.11n, Bluetooth LE, Zigbee (optional)</li>
+<li><strong>Power Supply</strong>: 12V DC with 5V and 3.3V regulation</li>
+<li><strong>I/O Expansion</strong>: I2C-based GPIO expanders</li>
+<li><strong>Storage</strong>: 4MB Flash, SD card slot for logging</li>
+<li><strong>Environmental</strong>: Operating temp -10°C to +60°C</li>
+</ul>
+<h2><a id="hardware-design"></a>Hardware Architecture Design</h2>
+<h3>System Block Diagram</h3>
+<p>The system architecture is built around a central ESP32-S3 controller with multiple subsystems:</p>
+<pre><code>[ESP32-S3 Controller]
+    ├── WiFi/BT Radio
+    ├── I2C Bus
+    │   ├── GPIO Expanders (MCP23017)
+    │   ├── Temperature Sensors (DS18B20)
+    │   ├── RTC Module (DS3231)
+    │   └── OLED Display (SSD1306)
+    ├── SPI Bus
+    │   ├── SD Card Module
+    │   └── Ethernet Module (W5500)
+    ├── UART Interfaces
+    │   ├── Zigbee Module (CC2530)
+    │   └── Debug Console
+    └── Analog Inputs
+        ├── Current Sensors (ACS712)
+        └── Light Level Sensors (LDR)
+</code></pre>
+<h3>Key Design Decisions</h3>
+<p><strong>Modular Architecture</strong>: The system uses a modular approach with separate PCBs for different functions, connected via standardized connectors.</p>
+<p><strong>Redundant Communication</strong>: Both WiFi and Ethernet connectivity ensure reliable network access, with Zigbee for low-power sensor networks.</p>
+<p><strong>Local Processing</strong>: Critical functions operate locally to ensure reliability even without internet connectivity.</p>
+<h2><a id="pcb-design"></a>PCB Design &#x26; Manufacturing</h2>
+<h3>Main Controller Board</h3>
+<p>The main controller PCB features:</p>
+<ul>
+<li><strong>4-layer design</strong> for proper power distribution and EMI control</li>
+<li><strong>USB-C connector</strong> for programming and power</li>
+<li><strong>Modular expansion slots</strong> for daughter boards</li>
+<li><strong>ESD protection</strong> on all external interfaces</li>
+<li><strong>Switching power supply</strong> for efficiency</li>
+</ul>
+<h3>Design Considerations</h3>
+<p><strong>EMI/EMC Compliance</strong>:</p>
+<ul>
+<li>Proper ground plane design</li>
+<li>Ferrite beads on high-speed signals</li>
+<li>Shielded enclosure compatibility</li>
+</ul>
+<p><strong>Thermal Management</strong>:</p>
+<ul>
+<li>Thermal vias under power components</li>
+<li>Heat sink mounting provision</li>
+<li>Temperature monitoring points</li>
+</ul>
+<p><strong>Manufacturing</strong>:</p>
+<ul>
+<li>All components selected for automated assembly</li>
+<li>Test points for production testing</li>
+<li>JTAG interface for debugging</li>
+</ul>
+<h2><a id="firmware"></a>Firmware Development</h2>
+<h3>Software Architecture</h3>
+<p>The firmware is built using ESP-IDF with FreeRTOS, implementing a task-based architecture:</p>
+<pre><code class="language-cpp">// Main application tasks
+class HomeAutomationController {
+private:
+    TaskHandle_t webServerTask;
+    TaskHandle_t sensorTask;
+    TaskHandle_t lightingTask;
+    TaskHandle_t securityTask;
+    
+    WebServer webServer;
+    SensorManager sensorManager;
+    LightingController lightingController;
+    SecuritySystem securitySystem;
+    
+public:
+    void initialize();
+    void startTasks();
+    void processCommands();
+};
+
+// Example lighting control implementation
+class LightingController {
+private:
+    struct LightZone {
+        uint8_t pin;
+        uint8_t brightness;
+        bool isOn;
+        LightType type;
+    };
+    
+    std::array&#x3C;LightZone, 16> zones;
+    
+public:
+    void setZoneBrightness(uint8_t zone, uint8_t brightness);
+    void toggleZone(uint8_t zone);
+    void setSchedule(uint8_t zone, const Schedule&#x26; schedule);
+};
+</code></pre>
+<h3>Key Features Implementation</h3>
+<p><strong>Real-time Operation</strong>:</p>
+<ul>
+<li>Task priorities optimized for real-time response</li>
+<li>Interrupt-driven sensor processing</li>
+<li>Watchdog timers for system reliability</li>
+</ul>
+<p><strong>Security</strong>:</p>
+<ul>
+<li>WPA3 WiFi encryption</li>
+<li>TLS/SSL for web interfaces</li>
+<li>Local authentication system</li>
+<li>Encrypted configuration storage</li>
+</ul>
+<p><strong>Energy Efficiency</strong>:</p>
+<ul>
+<li>Deep sleep modes during inactive periods</li>
+<li>Dynamic frequency scaling</li>
+<li>Peripheral power management</li>
+</ul>
+<h2><a id="software"></a>Web Interface &#x26; Mobile App</h2>
+<h3>Web Interface Technology Stack</h3>
+<ul>
+<li><strong>Frontend</strong>: TypeScript, React, Material-UI</li>
+<li><strong>Backend</strong>: Node.js REST API</li>
+<li><strong>Real-time Communication</strong>: WebSockets</li>
+<li><strong>Database</strong>: SQLite for configuration, InfluxDB for time-series data</li>
+</ul>
+<h3>Mobile Application</h3>
+<p>Cross-platform mobile app built with React Native:</p>
+<pre><code class="language-typescript">// Example React Native component for lighting control
+const LightingControl: React.FC = () => {
+  const [zones, setZones] = useState&#x3C;LightZone[]>([]);
+  
+  const toggleZone = async (zoneId: number) => {
+    try {
+      await api.post(`/lighting/zones/${zoneId}/toggle`);
+      updateZoneStatus(zoneId);
+    } catch (error) {
+      showError('Failed to toggle light zone');
+    }
+  };
+  
+  return (
+    &#x3C;ScrollView>
+      {zones.map(zone => (
+        &#x3C;LightZoneCard 
+          key={zone.id}
+          zone={zone}
+          onToggle={() => toggleZone(zone.id)}
+          onBrightnessChange={(brightness) => 
+            updateZoneBrightness(zone.id, brightness)
+          }
+        />
+      ))}
+    &#x3C;/ScrollView>
+  );
+};
+</code></pre>
+<h2><a id="testing"></a>Integration &#x26; Testing</h2>
+<h3>Testing Strategy</h3>
+<p><strong>Unit Testing</strong>: Individual component testing using GoogleTest framework
+<strong>Integration Testing</strong>: System-level testing with real hardware
+<strong>Performance Testing</strong>: Load testing for concurrent user access
+<strong>Security Testing</strong>: Penetration testing for network vulnerabilities</p>
+<h3>Validation Results</h3>
+<ul>
+<li><strong>Response Time</strong>: &#x3C;100ms for lighting control commands</li>
+<li><strong>Reliability</strong>: 99.9% uptime over 6-month testing period</li>
+<li><strong>Power Consumption</strong>: 2.3W average, 0.5W in sleep mode</li>
+<li><strong>Network Performance</strong>: 50+ concurrent connections supported</li>
+</ul>
+<h2>Challenges &#x26; Solutions</h2>
+<h3>Challenge 1: EMI Interference</h3>
+<p><strong>Problem</strong>: Initial prototypes experienced WiFi connectivity issues due to EMI from switching power supplies.</p>
+<p><strong>Solution</strong>:</p>
+<ul>
+<li>Redesigned PCB layout with better ground plane</li>
+<li>Added ferrite beads and shielding</li>
+<li>Implemented spread-spectrum PWM for dimming circuits</li>
+</ul>
+<h3>Challenge 2: Real-time Performance</h3>
+<p><strong>Problem</strong>: Web interface updates were causing delays in critical lighting responses.</p>
+<p><strong>Solution</strong>:</p>
+<ul>
+<li>Separated real-time control from web interface tasks</li>
+<li>Implemented priority-based task scheduling</li>
+<li>Added local caching for frequently accessed commands</li>
+</ul>
+<h3>Challenge 3: Power Management</h3>
+<p><strong>Problem</strong>: System consumed too much power in standby mode.</p>
+<p><strong>Solution</strong>:</p>
+<ul>
+<li>Implemented sophisticated sleep mode management</li>
+<li>Added motion-based wake-up system</li>
+<li>Optimized sensor polling intervals</li>
+</ul>
+<h2>Future Enhancements</h2>
+<ul>
+<li><strong>Machine Learning</strong>: Adaptive scheduling based on usage patterns</li>
+<li><strong>Voice Control</strong>: Integration with Alexa and Google Assistant</li>
+<li><strong>Advanced Analytics</strong>: Detailed energy usage reports and optimization suggestions</li>
+<li><strong>Mesh Networking</strong>: Support for larger installations with multiple controllers</li>
+<li><strong>Matter/Thread</strong>: Integration with emerging IoT standards</li>
+</ul>
+<h2>Conclusion</h2>
+<p>This project demonstrates the integration of embedded systems design, electronics engineering, and software development to create a practical IoT solution. The modular architecture and comprehensive testing approach resulted in a reliable and scalable home automation system.</p>
+<p>The project showcases skills in:</p>
+<ul>
+<li><strong>Embedded C++ Programming</strong>: Real-time firmware development</li>
+<li><strong>PCB Design</strong>: Multi-layer board design and manufacturing</li>
+<li><strong>System Architecture</strong>: Scalable IoT system design</li>
+<li><strong>Web Development</strong>: Full-stack application development</li>
+<li><strong>Project Management</strong>: Complete product development lifecycle</li>
+</ul>
+<hr>
+<p><em>This project was completed over 4 months and is currently deployed in multiple test installations. The complete source code and design files are available on GitHub.</em></p>
+      </div>
+
+      
+        <!-- Project Updates Section -->
+        <section class="project-updates-section" id="project-updates-section">
+          <h2 class="updates-section-title">Project Updates</h2>
+          
+            <article class="project-update" id="update-demo-smart-home-controller-voice-control">
+              <header class="update-header">
+                <div class="update-header-main">
+                  <h3>Voice Control Integration</h3>
+                  <div class="update-meta">
+                    <time>10.5.2024</time>
+                    
+                      <div class="tags">
+                        <a href="../tags/voice%20control.html" class="tag">Voice Control</a><a href="../tags/alexa.html" class="tag">Alexa</a><a href="../tags/google%20assistant.html" class="tag">Google Assistant</a><a href="../tags/smart%20home.html" class="tag">Smart Home</a>
+                      </div>
+                    
+                  </div>
+                </div>
+              </header>
+              <div class="update-content">
+                <h1>Voice Control Integration</h1>
+<p>This major update adds comprehensive voice control capabilities to the Smart Home Automation Controller, enabling natural language interaction with all home systems.</p>
+<h2>Supported Voice Commands</h2>
+<h3>Lighting Control</h3>
+<ul>
+<li>"Alexa, turn on the living room lights"</li>
+<li>"Hey Google, dim the bedroom lights to 30 percent"</li>
+<li>"Set the kitchen lights to warm white"</li>
+</ul>
+<h3>Climate Control</h3>
+<ul>
+<li>"Set temperature to 72 degrees"</li>
+<li>"Turn on the air conditioning"</li>
+<li>"What's the humidity in the basement?"</li>
+</ul>
+<h3>Security System</h3>
+<ul>
+<li>"Arm the security system"</li>
+<li>"Is the front door locked?"</li>
+<li>"Show me the camera feed"</li>
+</ul>
+<h2>Technical Implementation</h2>
+<p>The voice integration uses AWS Lambda functions and Google Cloud Functions to process voice commands:</p>
+<pre><code class="language-javascript">// Alexa Skill Handler
+const AlexaSmartHomeHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'Alexa.Discovery';
+  },
+  
+  async handle(handlerInput) {
+    const devices = await discoverDevices();
+    return {
+      event: {
+        header: {
+          messageId: generateMessageId(),
+          name: 'Discover.Response',
+          namespace: 'Alexa.Discovery',
+          payloadVersion: '3'
+        },
+        payload: { endpoints: devices }
+      }
+    };
+  }
+};
+
+// Device Control Function
+async function controlDevice(deviceId, action, value) {
+  const command = {
+    device: deviceId,
+    action: action,
+    value: value,
+    timestamp: Date.now()
+  };
+  
+  return await sendCommandToController(command);
+}
+</code></pre>
+<h2>Features Added</h2>
+<h3>Natural Language Processing</h3>
+<ul>
+<li><strong>Intent Recognition</strong>: Understands various ways to express the same command</li>
+<li><strong>Context Awareness</strong>: Remembers previous commands for follow-up actions</li>
+<li><strong>Multi-room Support</strong>: Handles room-specific commands automatically</li>
+</ul>
+<h3>Security Integration</h3>
+<ul>
+<li><strong>Voice Authentication</strong>: Optional voice print verification for sensitive commands</li>
+<li><strong>Command Logging</strong>: All voice commands are logged for security auditing</li>
+<li><strong>Fallback Protection</strong>: Manual override always available</li>
+</ul>
+<h2>Results</h2>
+<ul>
+<li><strong>Command Accuracy</strong>: 98.5% successful command recognition</li>
+<li><strong>Response Time</strong>: Average 1.2 seconds from voice to action</li>
+<li><strong>User Satisfaction</strong>: 94% positive feedback from beta testers</li>
+<li><strong>Daily Usage</strong>: 150+ voice commands per day average per household</li>
+</ul>
+<p>Voice control has become the primary interface for most daily home automation tasks.</p>
+              </div>
+              
+            </article>
+          
+        </section>
+      
+
+      <nav class="post-nav">
+        <a href="../posts.html" class="btn-secondary">← Back to Projects</a>
+      </nav>
+    </article>
+
+    
+      <!-- Timeline Sidebar -->
+      <div class="timeline-wrapper">
+        <div class="timeline-overlay" id="timeline-overlay" onclick="closeTimelineSidebar()"></div>
+        <!-- Floating Side Tab Button -->
+        <button class="timeline-tab-button" onclick="toggleTimelineSidebar()" aria-label="Toggle Project Timeline">
+          <span class="timeline-tab-icon">📅</span>
+          <span class="timeline-tab-text">Timeline</span>
+        </button>
+        <div class="timeline-sidebar" id="timeline-sidebar">
+          <div class="timeline-header">
+            <h3>Project Timeline</h3>
+            <button class="timeline-close" onclick="closeTimelineSidebar()">×</button>
+          </div>
+          <div class="timeline-content">
+            
+              <a href="#requirements" class="timeline-item" data-index="0">
+                <div class="timeline-date">1.1.2024</div>
+                <div class="timeline-title">Project Initiation & Requirements</div>
+              </a>
+            
+              <a href="#hardware-design" class="timeline-item" data-index="1">
+                <div class="timeline-date">15.1.2024</div>
+                <div class="timeline-title">Hardware Architecture Design</div>
+              </a>
+            
+              <a href="#pcb-design" class="timeline-item" data-index="2">
+                <div class="timeline-date">1.2.2024</div>
+                <div class="timeline-title">PCB Design & Manufacturing</div>
+              </a>
+            
+              <a href="#firmware" class="timeline-item" data-index="3">
+                <div class="timeline-date">15.2.2024</div>
+                <div class="timeline-title">Firmware Development</div>
+              </a>
+            
+              <a href="#software" class="timeline-item" data-index="4">
+                <div class="timeline-date">1.3.2024</div>
+                <div class="timeline-title">Web Interface & Mobile App</div>
+              </a>
+            
+              <a href="#testing" class="timeline-item" data-index="5">
+                <div class="timeline-date">15.3.2024</div>
+                <div class="timeline-title">Integration & Testing</div>
+              </a>
+            
+              <a href="#update-demo-smart-home-controller-voice-control" class="timeline-item" data-index="6">
+                <div class="timeline-date">10.5.2024</div>
+                <div class="timeline-title">Voice Control Integration</div>
+              </a>
+            
+          </div>
+        </div>
+      </div>
+    
+  
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 Your Name. Automation Engineer & Embedded Systems Developer</p>
+    <p class="generator-credit">
+      Generated with <a href="https://github.com/Crowiel/Sieva-Site-Generator" target="_blank" rel="noopener">Sievä Site Generator</a>
+    </p>
+  </footer>
+
+  <script src="../static/js/components.js"></script>
+  <script src="../static/js/gallery.js"></script>
+</body>
+</html>
+
+<!-- 
+  Generated with Sievä Site Generator
+  https://github.com/Crowiel/Sieva-Site-Generator
+  A modern static site generator built with Deno, TypeScript, and MDX
+-->

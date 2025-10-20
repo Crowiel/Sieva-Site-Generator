@@ -1,0 +1,5 @@
+/.vscode
+/.todo-documentation
+
+# User configuration (copy config-default.json to config-user.json)
+config-user.json

@@ -1,0 +1,26 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read --allow-write --watch main.ts",
+    "build-dev": "deno run --allow-read --allow-write scripts/build-mdx.ts dev",
+    "build-static-dev": "deno task build-dev && deno run --allow-read --allow-write scripts/build-static.ts",
+    "build-release": "deno run --allow-read --allow-write scripts/build-mdx.ts release && deno run --allow-read --allow-write scripts/build-static.ts",
+    "build": "deno task build-dev",
+    "build-and-serve": "deno task build-dev && deno task dev",
+    "release": "deno task build-release"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "@std/http/file-server": "jsr:@std/http@1/file-server",
+    "@std/path": "jsr:@std/path@1",
+    "@std/fs": "jsr:@std/fs@1",
+    "gray-matter": "npm:gray-matter@4.0.3",
+    "@mdx-js/mdx": "npm:@mdx-js/mdx@3.0.1",
+    "hast": "npm:hast@1.0.0",
+    "mdast": "npm:mdast@3.0.0",
+    "unified": "npm:unified@11.0.4",
+    "remark-parse": "npm:remark-parse@11.0.0",
+    "remark-rehype": "npm:remark-rehype@11.1.0",
+    "rehype-stringify": "npm:rehype-stringify@10.0.0",
+    "remark-frontmatter": "npm:remark-frontmatter@5.0.0"
+  }
+}

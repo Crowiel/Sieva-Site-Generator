@@ -1,0 +1,331 @@
+---
+title: "Smart Home Automation Controller"
+date: "2024-03-15"
+description: "A comprehensive IoT-based home automation system with ESP32, custom PCB design, and web interface for controlling lights, temperature, and security systems."
+tags: ["IoT", "ESP32", "PCB Design", "C++", "Web Development"]
+featured: true
+isIndex: true
+projectSlug: "smart-home-controller"
+gantt:
+  - name: "Project Planning"
+    start: "2024-01-01"
+    end: "2024-01-15"
+    progress: 100
+    color: "#4CAF50"
+  - name: "Hardware Design"
+    start: "2024-01-10"
+    end: "2024-02-28"
+    progress: 100
+    color: "#2196F3"
+  - name: "PCB Layout"
+    start: "2024-02-15"
+    end: "2024-03-15"
+    progress: 100
+    color: "#FF9800"
+  - name: "Component Sourcing"
+    start: "2024-03-01"
+    end: "2024-03-20"
+    progress: 100
+    color: "#9C27B0"
+  - name: "Assembly & Testing"
+    start: "2024-03-15"
+    end: "2024-04-30"
+    progress: 80
+    color: "#F44336"
+  - name: "Software Development"
+    start: "2024-02-01"
+    end: "2024-05-15"
+    progress: 60
+    color: "#607D8B"
+timeline:
+  - title: "Project Initiation & Requirements"
+    date: "2024-01-01"
+    link: "#requirements"
+  - title: "Hardware Architecture Design"
+    date: "2024-01-15"
+    link: "#hardware-design"
+  - title: "PCB Design & Manufacturing"
+    date: "2024-02-01"
+    link: "#pcb-design"
+  - title: "Firmware Development"
+    date: "2024-02-15"
+    link: "#firmware"
+  - title: "Web Interface & Mobile App"
+    date: "2024-03-01"
+    link: "#software"
+  - title: "Integration & Testing"
+    date: "2024-03-15"
+    link: "#testing"
+  - title: "Voice Control Integration"
+    date: "2024-05-10"
+    link: "#update-demo-smart-home-controller-voice-control"
+---
+
+# Smart Home Automation Controller
+
+This project showcases the development of a comprehensive IoT-based home automation system that combines embedded systems programming, electronics design, and modern web technologies to create an intelligent home control solution.
+
+## Project Overview
+
+The Smart Home Automation Controller is designed to provide centralized control over various home systems including:
+
+- **Lighting Control**: Dimming and switching capabilities for multiple zones
+- **HVAC Management**: Temperature monitoring and thermostat control
+- **Security System**: Door/window sensors, motion detection, and camera integration
+- **Energy Monitoring**: Real-time power consumption tracking
+- **Remote Access**: Web and mobile app interfaces for remote control
+
+Gallery: test1.png, test2.png, test3.png
+
+## <a id="requirements"></a>Requirements & Specifications
+
+### Functional Requirements
+- Support for 16 lighting zones with dimming control
+- Temperature monitoring in 8 different rooms
+- Integration with existing HVAC systems
+- Motion detection and security alerts
+- Energy consumption monitoring
+- Web-based configuration interface
+- Mobile app for iOS and Android
+- Local and cloud-based operation modes
+
+### Technical Specifications
+- **Microcontroller**: ESP32-S3 (dual-core, WiFi, Bluetooth)
+- **Communication**: WiFi 802.11n, Bluetooth LE, Zigbee (optional)
+- **Power Supply**: 12V DC with 5V and 3.3V regulation
+- **I/O Expansion**: I2C-based GPIO expanders
+- **Storage**: 4MB Flash, SD card slot for logging
+- **Environmental**: Operating temp -10°C to +60°C
+
+## <a id="hardware-design"></a>Hardware Architecture Design
+
+### System Block Diagram
+
+The system architecture is built around a central ESP32-S3 controller with multiple subsystems:
+
+```
+[ESP32-S3 Controller]
+    ├── WiFi/BT Radio
+    ├── I2C Bus
+    │   ├── GPIO Expanders (MCP23017)
+    │   ├── Temperature Sensors (DS18B20)
+    │   ├── RTC Module (DS3231)
+    │   └── OLED Display (SSD1306)
+    ├── SPI Bus
+    │   ├── SD Card Module
+    │   └── Ethernet Module (W5500)
+    ├── UART Interfaces
+    │   ├── Zigbee Module (CC2530)
+    │   └── Debug Console
+    └── Analog Inputs
+        ├── Current Sensors (ACS712)
+        └── Light Level Sensors (LDR)
+```
+
+### Key Design Decisions
+
+**Modular Architecture**: The system uses a modular approach with separate PCBs for different functions, connected via standardized connectors.
+
+**Redundant Communication**: Both WiFi and Ethernet connectivity ensure reliable network access, with Zigbee for low-power sensor networks.
+
+**Local Processing**: Critical functions operate locally to ensure reliability even without internet connectivity.
+
+## <a id="pcb-design"></a>PCB Design & Manufacturing
+
+### Main Controller Board
+
+The main controller PCB features:
+- **4-layer design** for proper power distribution and EMI control
+- **USB-C connector** for programming and power
+- **Modular expansion slots** for daughter boards
+- **ESD protection** on all external interfaces
+- **Switching power supply** for efficiency
+
+### Design Considerations
+
+**EMI/EMC Compliance**:
+- Proper ground plane design
+- Ferrite beads on high-speed signals
+- Shielded enclosure compatibility
+
+**Thermal Management**:
+- Thermal vias under power components
+- Heat sink mounting provision
+- Temperature monitoring points
+
+**Manufacturing**:
+- All components selected for automated assembly
+- Test points for production testing
+- JTAG interface for debugging
+
+## <a id="firmware"></a>Firmware Development
+
+### Software Architecture
+
+The firmware is built using ESP-IDF with FreeRTOS, implementing a task-based architecture:
+
+```cpp
+// Main application tasks
+class HomeAutomationController {
+private:
+    TaskHandle_t webServerTask;
+    TaskHandle_t sensorTask;
+    TaskHandle_t lightingTask;
+    TaskHandle_t securityTask;
+    
+    WebServer webServer;
+    SensorManager sensorManager;
+    LightingController lightingController;
+    SecuritySystem securitySystem;
+    
+public:
+    void initialize();
+    void startTasks();
+    void processCommands();
+};
+
+// Example lighting control implementation
+class LightingController {
+private:
+    struct LightZone {
+        uint8_t pin;
+        uint8_t brightness;
+        bool isOn;
+        LightType type;
+    };
+    
+    std::array<LightZone, 16> zones;
+    
+public:
+    void setZoneBrightness(uint8_t zone, uint8_t brightness);
+    void toggleZone(uint8_t zone);
+    void setSchedule(uint8_t zone, const Schedule& schedule);
+};
+```
+
+### Key Features Implementation
+
+**Real-time Operation**:
+- Task priorities optimized for real-time response
+- Interrupt-driven sensor processing
+- Watchdog timers for system reliability
+
+**Security**:
+- WPA3 WiFi encryption
+- TLS/SSL for web interfaces
+- Local authentication system
+- Encrypted configuration storage
+
+**Energy Efficiency**:
+- Deep sleep modes during inactive periods
+- Dynamic frequency scaling
+- Peripheral power management
+
+## <a id="software"></a>Web Interface & Mobile App
+
+### Web Interface Technology Stack
+
+- **Frontend**: TypeScript, React, Material-UI
+- **Backend**: Node.js REST API
+- **Real-time Communication**: WebSockets
+- **Database**: SQLite for configuration, InfluxDB for time-series data
+
+### Mobile Application
+
+Cross-platform mobile app built with React Native:
+
+```typescript
+// Example React Native component for lighting control
+const LightingControl: React.FC = () => {
+  const [zones, setZones] = useState<LightZone[]>([]);
+  
+  const toggleZone = async (zoneId: number) => {
+    try {
+      await api.post(`/lighting/zones/${zoneId}/toggle`);
+      updateZoneStatus(zoneId);
+    } catch (error) {
+      showError('Failed to toggle light zone');
+    }
+  };
+  
+  return (
+    <ScrollView>
+      {zones.map(zone => (
+        <LightZoneCard 
+          key={zone.id}
+          zone={zone}
+          onToggle={() => toggleZone(zone.id)}
+          onBrightnessChange={(brightness) => 
+            updateZoneBrightness(zone.id, brightness)
+          }
+        />
+      ))}
+    </ScrollView>
+  );
+};
+```
+
+## <a id="testing"></a>Integration & Testing
+
+### Testing Strategy
+
+**Unit Testing**: Individual component testing using GoogleTest framework
+**Integration Testing**: System-level testing with real hardware
+**Performance Testing**: Load testing for concurrent user access
+**Security Testing**: Penetration testing for network vulnerabilities
+
+### Validation Results
+
+- **Response Time**: <100ms for lighting control commands
+- **Reliability**: 99.9% uptime over 6-month testing period
+- **Power Consumption**: 2.3W average, 0.5W in sleep mode
+- **Network Performance**: 50+ concurrent connections supported
+
+## Challenges & Solutions
+
+### Challenge 1: EMI Interference
+**Problem**: Initial prototypes experienced WiFi connectivity issues due to EMI from switching power supplies.
+
+**Solution**: 
+- Redesigned PCB layout with better ground plane
+- Added ferrite beads and shielding
+- Implemented spread-spectrum PWM for dimming circuits
+
+### Challenge 2: Real-time Performance
+**Problem**: Web interface updates were causing delays in critical lighting responses.
+
+**Solution**:
+- Separated real-time control from web interface tasks
+- Implemented priority-based task scheduling
+- Added local caching for frequently accessed commands
+
+### Challenge 3: Power Management
+**Problem**: System consumed too much power in standby mode.
+
+**Solution**:
+- Implemented sophisticated sleep mode management
+- Added motion-based wake-up system
+- Optimized sensor polling intervals
+
+## Future Enhancements
+
+- **Machine Learning**: Adaptive scheduling based on usage patterns
+- **Voice Control**: Integration with Alexa and Google Assistant
+- **Advanced Analytics**: Detailed energy usage reports and optimization suggestions
+- **Mesh Networking**: Support for larger installations with multiple controllers
+- **Matter/Thread**: Integration with emerging IoT standards
+
+## Conclusion
+
+This project demonstrates the integration of embedded systems design, electronics engineering, and software development to create a practical IoT solution. The modular architecture and comprehensive testing approach resulted in a reliable and scalable home automation system.
+
+The project showcases skills in:
+- **Embedded C++ Programming**: Real-time firmware development
+- **PCB Design**: Multi-layer board design and manufacturing
+- **System Architecture**: Scalable IoT system design
+- **Web Development**: Full-stack application development
+- **Project Management**: Complete product development lifecycle
+
+---
+
+*This project was completed over 4 months and is currently deployed in multiple test installations. The complete source code and design files are available on GitHub.*

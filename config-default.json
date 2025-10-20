@@ -1,0 +1,33 @@
+{
+  "site": {
+    "name": "Your Name",
+    "subtitle": "Automation & Embedded Systems",
+    "footer": "Automation Engineer & Embedded Systems Developer",
+    "showGeneratorCredit": true,
+    "domain": "https://yourdomain.com"
+  },
+  "navigation": {
+    "home": "Home",
+    "projects": "Projects",
+    "blog": "Blog",
+    "about": "About"
+  },
+  "pages": {
+    "blog": {
+      "title": "Blog",
+      "description": "Thoughts, tutorials, and insights on software development, embedded systems, and technology."
+    },
+    "projects": {
+      "title": "Projects",
+      "description": "A collection of my technical projects, ranging from industrial automation to embedded systems development."
+    },
+    "about": {
+      "title": "About Me",
+      "description": "Learn more about my background, skills, and experience in automation and embedded systems."
+    },
+    "tags": {
+      "title": "Browse by Tag",
+      "description": "Explore projects and posts organized by technology and topic."
+    }
+  }
+}
