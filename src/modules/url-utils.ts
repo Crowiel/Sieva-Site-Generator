@@ -86,11 +86,14 @@ export function buildHomeUrl(options: UrlOptions = {}): string {
  * Used when linking from /articles/slug to /topics/tag
  * @param tag - Tag name
  * @param options - URL options
- * @returns URL string like "../topics/tag.html"
+ * @returns URL string like "../topics/tag.html" or "/topics/tag"
  */
 export function buildRelativeTagUrl(tag: string, options: UrlOptions = {}): string {
-  const { htmlExt = false } = options;
+  const { absolute = false, htmlExt = false } = options;
   const ext = htmlExt ? ".html" : "";
+  if (absolute) {
+    return `/topics/${encodeURIComponent(tag.toLowerCase())}${ext}`;
+  }
   return `../topics/${encodeURIComponent(tag.toLowerCase())}${ext}`;
 }
 

@@ -101,10 +101,13 @@ export function renderTagPage(
       
       ${tagPosts.length > 0 ? `
         <div class="posts-grid">
-          ${tagPosts.map(post => `
+          ${tagPosts.map(post => {
+            const projectUrl = buildProjectUrl(post.projectSlug || post.slug, urlOpts);
+            const prefix = urlOpts.absolute ? "" : "../";
+            return `
             <article class="post-card">
               <header class="post-card-header">
-                <h2><a href="../${buildProjectUrl(post.projectSlug || post.slug, urlOpts)}">${post.frontmatter.title}</a></h2>
+                <h2><a href="${prefix}${projectUrl}">${post.frontmatter.title}</a></h2>
                 <time class="post-date">${new Date(post.frontmatter.date).toLocaleDateString()}</time>
               </header>
               ${post.frontmatter.description ? `
@@ -113,12 +116,13 @@ export function renderTagPage(
               <footer class="post-card-footer">
                 <div class="tags">
                   ${post.frontmatter.tags?.map(tag => `
-                    <a href="${buildTagUrl(tag, { absolute: false, htmlExt: true })}" class="tag">${tag}</a>
+                    <a href="${buildTagUrl(tag, urlOpts)}" class="tag">${tag}</a>
                   `).join('') || ''}
                 </div>
               </footer>
             </article>
-          `).join('')}
+          `;
+          }).join('')}
         </div>
       ` : `
         <div class="empty-state">
@@ -128,8 +132,8 @@ export function renderTagPage(
       `}
       
       <nav class="page-nav">
-        <a href="../${buildPageUrl('tags', urlOpts)}" class="btn-secondary">← All Tags</a>
-        <a href="../${buildPageUrl('posts', urlOpts)}" class="btn-secondary">← Back to Projects</a>
+        <a href="${urlOpts.absolute ? '' : '../'}${buildPageUrl('tags', urlOpts)}" class="btn-secondary">← All Tags</a>
+        <a href="${urlOpts.absolute ? '' : '../'}${buildPageUrl('posts', urlOpts)}" class="btn-secondary">← Back to Projects</a>
       </nav>
     </div>
   `;

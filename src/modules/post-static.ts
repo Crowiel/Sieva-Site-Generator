@@ -56,7 +56,11 @@ export function renderPost(
           <time>${new Date(post.frontmatter.date).toLocaleDateString()}</time>
           ${post.frontmatter.tags ? `
             <div class="tags">
-              ${post.frontmatter.tags.map((tag: string) => `<a href="../${buildTagUrl(tag, urlOpts)}" class="tag">${tag}</a>`).join("")}
+              ${post.frontmatter.tags.map((tag: string) => {
+                const tagUrl = buildTagUrl(tag, urlOpts);
+                const prefix = urlOpts.absolute ? "" : "../";
+                return `<a href="${prefix}${tagUrl}" class="tag">${tag}</a>`;
+              }).join("")}
             </div>
           ` : ""}
         </div>
@@ -80,7 +84,11 @@ export function renderPost(
                     <time>${new Date(update.frontmatter.date).toLocaleDateString()}</time>
                     ${update.frontmatter.tags ? `
                       <div class="tags">
-                        ${update.frontmatter.tags.map((tag: string) => `<a href="../${buildTagUrl(tag, urlOpts)}" class="tag">${tag}</a>`).join("")}
+                        ${update.frontmatter.tags.map((tag: string) => {
+                          const tagUrl = buildTagUrl(tag, urlOpts);
+                          const prefix = urlOpts.absolute ? "" : "../";
+                          return `<a href="${prefix}${tagUrl}" class="tag">${tag}</a>`;
+                        }).join("")}
                       </div>
                     ` : ""}
                   </div>
