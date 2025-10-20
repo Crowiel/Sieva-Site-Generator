@@ -26,13 +26,13 @@ export function renderBlogList(blogPosts: BlogPost[]): string {
           </div>
         ` : blogPosts.map(post => `
           <article class="blog-post-card">
-            <h2><a href="/blog/${post.slug}">${post.frontmatter.title}</a></h2>
+            <h2><a href="/articles/${post.slug}">${post.frontmatter.title}</a></h2>
             <div class="post-meta">
               <time>${new Date(post.frontmatter.date).toLocaleDateString()}</time>
               ${post.frontmatter.tags ? `
                 <div class="tags">
                   ${post.frontmatter.tags.map((tag: string) => 
-                    `<a href="/tags/${encodeURIComponent(tag.toLowerCase())}" class="tag">${tag}</a>`
+                    `<a href="/topics/${encodeURIComponent(tag.toLowerCase())}" class="tag">${tag}</a>`
                   ).join("")}
                 </div>
               ` : ""}
@@ -40,7 +40,7 @@ export function renderBlogList(blogPosts: BlogPost[]): string {
             ${post.frontmatter.description ? `
               <p class="post-excerpt">${post.frontmatter.description}</p>
             ` : ""}
-            <a href="/blog/${post.slug}" class="read-more">Read more →</a>
+            <a href="/articles/${post.slug}" class="read-more">Read more →</a>
           </article>
         `).join("")}
       </section>
@@ -60,7 +60,7 @@ export function renderBlogPost(post: BlogPost): string {
           ${post.frontmatter.tags ? `
             <div class="tags">
               ${post.frontmatter.tags.map((tag: string) => 
-                `<a href="/tags/${encodeURIComponent(tag.toLowerCase())}" class="tag">${tag}</a>`
+                `<a href="/topics/${encodeURIComponent(tag.toLowerCase())}" class="tag">${tag}</a>`
               ).join("")}
             </div>
           ` : ""}

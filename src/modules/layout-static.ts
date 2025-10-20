@@ -39,8 +39,8 @@ export function renderLayout(
   const navBlog = config?.navigation.blog || "Blog";
   const navAbout = config?.navigation.about || "About";
   
-  // Determine base path for assets based on whether we're in a subdirectory  
-  const basePath = content.includes('class="post"') || content.includes('class="blog-post"') ? "../" : "";
+  // Always use absolute paths for assets to avoid path issues
+  const basePath = "/";
   
   return `<!DOCTYPE html>
 <html lang="en">
@@ -48,15 +48,15 @@ export function renderLayout(
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
-  <link rel="stylesheet" href="${basePath}styles/main.css">
-  <link rel="stylesheet" href="${basePath}styles/components.css">
+  <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="/styles/components.css">
   ${additionalHead}
 </head>
 <body>
   <header class="site-header">
     <nav class="nav">
       <div class="nav-brand">
-        <a href="${basePath}">
+        <a href="/">
           <span class="brand-name">${siteName}</span>
           <span class="brand-subtitle">${siteSubtitle}</span>
         </a>
@@ -67,10 +67,10 @@ export function renderLayout(
         <span class="hamburger"></span>
       </button>
       <ul class="nav-links">
-        <li><a href="${basePath}">${navHome}</a></li>
-        ${showProjects ? `<li><a href="${basePath}posts.html">${navProjects}</a></li>` : ''}
-        ${showBlog ? `<li><a href="${basePath}blog.html">${navBlog}</a></li>` : ''}
-        <li><a href="${basePath}about.html">${navAbout}</a></li>
+        <li><a href="/">${navHome}</a></li>
+        ${showProjects ? `<li><a href="/posts">${navProjects}</a></li>` : ''}
+        ${showBlog ? `<li><a href="/blog">${navBlog}</a></li>` : ''}
+        <li><a href="/about">${navAbout}</a></li>
       </ul>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <div class="theme-toggle-track">
@@ -83,19 +83,19 @@ export function renderLayout(
   <!-- Floating Navigation (appears when scrolling) -->
   <nav class="floating-nav" id="floatingNav">
     <div class="floating-nav-buttons">
-      <a href="${basePath}" class="floating-btn" title="${navHome}">
+      <a href="/" class="floating-btn" title="${navHome}">
         <span class="btn-icon">🏠</span>
         <span class="btn-text">${navHome}</span>
       </a>
-      ${showProjects ? `<a href="${basePath}posts.html" class="floating-btn" title="${navProjects}">
+      ${showProjects ? `<a href="/posts" class="floating-btn" title="${navProjects}">
         <span class="btn-icon">💼</span>
         <span class="btn-text">${navProjects}</span>
       </a>` : ''}
-      ${showBlog ? `<a href="${basePath}blog.html" class="floating-btn" title="${navBlog}">
+      ${showBlog ? `<a href="/blog" class="floating-btn" title="${navBlog}">
         <span class="btn-icon">📝</span>
         <span class="btn-text">${navBlog}</span>
       </a>` : ''}
-      <a href="${basePath}about.html" class="floating-btn" title="${navAbout}">
+      <a href="/about" class="floating-btn" title="${navAbout}">
         <span class="btn-icon">👤</span>
         <span class="btn-text">${navAbout}</span>
       </a>
@@ -118,8 +118,8 @@ export function renderLayout(
     </p>` : ''}
   </footer>
 
-  <script src="${basePath}static/js/components.js"></script>
-  <script src="${basePath}static/js/gallery.js"></script>
+  <script src="/static/js/components.js"></script>
+  <script src="/static/js/gallery.js"></script>
 </body>
 </html>
 

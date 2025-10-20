@@ -36,9 +36,9 @@ async function buildStaticSite() {
   await ensureDir(DIST_DIR);
   
   // Create necessary subdirectories
-  await ensureDir(join(DIST_DIR, "posts"));
-  await ensureDir(join(DIST_DIR, "blog"));
-  await ensureDir(join(DIST_DIR, "tags"));
+  await ensureDir(join(DIST_DIR, "projects"));
+  await ensureDir(join(DIST_DIR, "articles"));
+  await ensureDir(join(DIST_DIR, "topics"));
   await ensureDir(join(DIST_DIR, "styles"));
   await ensureDir(join(DIST_DIR, "static", "js"));
 
@@ -54,7 +54,7 @@ async function buildStaticSite() {
   // Copy image folders from content
   console.log("🖼️  Copying content images...");
   try {
-    // Copy project images
+    // Copy project images to centralized media directory
     const projectsDir = "./src/content/projects";
     try {
       for await (const entry of Deno.readDir(projectsDir)) {
@@ -62,7 +62,7 @@ async function buildStaticSite() {
           const imgDir = join(projectsDir, entry.name, "img");
           try {
             await Deno.stat(imgDir);
-            const destDir = join(DIST_DIR, "posts", entry.name, "img");
+            const destDir = join(DIST_DIR, "media", "projects", entry.name);
             await ensureDir(destDir);
             await copy(imgDir, destDir, { overwrite: true });
             console.log(`  ✓ Copied images for project: ${entry.name}`);
@@ -75,11 +75,11 @@ async function buildStaticSite() {
       console.warn("⚠️  No projects directory found");
     }
 
-    // Copy blog images
+    // Copy blog images to centralized media directory
     const blogImgDir = "./src/content/blog/img";
     try {
       await Deno.stat(blogImgDir);
-      const destDir = join(DIST_DIR, "blog", "img");
+      const destDir = join(DIST_DIR, "media", "blog");
       await ensureDir(destDir);
       await copy(blogImgDir, destDir, { overwrite: true });
       console.log("  ✓ Copied blog images");
@@ -112,14 +112,14 @@ async function buildStaticSite() {
       <div class="posts-list">
         ${projects.map((project: ProjectData) => `
           <article class="post-card ${project.indexPost.frontmatter.featured ? 'featured' : ''}">
-            <h2><a href="posts/${project.slug}.html">${project.indexPost.frontmatter.title}</a></h2>
+            <h2><a href="projects/${project.slug}.html">${project.indexPost.frontmatter.title}</a></h2>
             <div class="post-meta">
               <time>${new Date(project.indexPost.frontmatter.date).toLocaleDateString()}</time>
               ${project.updates.length > 0 ? `<p class="update-count">${project.updates.length} update${project.updates.length !== 1 ? 's' : ''}</p>` : ''}
               ${project.latestUpdate ? `<p class="latest-update">Latest: ${new Date(project.latestUpdate.frontmatter.date).toLocaleDateString()}</p>` : ''}
               ${project.indexPost.frontmatter.tags ? `
                 <div class="tags">
-                  ${project.indexPost.frontmatter.tags.map((tag: string) => `<a href="tags/${encodeURIComponent(tag.toLowerCase())}.html" class="tag">${tag}</a>`).join("")}
+                  ${project.indexPost.frontmatter.tags.map((tag: string) => `<a href="topics/${encodeURIComponent(tag.toLowerCase())}.html" class="tag">${tag}</a>`).join("")}
                 </div>
               ` : ""}
             </div>
@@ -138,10 +138,11 @@ async function buildStaticSite() {
   
   // Generate combined project pages with all updates on same page
   for (const project of projects) {
-    // Generate project page with all updates included (accessible via /posts/project-slug)
+    // Generate project page with all updates included (accessible via /projects/project-slug)
     const projectContent = renderPost(project.indexPost, project, config);
-    await Deno.writeTextFile(join(DIST_DIR, "posts", `${project.slug}.html`), projectContent);
-    console.log(`   ✅ Generated: posts/${project.slug}.html (with ${project.updates.length} updates)`);
+    await ensureDir(join(DIST_DIR, "projects"));
+    await Deno.writeTextFile(join(DIST_DIR, "projects", `${project.slug}.html`), projectContent);
+    console.log(`   ✅ Generated: projects/${project.slug}.html (with ${project.updates.length} updates)`);
   }
 
   // Generate blog list page
@@ -153,8 +154,9 @@ async function buildStaticSite() {
   // Generate individual blog post pages
   for (const post of blogPosts) {
     const blogPostContent = renderBlogPost(post, config);
-    await Deno.writeTextFile(join(DIST_DIR, "blog", `${post.slug}.html`), blogPostContent);
-    console.log(`   ✅ Generated: blog/${post.slug}.html`);
+    await ensureDir(join(DIST_DIR, "articles"));
+    await Deno.writeTextFile(join(DIST_DIR, "articles", `${post.slug}.html`), blogPostContent);
+    console.log(`   ✅ Generated: articles/${post.slug}.html`);
   }
 
   // Generate tag pages
@@ -184,8 +186,9 @@ async function buildStaticSite() {
   for (const tag of allTags) {
     const tagPageContent = renderTagPage(tag, allPosts, config);
     const fileName = `${tag.toLowerCase()}.html`;
-    await Deno.writeTextFile(join(DIST_DIR, "tags", fileName), tagPageContent);
-    console.log(`   ✅ Generated: tags/${fileName}`);
+    await ensureDir(join(DIST_DIR, "topics"));
+    await Deno.writeTextFile(join(DIST_DIR, "topics", fileName), tagPageContent);
+    console.log(`   ✅ Generated: topics/${fileName}`);
   }
 
   // Generate .htaccess for clean URLs
@@ -193,20 +196,39 @@ async function buildStaticSite() {
   const htaccessContent = `# Portfolio Website - Clean URLs and Apache Configuration
 RewriteEngine On
 
+# Disable directory listing
+Options -Indexes
+
+# Prevent Apache from adding trailing slashes to directories
+DirectorySlash Off
+
 # Remove .html extension from URLs
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !^/(projects|articles|topics)/
 RewriteRule ^([^.]+)$ $1.html [NC,L]
 
 # Redirect .html URLs to clean URLs (optional - for SEO)
 RewriteCond %{THE_REQUEST} /([^.]+)\\.html [NC]
 RewriteRule ^ /%1 [NC,L,R=301]
 
-# Handle posts directory
-RewriteRule ^posts/([^/]+)/?$ posts/$1.html [NC,L]
+# Handle projects directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^projects/([^/]+)/?$ projects/$1.html [NC,L]
 
-# Handle tags directory
-RewriteRule ^tags/([^/]+)/?$ tags/$1.html [NC,L]
+# Handle articles directory (blog posts)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^articles/([^/]+)/?$ articles/$1.html [NC,L]
+
+# Handle topics directory (tags)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^topics/([^/]+)/?$ topics/$1.html [NC,L]
+
+# Disable directory listing
+Options -Indexes
 
 # Custom error pages (optional)
 ErrorDocument 404 /404.html

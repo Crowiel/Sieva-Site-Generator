@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debugging Embedded Systems: Tips and Tools</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <div class="nav-brand">
+        <a href="/">
+          <span class="brand-name">Your Name</span>
+          <span class="brand-subtitle">Automation & Embedded Systems</span>
+        </a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/posts">Projects</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <div class="theme-toggle-track">
+          <div class="theme-toggle-thumb"></div>
+        </div>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Floating Navigation (appears when scrolling) -->
+  <nav class="floating-nav" id="floatingNav">
+    <div class="floating-nav-buttons">
+      <a href="/" class="floating-btn" title="Home">
+        <span class="btn-icon">🏠</span>
+        <span class="btn-text">Home</span>
+      </a>
+      <a href="/posts" class="floating-btn" title="Projects">
+        <span class="btn-icon">💼</span>
+        <span class="btn-text">Projects</span>
+      </a>
+      <a href="/blog" class="floating-btn" title="Blog">
+        <span class="btn-icon">📝</span>
+        <span class="btn-text">Blog</span>
+      </a>
+      <a href="/about" class="floating-btn" title="About">
+        <span class="btn-icon">👤</span>
+        <span class="btn-text">About</span>
+      </a>
+      <button class="floating-btn theme-toggle" id="floatingThemeToggle" title="Toggle theme">
+        <div class="theme-toggle-track">
+          <div class="theme-toggle-thumb"></div>
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <article class="blog-post">
+      <header class="post-header">
+        <h1>Debugging Embedded Systems: Tips and Tools</h1>
+        <div class="post-meta">
+          <time>1.10.2024</time>
+          
+            <div class="tags">
+              <a href="../tags/embedded%20systems.html" class="tag">embedded systems</a><a href="../tags/debugging.html" class="tag">debugging</a><a href="../tags/hardware.html" class="tag">hardware</a><a href="../tags/tools.html" class="tag">tools</a>
+            </div>
+          
+        </div>
+        
+          <p class="post-description">Essential debugging techniques and tools for embedded systems development, from serial debugging to logic analyzers.</p>
+        
+      </header>
+
+      <div class="post-content">
+        <h1>Debugging Embedded Systems: Tips and Tools</h1>
+<p>Debugging embedded systems presents unique challenges compared to traditional software development. Here's a comprehensive guide to the essential techniques and tools.</p>
+<h2>The Debugging Toolkit</h2>
+<h3>1. Serial Debugging: Your First Line of Defense</h3>
+<pre><code class="language-cpp">// ESP32 example
+void setup() {
+  Serial.begin(115200);
+  Serial.println("System starting...");
+}
+
+void loop() {
+  int sensorValue = analogRead(A0);
+  Serial.printf("Sensor: %d, Free heap: %d\n", 
+                sensorValue, ESP.getFreeHeap());
+  delay(1000);
+}
+</code></pre>
+<p><strong>Pro tip</strong>: Use structured logging with prefixes:</p>
+<pre><code class="language-cpp">#define DEBUG_SENSOR "[SENSOR] "
+#define DEBUG_NETWORK "[NET] "
+#define DEBUG_ERROR "[ERROR] "
+
+Serial.println(DEBUG_SENSOR "Temperature: 25.4°C");
+</code></pre>
+<h3>2. LED Debugging: When Serial Isn't Available</h3>
+<p>The humble LED can save hours of debugging:</p>
+<pre><code class="language-cpp">#define DEBUG_LED 2
+
+void signalError(int errorCode) {
+  for(int i = 0; i &#x3C; errorCode; i++) {
+    digitalWrite(DEBUG_LED, HIGH);
+    delay(200);
+    digitalWrite(DEBUG_LED, LOW);
+    delay(200);
+  }
+  delay(1000);
+}
+</code></pre>
+<h3>3. Logic Analyzers</h3>
+<p>Essential for debugging:</p>
+<ul>
+<li>I2C/SPI communication</li>
+<li>Timing issues</li>
+<li>Protocol verification</li>
+</ul>
+<p><strong>Recommended</strong>: Saleae Logic Analyzer for professional work, or cheap Chinese clones for hobby projects.</p>
+<h2>Common Debugging Scenarios</h2>
+<h3>Issue: I2C Device Not Responding</h3>
+<p><strong>Debug Steps:</strong></p>
+<ol>
+<li>Check pull-up resistors (typically 4.7kΩ)</li>
+<li>Scan I2C bus:</li>
+</ol>
+<pre><code class="language-cpp">#include &#x3C;Wire.h>
+
+void scanI2C() {
+  Serial.println("Scanning I2C bus...");
+  byte count = 0;
+  
+  for(byte i = 1; i &#x3C; 127; i++) {
+    Wire.beginTransmission(i);
+    if(Wire.endTransmission() == 0) {
+      Serial.printf("Device found at 0x%02X\n", i);
+      count++;
+    }
+  }
+  Serial.printf("Found %d device(s)\n", count);
+}
+</code></pre>
+<ol start="3">
+<li>Verify voltage levels (3.3V vs 5V)</li>
+<li>Check physical connections</li>
+</ol>
+<h3>Issue: Random Crashes/Resets</h3>
+<p><strong>Common causes:</strong></p>
+<ol>
+<li><strong>Power issues</strong>: Insufficient current, voltage drops</li>
+<li><strong>Stack overflow</strong>: Check stack size</li>
+<li><strong>Watchdog timer</strong>: Not being fed regularly</li>
+<li><strong>Memory leaks</strong>: Monitor heap usage</li>
+</ol>
+<pre><code class="language-cpp">// Watchdog feeding
+void loop() {
+  feedWatchdog();  // Reset watchdog timer
+  
+  // Your code here
+  
+  // Monitor memory
+  if(ESP.getFreeHeap() &#x3C; 10000) {
+    Serial.println("WARNING: Low memory!");
+  }
+}
+</code></pre>
+<h3>Issue: Timing Problems</h3>
+<p>Use built-in timers for precise measurements:</p>
+<pre><code class="language-cpp">unsigned long startTime, endTime;
+
+startTime = micros();
+performCriticalOperation();
+endTime = micros();
+
+Serial.printf("Operation took %lu µs\n", endTime - startTime);
+</code></pre>
+<h2>Advanced Debugging Techniques</h2>
+<h3>1. Assert Statements</h3>
+<pre><code class="language-cpp">#define ASSERT(condition, message) \
+  if(!(condition)) { \
+    Serial.printf("ASSERT FAILED: %s at %s:%d\n", \
+                  message, __FILE__, __LINE__); \
+    while(1); \
+  }
+
+ASSERT(temperature &#x3C; 100, "Temperature too high!");
+</code></pre>
+<h3>2. Memory Dumping</h3>
+<pre><code class="language-cpp">void dumpMemory(uint8_t* addr, size_t len) {
+  for(size_t i = 0; i &#x3C; len; i++) {
+    if(i % 16 == 0) Serial.printf("\n%08X: ", (uint32_t)(addr + i));
+    Serial.printf("%02X ", addr[i]);
+  }
+  Serial.println();
+}
+</code></pre>
+<h3>3. State Machines with Debug Output</h3>
+<pre><code class="language-cpp">enum State {
+  INIT,
+  CONNECTING,
+  CONNECTED,
+  ERROR
+};
+
+State currentState = INIT;
+
+void setState(State newState) {
+  const char* stateNames[] = {"INIT", "CONNECTING", "CONNECTED", "ERROR"};
+  Serial.printf("State: %s -> %s\n", 
+                stateNames[currentState], 
+                stateNames[newState]);
+  currentState = newState;
+}
+</code></pre>
+<h2>Essential Hardware Tools</h2>
+<h3>Must-Have</h3>
+<ol>
+<li><strong>Multimeter</strong>: Voltage, current, continuity checking</li>
+<li><strong>USB-to-Serial adapter</strong>: For debugging without built-in USB</li>
+<li><strong>Cheap logic analyzer</strong>: Protocol debugging</li>
+<li><strong>Oscilloscope</strong>: For analog signals and noise issues</li>
+</ol>
+<h3>Nice-to-Have</h3>
+<ol>
+<li><strong>Bench power supply</strong>: Stable, adjustable power</li>
+<li><strong>Hot air station</strong>: For SMD rework</li>
+<li><strong>Proper debugger</strong>: ST-Link, J-Link for ARM debugging</li>
+</ol>
+<h2>Software Tools</h2>
+<h3>Free &#x26; Essential</h3>
+<ul>
+<li><strong>Arduino IDE/PlatformIO</strong>: Development and debugging</li>
+<li><strong>PuTTY/CoolTerm</strong>: Serial terminal</li>
+<li><strong>Sigrok PulseView</strong>: Logic analyzer software</li>
+</ul>
+<h3>Professional</h3>
+<ul>
+<li><strong>Segger Ozone</strong>: Advanced debugging</li>
+<li><strong>Percepio Tracealyzer</strong>: RTOS debugging</li>
+</ul>
+<h2>Best Practices</h2>
+<ol>
+<li><strong>Add debug code early</strong>: Don't wait until things break</li>
+<li><strong>Use version control</strong>: Track what changed when issues appeared</li>
+<li><strong>Document weird behaviors</strong>: They often come back</li>
+<li><strong>Keep a debug log</strong>: Track issues and solutions</li>
+<li><strong>Test incrementally</strong>: Don't change too much at once</li>
+</ol>
+<h2>Debugging Workflow</h2>
+<pre><code>1. Reproduce the issue consistently
+   ↓
+2. Add logging around the problem area
+   ↓
+3. Form a hypothesis
+   ↓
+4. Test the hypothesis
+   ↓
+5. Fix and verify
+   ↓
+6. Document the solution
+</code></pre>
+<h2>Conclusion</h2>
+<p>Embedded debugging is part art, part science. The key is having the right tools and methodologies. Start with simple serial debugging, and gradually add more sophisticated tools as needed.</p>
+<p>Remember: <strong>The best debugging tool is a clear understanding of your system.</strong></p>
+<p>Happy debugging! 🔍</p>
+      </div>
+
+      <footer class="post-footer">
+        <a href="../blog.html" class="back-link">← Back to Blog</a>
+      </footer>
+    </article>
+  
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 Your Name. Automation Engineer & Embedded Systems Developer</p>
+    <p class="generator-credit">
+      Generated with <a href="https://github.com/Crowiel/Sieva-Site-Generator" target="_blank" rel="noopener">Sievä Site Generator</a>
+    </p>
+  </footer>
+
+  <script src="/static/js/components.js"></script>
+  <script src="/static/js/gallery.js"></script>
+</body>
+</html>
+
+<!-- 
+  Generated with Sievä Site Generator
+  https://github.com/Crowiel/Sieva-Site-Generator
+  A modern static site generator built with Deno, TypeScript, and MDX
+-->

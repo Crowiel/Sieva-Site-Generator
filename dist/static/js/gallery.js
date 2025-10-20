@@ -61,8 +61,8 @@ function openLightbox(galleryId, index) {
   const img = link.querySelector('.gallery-image');
   
   // Update lightbox
-  const lightboxImg = lightbox.querySelector('#lightbox-image');
-  const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+  const lightboxImg = lightbox.querySelector(`#lightbox-image-${galleryId}`);
+  const lightboxCaption = lightbox.querySelector(`#lightbox-caption-${galleryId}`);
   
   lightboxImg.src = img.src;
   lightboxImg.alt = img.alt;
@@ -113,8 +113,8 @@ function navigateLightbox(galleryId, direction) {
   const link = galleryLinks[newIndex];
   const img = link.querySelector('.gallery-image');
   
-  const lightboxImg = lightbox.querySelector('#lightbox-image');
-  const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+  const lightboxImg = lightbox.querySelector(`#lightbox-image-${galleryId}`);
+  const lightboxCaption = lightbox.querySelector(`#lightbox-caption-${galleryId}`);
   
   lightboxImg.src = img.src;
   lightboxImg.alt = img.alt;

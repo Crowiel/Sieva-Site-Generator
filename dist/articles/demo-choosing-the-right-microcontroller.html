@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choosing the Right Microcontroller for Your IoT Project</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <div class="nav-brand">
+        <a href="/">
+          <span class="brand-name">Your Name</span>
+          <span class="brand-subtitle">Automation & Embedded Systems</span>
+        </a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+        <span class="hamburger"></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/posts">Projects</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <div class="theme-toggle-track">
+          <div class="theme-toggle-thumb"></div>
+        </div>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Floating Navigation (appears when scrolling) -->
+  <nav class="floating-nav" id="floatingNav">
+    <div class="floating-nav-buttons">
+      <a href="/" class="floating-btn" title="Home">
+        <span class="btn-icon">🏠</span>
+        <span class="btn-text">Home</span>
+      </a>
+      <a href="/posts" class="floating-btn" title="Projects">
+        <span class="btn-icon">💼</span>
+        <span class="btn-text">Projects</span>
+      </a>
+      <a href="/blog" class="floating-btn" title="Blog">
+        <span class="btn-icon">📝</span>
+        <span class="btn-text">Blog</span>
+      </a>
+      <a href="/about" class="floating-btn" title="About">
+        <span class="btn-icon">👤</span>
+        <span class="btn-text">About</span>
+      </a>
+      <button class="floating-btn theme-toggle" id="floatingThemeToggle" title="Toggle theme">
+        <div class="theme-toggle-track">
+          <div class="theme-toggle-thumb"></div>
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <article class="blog-post">
+      <header class="post-header">
+        <h1>Choosing the Right Microcontroller for Your IoT Project</h1>
+        <div class="post-meta">
+          <time>22.9.2024</time>
+          
+            <div class="tags">
+              <a href="../tags/iot.html" class="tag">iot</a><a href="../tags/embedded%20systems.html" class="tag">embedded systems</a><a href="../tags/esp32.html" class="tag">esp32</a><a href="../tags/hardware.html" class="tag">hardware</a>
+            </div>
+          
+        </div>
+        
+          <p class="post-description">A comprehensive guide to selecting the perfect microcontroller for your next IoT project, covering ESP32, STM32, and Arduino platforms.</p>
+        
+      </header>
+
+      <div class="post-content">
+        <h1>Choosing the Right Microcontroller for Your IoT Project</h1>
+<p>Selecting the right microcontroller can make or break your IoT project. With so many options available, it's essential to understand the key factors that influence your decision.</p>
+<h2>Key Factors to Consider</h2>
+<h3>1. Processing Power</h3>
+<p>The computational requirements of your project will determine the minimum processing power needed:</p>
+<ul>
+<li><strong>Simple sensors</strong>: 8-bit microcontrollers (ATmega series)</li>
+<li><strong>Complex data processing</strong>: 32-bit ARM Cortex (ESP32, STM32)</li>
+<li><strong>Machine learning</strong>: High-performance chips with dedicated accelerators</li>
+</ul>
+<h3>2. Connectivity Options</h3>
+<p>Modern IoT projects often require multiple connectivity options:</p>
+<ul>
+<li><strong>Wi-Fi</strong>: ESP32, ESP8266 for wireless connectivity</li>
+<li><strong>Bluetooth</strong>: ESP32 offers both Classic and BLE</li>
+<li><strong>LoRa</strong>: For long-range, low-power applications</li>
+<li><strong>Cellular</strong>: For remote locations without Wi-Fi</li>
+</ul>
+<h3>3. Power Consumption</h3>
+<p>Battery-powered projects demand careful consideration of power usage:</p>
+<pre><code class="language-cpp">// Example: ESP32 deep sleep mode
+esp_sleep_enable_timer_wakeup(60 * 1000000); // Wake up after 60 seconds
+esp_deep_sleep_start();
+</code></pre>
+<h2>Popular Platforms Compared</h2>
+<h3>ESP32</h3>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Built-in Wi-Fi and Bluetooth</li>
+<li>Dual-core processor</li>
+<li>Large community support</li>
+<li>Affordable</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Higher power consumption</li>
+<li>3.3V logic (needs level shifters for 5V devices)</li>
+</ul>
+<h3>STM32</h3>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Excellent documentation</li>
+<li>Wide range of variants</li>
+<li>Professional-grade reliability</li>
+<li>Low power modes</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Steeper learning curve</li>
+<li>No built-in wireless (requires external modules)</li>
+</ul>
+<h3>Arduino (ATmega)</h3>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Beginner-friendly</li>
+<li>Massive library ecosystem</li>
+<li>Reliable and proven</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Limited processing power</li>
+<li>No native wireless capabilities</li>
+<li>5V logic can complicate modern sensor integration</li>
+</ul>
+<h2>Real-World Example</h2>
+<p>For my recent smart home automation project, I chose the ESP32 because:</p>
+<ol>
+<li>Built-in Wi-Fi eliminated the need for additional modules</li>
+<li>Dual-core allowed me to handle UI and sensor processing separately</li>
+<li>Cost-effective for prototyping multiple nodes</li>
+<li>Large community meant quick solutions to common problems</li>
+</ol>
+<h2>Conclusion</h2>
+<p>There's no one-size-fits-all answer. Consider your specific requirements:</p>
+<ul>
+<li><strong>Budget constraints</strong> → Arduino or ESP8266</li>
+<li><strong>Complex processing</strong> → ESP32 or STM32F4</li>
+<li><strong>Ultra-low power</strong> → STM32L series</li>
+<li><strong>Rapid prototyping</strong> → ESP32 or Arduino</li>
+</ul>
+<p>The best microcontroller is the one that meets your project requirements while staying within your technical comfort zone and budget.</p>
+<p>Happy building! 🔧</p>
+      </div>
+
+      <footer class="post-footer">
+        <a href="../blog.html" class="back-link">← Back to Blog</a>
+      </footer>
+    </article>
+  
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 Your Name. Automation Engineer & Embedded Systems Developer</p>
+    <p class="generator-credit">
+      Generated with <a href="https://github.com/Crowiel/Sieva-Site-Generator" target="_blank" rel="noopener">Sievä Site Generator</a>
+    </p>
+  </footer>
+
+  <script src="/static/js/components.js"></script>
+  <script src="/static/js/gallery.js"></script>
+</body>
+</html>
+
+<!-- 
+  Generated with Sievä Site Generator
+  https://github.com/Crowiel/Sieva-Site-Generator
+  A modern static site generator built with Deno, TypeScript, and MDX
+-->

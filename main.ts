@@ -32,8 +32,8 @@ async function handler(req: Request): Promise<Response> {
   }
 
   // Serve content images from projects
-  if (pathname.match(/^\/posts\/([^\/]+)\/img\/(.+)$/)) {
-    const match = pathname.match(/^\/posts\/([^\/]+)\/img\/(.+)$/);
+  if (pathname.match(/^\/media\/projects\/([^\/]+)\/(.+)$/)) {
+    const match = pathname.match(/^\/media\/projects\/([^\/]+)\/(.+)$/);
     if (match) {
       const projectSlug = match[1];
       const imagePath = match[2];
@@ -64,8 +64,8 @@ async function handler(req: Request): Promise<Response> {
   }
 
   // Serve blog images
-  if (pathname.startsWith("/blog/img/")) {
-    const imagePath = pathname.substring(10); // Remove "/blog/img/"
+  if (pathname.startsWith("/media/blog/")) {
+    const imagePath = pathname.substring(12); // Remove "/media/blog/"
     const filePath = `./src/content/blog/img/${imagePath}`;
     
     try {
@@ -101,9 +101,9 @@ async function handler(req: Request): Promise<Response> {
     } else if (pathname === "/about") {
       // About page
       content = renderAbout(projects.length, blogPosts.length);
-    } else if (pathname.startsWith("/posts/")) {
+    } else if (pathname.startsWith("/projects/")) {
       // Handle project pages (all updates included on same page)
-      const slug = pathname.slice(7); // Remove "/posts/"
+      const slug = pathname.slice(10); // Remove "/projects/"
       
       // Try to find a project by slug
       const project = getProjectBySlug(slug);
@@ -140,7 +140,7 @@ async function handler(req: Request): Promise<Response> {
             <div class="posts-list">
             ${projects.map((project: ProjectData) => `
               <article class="post-card ${project.indexPost.frontmatter.featured ? 'featured' : ''}">
-                <h2><a href="/posts/${project.slug}">${project.indexPost.frontmatter.title}</a></h2>
+                <h2><a href="/projects/${project.slug}">${project.indexPost.frontmatter.title}</a></h2>
                 <time>${new Date(project.indexPost.frontmatter.date).toLocaleDateString()}</time>
                 <p>${project.indexPost.frontmatter.description || ""}</p>
                 ${project.updates.length > 0 ? `<p class="update-count">${project.updates.length} update${project.updates.length !== 1 ? 's' : ''}</p>` : ''}
@@ -160,17 +160,17 @@ async function handler(req: Request): Promise<Response> {
       // Tags index page
       const allPosts = projects.flatMap(p => [p.indexPost, ...p.updates]);
       content = renderTagsPage(allPosts);
-    } else if (pathname.startsWith("/tags/")) {
+    } else if (pathname.startsWith("/topics/")) {
       // Individual tag page
-      const tagName = decodeURIComponent(pathname.slice(6)); // Remove "/tags/" and decode URL
+      const tagName = decodeURIComponent(pathname.slice(8)); // Remove "/topics/" and decode URL
       const allPosts = projects.flatMap(p => [p.indexPost, ...p.updates]);
       content = renderTagPage(tagName, allPosts);
     } else if (pathname === "/blog") {
       // Blog index page
       content = renderBlogList(blogPosts);
-    } else if (pathname.startsWith("/blog/")) {
+    } else if (pathname.startsWith("/articles/")) {
       // Individual blog post
-      const slug = pathname.slice(6); // Remove "/blog/"
+      const slug = pathname.slice(10); // Remove "/articles/"
       const post = getBlogPostBySlug(slug);
       if (post) {
         content = renderBlogPost(post);

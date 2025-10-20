@@ -1,20 +1,39 @@
 # Portfolio Website - Clean URLs and Apache Configuration
 RewriteEngine On
 
+# Disable directory listing
+Options -Indexes
+
+# Prevent Apache from adding trailing slashes to directories
+DirectorySlash Off
+
 # Remove .html extension from URLs
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !^/(projects|articles|topics)/
 RewriteRule ^([^.]+)$ $1.html [NC,L]
 
 # Redirect .html URLs to clean URLs (optional - for SEO)
 RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
 RewriteRule ^ /%1 [NC,L,R=301]
 
-# Handle posts directory
-RewriteRule ^posts/([^/]+)/?$ posts/$1.html [NC,L]
+# Handle projects directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^projects/([^/]+)/?$ projects/$1.html [NC,L]
 
-# Handle tags directory
-RewriteRule ^tags/([^/]+)/?$ tags/$1.html [NC,L]
+# Handle articles directory (blog posts)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^articles/([^/]+)/?$ articles/$1.html [NC,L]
+
+# Handle topics directory (tags)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^topics/([^/]+)/?$ topics/$1.html [NC,L]
+
+# Disable directory listing
+Options -Indexes
 
 # Custom error pages (optional)
 ErrorDocument 404 /404.html

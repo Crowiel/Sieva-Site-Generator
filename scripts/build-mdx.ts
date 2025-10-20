@@ -66,11 +66,11 @@ function processGalleryTags(markdownContent: string, basePath: string, contentTy
       // Determine the base path for images
       let imgBasePath: string;
       if (contentType === 'project' && projectSlug) {
-        imgBasePath = `/posts/${projectSlug}/img`;
+        imgBasePath = `/media/projects/${projectSlug}`;
       } else if (contentType === 'blog') {
-        imgBasePath = `/blog/img`;
+        imgBasePath = `/media/blog`;
       } else {
-        imgBasePath = `/img`;
+        imgBasePath = `/media`;
       }
       
       // Parse gallery images

@@ -873,8 +873,9 @@ img.lazy:not([src]) {
   position: relative;
   overflow: hidden;
   border-radius: var(--border-radius);
-  background-color: var(--color-background-alt);
+  background-color: transparent;
   aspect-ratio: 4 / 3;
+  line-height: 0;
 }
 
 .gallery-link {
@@ -883,17 +884,26 @@ img.lazy:not([src]) {
   height: 100%;
   position: relative;
   text-decoration: none;
+  line-height: 0;
+  overflow: hidden;
 }
 
-.gallery-image {
+.gallery-image-wrapper {
+  position: relative;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   transition: transform var(--transition-slow);
 }
 
-.gallery-link:hover .gallery-image {
+.gallery-link:hover .gallery-image-wrapper {
   transform: scale(1.05);
+}
+
+.gallery-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .gallery-overlay {
@@ -908,6 +918,7 @@ img.lazy:not([src]) {
   justify-content: center;
   opacity: 0;
   transition: opacity var(--transition-base);
+  pointer-events: none;
 }
 
 .gallery-link:hover .gallery-overlay {
