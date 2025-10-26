@@ -5,10 +5,10 @@ export function renderLayout(
   title: string, 
   content: string, 
   additionalHead: string = "",
-  options: LayoutOptions = { showProjects: true, showBlog: true },
+  options: LayoutOptions = { showProjects: true, showBlog: true, showAbout: true },
   config?: SiteConfig
 ): string {
-  const { showProjects = true, showBlog = true } = options;
+  const { showProjects = true, showBlog = true, showAbout = true } = options;
   
   // Use config values or fallback to defaults
   const siteName = config?.site.name || "Your Name";
@@ -20,8 +20,9 @@ export function renderLayout(
   const navBlog = config?.navigation.blog || "Blog";
   const navAbout = config?.navigation.about || "About";
   
-  // Always use absolute paths for assets to avoid path issues
-  const basePath = "/";
+  // Navigation behavior config
+  const floatingNav = config?.navigation.floatingNav !== false; // Default to true
+  const stickyHeader = config?.navigation.stickyHeader === true; // Default to false
   
   return `<!DOCTYPE html>
 <html lang="en">
@@ -29,12 +30,13 @@ export function renderLayout(
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/styles/main.css">
   <link rel="stylesheet" href="/styles/components.css">
   ${additionalHead}
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header${stickyHeader ? ' sticky' : ''}">
     <nav class="nav">
       <div class="nav-brand">
         <a href="/">
@@ -51,7 +53,7 @@ export function renderLayout(
         <li><a href="/">${navHome}</a></li>
         ${showProjects ? `<li><a href="/posts">${navProjects}</a></li>` : ''}
         ${showBlog ? `<li><a href="/blog">${navBlog}</a></li>` : ''}
-        <li><a href="/about">${navAbout}</a></li>
+        ${showAbout ? `<li><a href="/about">${navAbout}</a></li>` : ''}
       </ul>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <div class="theme-toggle-track">
@@ -62,7 +64,7 @@ export function renderLayout(
   </header>
 
   <!-- Floating Navigation (appears when scrolling) -->
-  <nav class="floating-nav" id="floatingNav">
+  ${floatingNav ? `<nav class="floating-nav" id="floatingNav">
     <div class="floating-nav-buttons">
       <a href="/" class="floating-btn" title="${navHome}">
         <span class="btn-icon">🏠</span>
@@ -76,17 +78,17 @@ export function renderLayout(
         <span class="btn-icon">📝</span>
         <span class="btn-text">${navBlog}</span>
       </a>` : ''}
-      <a href="/about" class="floating-btn" title="${navAbout}">
+      ${showAbout ? `<a href="/about" class="floating-btn" title="${navAbout}">
         <span class="btn-icon">👤</span>
         <span class="btn-text">${navAbout}</span>
-      </a>
+      </a>` : ''}
       <button class="floating-btn theme-toggle" id="floatingThemeToggle" title="Toggle theme">
         <div class="theme-toggle-track">
           <div class="theme-toggle-thumb"></div>
         </div>
       </button>
     </div>
-  </nav>
+  </nav>` : ''}
 
   <main class="main-content">
     ${content}

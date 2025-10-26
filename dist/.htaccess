@@ -20,17 +20,17 @@ RewriteRule ^ /%1 [NC,L,R=301]
 # Handle projects directory
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^projects/([^/]+)/?$ projects/$1.html [NC,L]
+RewriteRule ^projects/([^/.]+)/?$ projects/$1.html [NC,L]
 
 # Handle articles directory (blog posts)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^articles/([^/]+)/?$ articles/$1.html [NC,L]
+RewriteRule ^articles/([^/.]+)/?$ articles/$1.html [NC,L]
 
 # Handle topics directory (tags)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^topics/([^/]+)/?$ topics/$1.html [NC,L]
+RewriteRule ^topics/([^/.]+)/?$ topics/$1.html [NC,L]
 
 # Disable directory listing
 Options -Indexes

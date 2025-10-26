@@ -13,16 +13,42 @@ import {
 import { renderLayout } from "./src/modules/layout-static.ts";
 import { renderHomepage } from "./src/modules/homepage-static.ts";
 import { renderPost } from "./src/modules/post-static.ts";
-import { renderAbout } from "./src/modules/about-static.ts";
 import { renderTagsPage, renderTagPage } from "./src/modules/tags-static.ts";
 import { renderBlogList, renderBlogPost } from "./src/modules/blog-static.ts";
 import { buildTagUrl } from "./src/modules/url-utils.ts";
+import { loadConfig } from "./src/modules/config.ts";
 
-const PORT = 8000;
+// Load configuration
+const config = await loadConfig();
+const PORT = config.server?.port || 8000;
+
+// Check if about.mdx exists
+let aboutExists = false;
+try {
+  await import("./src/generated/about.ts");
+  aboutExists = true;
+} catch {
+  aboutExists = false;
+}
 
 async function handler(req: Request): Promise<Response> {
   const url = new URL(req.url);
   const pathname = url.pathname;
+
+  // Serve favicon
+  if (pathname === "/favicon.svg") {
+    try {
+      const file = await Deno.readFile("./src/static/favicon.svg");
+      return new Response(file, {
+        headers: {
+          'Content-Type': 'image/svg+xml',
+          'Cache-Control': 'public, max-age=31536000',
+        },
+      });
+    } catch {
+      return new Response('Favicon not found', { status: 404 });
+    }
+  }
 
   // Serve static files
   if (pathname.startsWith("/static/") || pathname.startsWith("/styles/")) {
@@ -97,13 +123,33 @@ async function handler(req: Request): Promise<Response> {
     let content: string;
     // Dev server URL options: absolute paths, no .html extensions
     const devUrlOpts = { absolute: true, htmlExt: false };
+    const devLayoutOpts = {
+      showProjects: projects.length > 0,
+      showBlog: blogPosts.length > 0,
+      showAbout: aboutExists,
+    };
 
     if (pathname === "/") {
       // Homepage - show recent projects and blog posts
-      content = renderHomepage(recentProjects.map(p => p.indexPost), recentBlogPosts, undefined, devUrlOpts);
+      content = renderHomepage(recentProjects.map(p => p.indexPost), recentBlogPosts, undefined, devUrlOpts, devLayoutOpts);
     } else if (pathname === "/about") {
-      // About page
-      content = renderAbout(projects.length, blogPosts.length);
+      // About page - only accessible if about.mdx exists
+      if (!aboutExists) {
+        return new Response("About page not found. Create src/content/about.mdx to enable the about page.", { 
+          status: 404,
+          headers: { "Content-Type": "text/plain" }
+        });
+      }
+      
+      const aboutModule = await import("./src/generated/about.ts");
+      const aboutHtml = aboutModule.html;
+      const aboutFrontmatter = aboutModule.frontmatter;
+      content = renderLayout(
+        aboutFrontmatter.title || "About",
+        `<div class="container"><article class="content-article">${aboutHtml}</article></div>`,
+        "",
+        devLayoutOpts
+      );
     } else if (pathname.startsWith("/projects/")) {
       // Handle project pages (all updates included on same page)
       const slug = pathname.slice(10); // Remove "/projects/"

@@ -15,16 +15,22 @@ export function renderBlogList(
         <p class="page-description">Thoughts, tutorials, and insights on software development, embedded systems, and technology.</p>
       </header>
 
-      <section class="blog-posts">
+      <section class="posts-grid">
+        <div class="posts-list">
         ${blogPosts.length === 0 ? `
           <div class="no-posts">
             <p>No blog posts yet. Check back soon!</p>
           </div>
         ` : blogPosts.map(post => `
-          <article class="blog-post-card">
-            <h2><a href="${buildBlogUrl(post.slug, urlOpts)}">${post.frontmatter.title}</a></h2>
-            <div class="post-meta">
-              <time>${new Date(post.frontmatter.date).toLocaleDateString()}</time>
+          <article class="post-card">
+            <header class="post-card-header">
+              <h2><a href="${buildBlogUrl(post.slug, urlOpts)}">${post.frontmatter.title}</a></h2>
+              <time class="post-date">${new Date(post.frontmatter.date).toLocaleDateString()}</time>
+            </header>
+            ${post.frontmatter.description ? `
+              <p class="post-card-description">${post.frontmatter.description}</p>
+            ` : ""}
+            <footer class="post-card-footer">
               ${post.frontmatter.tags ? `
                 <div class="tags">
                   ${post.frontmatter.tags.map((tag: string) => 
@@ -32,13 +38,10 @@ export function renderBlogList(
                   ).join("")}
                 </div>
               ` : ""}
-            </div>
-            ${post.frontmatter.description ? `
-              <p class="post-excerpt">${post.frontmatter.description}</p>
-            ` : ""}
-            <a href="${buildBlogUrl(post.slug, urlOpts)}" class="read-more">Read more →</a>
+            </footer>
           </article>
         `).join("")}
+        </div>
       </section>
     </div>
   `;
@@ -59,7 +62,9 @@ export function renderBlogPost(
   const content = `
     <article class="blog-post">
       <header class="post-header">
-        <h1>${post.frontmatter.title}</h1>
+        <div class="post-header-main">
+          <h1>${post.frontmatter.title}</h1>
+        </div>
         <div class="post-meta">
           <time>${new Date(post.frontmatter.date).toLocaleDateString()}</time>
           ${post.frontmatter.tags ? `

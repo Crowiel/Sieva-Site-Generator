@@ -352,7 +352,7 @@
   border-bottom-left-radius: 8px;
   cursor: pointer;
   z-index: 999;
-  transition: all var(--transition-base);
+  transition: transform var(--transition-slow), right var(--transition-base), background-color var(--transition-base);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -372,9 +372,10 @@
   box-shadow: -4px 2px 12px var(--color-shadow);
 }
 
+/* Move tab with timeline when open */
 .timeline-wrapper:has(.timeline-sidebar.open) .timeline-tab-button {
-  opacity: 0;
-  pointer-events: none;
+  transform: translateY(-50%) translateX(-300px);
+  right: 0;
 }
 
 .timeline-tab-icon {
@@ -609,12 +610,13 @@
 
 .gantt-dropdown {
   position: fixed;
-  top: 30%;
+  top: calc(var(--header-height) + 20px); /* Position below navbar */
   left: 50%;
-  transform: translate(-50%, calc(-50% - 20px));
+  transform: translate(-50%, 0);
   width: min(1200px, calc(100vw - 80px));
   max-width: 1200px;
   min-width: 600px;
+  max-height: calc(100vh - var(--header-height) - 40px); /* Don't exceed viewport */
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
@@ -623,10 +625,11 @@
   opacity: 0;
   visibility: hidden;
   transition: all var(--transition-base);
+  display: flex;
+  flex-direction: column;
 }
 
 .gantt-dropdown.open {
-  transform: translate(-50%, -50%);
   opacity: 1;
   visibility: visible;
 }
@@ -634,20 +637,28 @@
 /* Responsive Gantt chart width */
 @media (max-width: 1000px) {
   .gantt-dropdown {
-    width: calc(100vw - 80px);
+    width: calc(100vw - 60px);
     min-width: 500px;
   }
 }
 
 @media (max-width: var(--breakpoint-desktop)) {
   .gantt-dropdown {
-    width: 95vw;
+    top: calc(var(--header-height) + 10px);
+    width: calc(100vw - 40px);
     min-width: auto;
-    max-height: 80vh;
+    max-height: calc(100vh - var(--header-height) - 20px);
   }
   
   .post-header-controls {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .gantt-dropdown {
+    width: calc(100vw - 20px);
+    max-height: calc(100vh - var(--header-height) - 10px);
   }
 }
 
@@ -656,6 +667,7 @@
   border-bottom: 1px solid var(--color-border);
   background-color: var(--color-background-alt);
   border-radius: var(--border-radius) var(--border-radius) 0 0;
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .gantt-dropdown-header h4 {
@@ -667,8 +679,8 @@
 .gantt-chart {
   width: 100%;
   min-height: 400px;
-  max-height: 700px;
-  overflow: auto;
+  flex: 1; /* Take remaining space in flex container */
+  overflow: auto; /* Always show scrollbars when needed */
   box-sizing: border-box;
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
@@ -679,21 +691,20 @@
 @media (max-width: var(--breakpoint-desktop)) {
   .gantt-chart {
     min-height: 350px;
-    max-height: 500px;
   }
 }
 
 @media (max-width: 768px) {
   .gantt-chart {
     min-height: 300px;
-    max-height: 400px;
     padding: var(--spacing-sm);
   }
 }
 
 .gantt-chart svg {
+  min-width: 1125px; /* Minimum width to keep chart readable */
   width: 100%;
-  height: 100%;
+  height: auto;
   display: block;
 }
 
@@ -1027,5 +1038,119 @@ img.lazy:not([src]) {
     width: 40px;
     height: 40px;
     font-size: 1.5rem;
+  }
+}
+
+/* ============================================
+   SKILL CARDS COMPONENT
+   ============================================ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-lg);
+  margin: var(--spacing-xl) 0;
+}
+
+.skill-category {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-large);
+  padding: var(--spacing-lg);
+  transition: all var(--transition-base);
+}
+
+.skill-category:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px var(--color-shadow);
+  border-color: var(--color-secondary);
+}
+
+.skill-category h3 {
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-border);
+  font-size: var(--font-size-large);
+}
+
+.skill-category ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skill-category li {
+  padding: var(--spacing-sm) 0;
+  color: var(--color-text);
+  position: relative;
+  padding-left: var(--spacing-lg);
+  transition: color var(--transition-base);
+}
+
+.skill-category li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--color-secondary);
+  font-weight: bold;
+}
+
+.skill-category li:hover {
+  color: var(--color-secondary);
+}
+
+@media (max-width: 768px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   CONTACT BUTTONS COMPONENT
+   ============================================ */
+.contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  justify-content: center;
+  margin: var(--spacing-xl) 0;
+  padding: var(--spacing-xl) 0;
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md) var(--spacing-xl);
+  background-color: var(--color-background-alt);
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-base);
+  border: 1px solid var(--color-border);
+  min-width: 140px;
+}
+
+.contact-btn:hover {
+  background-color: var(--color-secondary);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px var(--color-shadow);
+}
+
+.contact-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .contact-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .contact-btn {
+    width: 100%;
   }
 }

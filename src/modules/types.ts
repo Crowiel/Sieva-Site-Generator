@@ -88,6 +88,8 @@ export interface SiteConfig {
     projects: string;
     blog: string;
     about: string;
+    floatingNav?: boolean;
+    stickyHeader?: boolean;
   };
   pages: {
     blog: {
@@ -102,12 +104,23 @@ export interface SiteConfig {
       title: string;
     };
   };
+  server?: {
+    port?: number;
+  };
+  contact?: {
+    email?: string;
+    github?: string;
+    linkedin?: string;
+    twitter?: string;
+    [key: string]: string | undefined;
+  };
 }
 
 // Layout options for conditional rendering
 export interface LayoutOptions {
   showProjects?: boolean;
   showBlog?: boolean;
+  showAbout?: boolean;
 }
 
 // URL generation options

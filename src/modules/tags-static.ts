@@ -116,7 +116,7 @@ export function renderTagPage(
               <footer class="post-card-footer">
                 <div class="tags">
                   ${post.frontmatter.tags?.map(tag => `
-                    <a href="${buildTagUrl(tag, urlOpts)}" class="tag">${tag}</a>
+                    <a href="${urlOpts.absolute ? buildTagUrl(tag, urlOpts) : '../' + buildTagUrl(tag, { ...urlOpts, absolute: false })}" class="tag">${tag}</a>
                   `).join('') || ''}
                 </div>
               </footer>

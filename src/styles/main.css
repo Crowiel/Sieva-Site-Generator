@@ -248,6 +248,11 @@ li {
   .site-header {
     position: relative;
   }
+  
+  /* When sticky header is enabled, keep it fixed */
+  .site-header.sticky {
+    position: sticky;
+  }
 }
 
 /* Navigation follows same container as content */

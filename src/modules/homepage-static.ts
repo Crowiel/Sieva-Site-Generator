@@ -1,12 +1,13 @@
 import { renderLayout } from "./layout-static.ts";
-import type { PostData, BlogPost, SiteConfig, UrlOptions } from "./types.ts";
+import type { PostData, BlogPost, SiteConfig, UrlOptions, LayoutOptions } from "./types.ts";
 import { buildProjectUrl, buildBlogUrl, buildPageUrl } from "./url-utils.ts";
 
 export function renderHomepage(
   recentProjects: PostData[], 
   recentBlogPosts: BlogPost[],
   config?: SiteConfig,
-  urlOpts: UrlOptions = { absolute: false, htmlExt: true }
+  urlOpts: UrlOptions = { absolute: false, htmlExt: true },
+  layoutOptions?: LayoutOptions
 ): string {
   // Smart budget system: max 4 posts total, prefer 2 blog + 2 projects
   const MAX_TOTAL = 4;
@@ -80,10 +81,12 @@ export function renderHomepage(
     ` : ""}
   `;
 
-  const layoutOptions = {
+  // Use provided layoutOptions or construct defaults
+  const finalLayoutOptions = layoutOptions || {
     showProjects: recentProjects.length > 0,
     showBlog: recentBlogPosts.length > 0,
+    showAbout: true,
   };
 
-  return renderLayout("Home", content, "", layoutOptions, config);
+  return renderLayout("Home", content, "", finalLayoutOptions, config);
 }

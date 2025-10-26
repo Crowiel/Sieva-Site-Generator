@@ -1,5 +1,5 @@
 import { walk } from "@std/fs/walk";
-import { parse, join, basename, dirname, relative } from "@std/path";
+import { parse, join, basename } from "@std/path";
 import matter from "gray-matter";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
@@ -7,6 +7,8 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import { renderGallery, parseGalleryString } from "../src/modules/gallery.ts";
+import { loadConfig } from "../src/modules/config.ts";
+import type { SiteConfig } from "../src/modules/types.ts";
 
 interface PostFrontmatter {
   title: string;
@@ -53,7 +55,7 @@ interface BlogPost {
  * Looks for lines like "Gallery: image1.png, image2.png, image3.png"
  * and replaces them with rendered gallery HTML
  */
-function processGalleryTags(markdownContent: string, basePath: string, contentType: 'project' | 'blog', projectSlug?: string): string {
+function processGalleryTags(markdownContent: string, _basePath: string, contentType: 'project' | 'blog', projectSlug?: string): string {
   const lines = markdownContent.split('\n');
   const processedLines: string[] = [];
   let galleryCounter = 0;
@@ -92,7 +94,153 @@ function processGalleryTags(markdownContent: string, basePath: string, contentTy
   return processedLines.join('\n');
 }
 
+/**
+ * Process SkillCards component tags
+ * Format: SkillCards:
+ *   Title: Programming | Items: C++ (Advanced), TypeScript, Python
+ *   Title: Embedded | Items: ARM, RTOS, IoT
+ */
+function processSkillCards(markdownContent: string): string {
+  const lines = markdownContent.split('\n');
+  const processedLines: string[] = [];
+  let i = 0;
+  
+  while (i < lines.length) {
+    const line = lines[i];
+    
+    // Check if line starts with "SkillCards:"
+    if (line.trim() === 'SkillCards:') {
+      const cards: Array<{ title: string; items: string[] }> = [];
+      i++; // Move to next line
+      
+      // Parse card definitions (indented lines)
+      while (i < lines.length) {
+        const cardLine = lines[i];
+        
+        // Stop if we hit a non-indented line or empty line
+        if (!cardLine.startsWith('  ') || cardLine.trim() === '') {
+          break;
+        }
+        
+        // Parse: "  Title: Programming | Items: C++, TypeScript, Python"
+        const match = cardLine.trim().match(/^Title:\s*(.+?)\s*\|\s*Items:\s*(.+)$/);
+        if (match) {
+          const title = match[1].trim();
+          // Split by comma but respect content within parentheses
+          const itemsStr = match[2];
+          const items: string[] = [];
+          let currentItem = '';
+          let parenDepth = 0;
+          
+          for (let j = 0; j < itemsStr.length; j++) {
+            const char = itemsStr[j];
+            if (char === '(') parenDepth++;
+            if (char === ')') parenDepth--;
+            
+            if (char === ',' && parenDepth === 0) {
+              items.push(currentItem.trim());
+              currentItem = '';
+            } else {
+              currentItem += char;
+            }
+          }
+          if (currentItem.trim()) {
+            items.push(currentItem.trim());
+          }
+          
+          cards.push({ title, items });
+        }
+        
+        i++;
+      }
+      
+      // Generate HTML for skill cards
+      if (cards.length > 0) {
+        let html = '<div class="skills-grid">\n';
+        for (const card of cards) {
+          html += '  <div class="skill-category">\n';
+          html += `    <h3>${card.title}</h3>\n`;
+          html += '    <ul>\n';
+          for (const item of card.items) {
+            html += `      <li>${item}</li>\n`;
+          }
+          html += '    </ul>\n';
+          html += '  </div>\n';
+        }
+        html += '</div>';
+        processedLines.push(html);
+      }
+      
+      continue; // Don't increment i again
+    }
+    
+    processedLines.push(line);
+    i++;
+  }
+  
+  return processedLines.join('\n');
+}
+
+/**
+ * Process ContactButtons component
+ * Format: ContactButtons: Email Me | GitHub | LinkedIn
+ */
+function processContactButtons(markdownContent: string, config?: SiteConfig): string {
+  const lines = markdownContent.split('\n');
+  const processedLines: string[] = [];
+  
+  // Get contact URLs from config with fallbacks
+  const contactUrls = {
+    email: config?.contact?.email || 'your.email@example.com',
+    github: config?.contact?.github || 'https://github.com/yourusername',
+    linkedin: config?.contact?.linkedin || 'https://linkedin.com/in/yourprofile',
+    twitter: config?.contact?.twitter || 'https://twitter.com/yourusername',
+    mastodon: config?.contact?.mastodon || 'https://mastodon.social/@yourusername',
+  };
+  
+  for (const line of lines) {
+    // Check if line starts with "ContactButtons:"
+    if (line.trim().startsWith('ContactButtons:')) {
+      const buttonsStr = line.trim().substring(15).trim(); // Remove "ContactButtons:" prefix
+      const buttons = buttonsStr.split('|').map(b => b.trim());
+      
+      // Generate HTML for contact buttons
+      let html = '<div class="contact-buttons">\n';
+      for (const button of buttons) {
+        const lower = button.toLowerCase();
+        if (lower === 'email me' || lower === 'email') {
+          html += `  <a href="mailto:${contactUrls.email}" class="contact-btn">Email Me</a>\n`;
+        } else if (lower === 'github') {
+          html += `  <a href="${contactUrls.github}" class="contact-btn" target="_blank" rel="noopener">GitHub</a>\n`;
+        } else if (lower === 'linkedin') {
+          html += `  <a href="${contactUrls.linkedin}" class="contact-btn" target="_blank" rel="noopener">LinkedIn</a>\n`;
+        } else if (lower === 'twitter') {
+          html += `  <a href="${contactUrls.twitter}" class="contact-btn" target="_blank" rel="noopener">Twitter</a>\n`;
+        } else if (lower === 'mastodon') {
+          html += `  <a href="${contactUrls.mastodon}" class="contact-btn" target="_blank" rel="noopener">Mastodon</a>\n`;
+        } else {
+          // Generic button - try to find in config.contact by key
+          const customUrl = config?.contact?.[lower];
+          const url = customUrl || '#';
+          html += `  <a href="${url}" class="contact-btn"${customUrl ? ' target="_blank" rel="noopener"' : ''}>${button}</a>\n`;
+        }
+      }
+      html += '</div>';
+      processedLines.push(html);
+    } else {
+      processedLines.push(line);
+    }
+  }
+  
+  return processedLines.join('\n');
+}
+
+
 async function buildMdxFiles(mode: 'dev' | 'release' = 'dev') {
+  console.log(`Building MDX files in ${mode} mode...`);
+  
+  // Load configuration
+  const config = await loadConfig();
   console.log(`Building MDX files in ${mode} mode...`);
   
   const projectPosts: PostData[] = [];
@@ -272,6 +420,54 @@ export default {
       throw error;
     }
     console.log("No blog directory found");
+  }
+
+  // Process about.mdx file
+  let aboutHtml = "";
+  // deno-lint-ignore no-explicit-any
+  let _aboutFrontmatter: any = {};
+  const aboutPath = join(contentDir, "about.mdx");
+  try {
+    console.log(`Processing about page: ${aboutPath}`);
+    const content = await Deno.readTextFile(aboutPath);
+    const { data: frontmatter, content: markdownContent } = matter(content);
+    
+    // Process custom components: gallery, skill cards, and contact buttons
+    let processedContent = processGalleryTags(markdownContent, aboutPath, 'blog');
+    processedContent = processSkillCards(processedContent);
+    processedContent = processContactButtons(processedContent, config);
+    
+    // Convert markdown to HTML
+    const processor = unified()
+      .use(remarkParse)
+      .use(remarkFrontmatter)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeStringify, { allowDangerousHtml: true });
+    
+    const result = await processor.process(processedContent);
+    aboutHtml = String(result);
+    _aboutFrontmatter = frontmatter;
+    
+    // Generate TypeScript module for about page
+    const tsContent = `// Generated from ${aboutPath}
+export const frontmatter = ${JSON.stringify(frontmatter, null, 2)};
+export const content = ${JSON.stringify(markdownContent)};
+export const html = ${JSON.stringify(aboutHtml)};
+
+export default {
+  frontmatter,
+  content,
+  html
+};
+`;
+    
+    const outputPath = join(outputDir, "about.ts");
+    await Deno.writeTextFile(outputPath, tsContent);
+  } catch (error) {
+    if (!(error instanceof Deno.errors.NotFound)) {
+      throw error;
+    }
+    console.log("No about.mdx file found, using default about page");
   }
 
   // Group posts by projects
