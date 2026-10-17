@@ -1,5 +1,16 @@
 /.vscode
 /.todo-documentation
 
-# User configuration (copy config-default.json to config-user.json)
+# User configuration (user overrides config-default.json)
+config.json
 config-user.json
+
+# Binaries
+*.exe
+*.exe~
+*~
+sieva-ssg
+
+# Internal Architectural Documentation & Tasklists
+architecture_*.md
+tasklist.md

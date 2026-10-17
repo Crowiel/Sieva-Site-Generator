@@ -4,15 +4,14 @@
     "subtitle": "Automation & Embedded Systems",
     "footer": "Automation Engineer & Embedded Systems Developer",
     "showGeneratorCredit": true,
+    "showPrivacyPolicy": true,
     "domain": "https://yourdomain.com"
   },
   "navigation": {
     "home": "Home",
     "projects": "Projects",
     "blog": "Blog",
-    "about": "About",
-    "floatingNav": true,
-    "stickyHeader": false
+    "about": "About"
   },
   "pages": {
     "blog": {
@@ -38,8 +37,6 @@
   "contact": {
     "email": "your.email@example.com",
     "github": "https://github.com/yourusername",
-    "linkedin": "https://linkedin.com/in/yourprofile",
-    "twitter": "https://twitter.com/yourusername",
-    "discord": "https://discord.gg/yourinvite"
+    "linkedin": "https://linkedin.com/in/yourprofile"
   }
 }

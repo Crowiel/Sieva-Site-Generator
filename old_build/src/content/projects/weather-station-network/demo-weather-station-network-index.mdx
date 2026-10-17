@@ -1,0 +1,64 @@
+---
+title: "Embedded Weather Station Network"
+date: "2024-01-20"
+description: "A distributed network of solar-powered weather monitoring stations with LoRaWAN connectivity, featuring custom sensors and long-range data transmission."
+tags: ["Embedded Systems", "LoRaWAN", "Solar Power", "Weather Monitoring", "C++"]
+featured: false
+isIndex: true
+projectSlug: "weather-station-network"
+gantt: false
+timeline:
+  - title: "Sensor Selection & Testing"
+    date: "2023-10-01"
+    link: "#sensors"
+  - title: "LoRaWAN Integration"
+    date: "2023-11-01"
+    link: "#lorawan"
+  - title: "Power Management Design"
+    date: "2023-11-15"
+    link: "#power"
+  - title: "Field Deployment"
+    date: "2023-12-15"
+    link: "#deployment"
+---
+
+# Embedded Weather Station Network
+
+Development of a network of autonomous weather monitoring stations for agricultural and environmental monitoring applications.
+
+## <a id="sensors"></a>System Overview
+
+The weather stations collect comprehensive environmental data including:
+
+- Temperature and humidity (±0.1°C, ±2% RH accuracy)
+- Atmospheric pressure (±0.1 hPa)
+- Wind speed and direction
+- Rainfall measurement
+- Solar irradiance
+- Soil temperature and moisture
+
+## <a id="lorawan"></a>Communication Architecture
+
+Each station transmits data via LoRaWAN to a central gateway, providing:
+
+- **Range**: Up to 15km in rural environments
+- **Battery Life**: >5 years with solar charging
+- **Data Rate**: Hourly measurements with alert capability
+- **Network Capacity**: 100+ stations per gateway
+
+## <a id="power"></a>Power Management
+
+Sophisticated power management system featuring:
+
+- 10W solar panel with MPPT charging
+- 18650 Li-ion battery pack (7.2V, 6600mAh)
+- Ultra-low power sleep modes (<10µA)
+- Dynamic duty cycling based on battery level
+
+## <a id="deployment"></a>Results
+
+Successfully deployed 25 stations across 500 hectares of agricultural land, providing farmers with real-time weather data for irrigation and crop management decisions.
+
+---
+
+This project showcases embedded systems design, wireless communication protocols, and sustainable power solutions for remote monitoring applications.

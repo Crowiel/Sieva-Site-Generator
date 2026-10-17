@@ -1,0 +1,35 @@
+{{ define "content" }}
+<div class="container article-container">
+  <div class="breadcrumbs">
+    <a href="/">Home</a> / <a href="/blog/">Blog</a> / <span>{{ .Post.Title }}</span>
+  </div>
+
+  <article class="single-article">
+    <header class="article-header">
+      <div class="article-meta">
+        <time datetime="{{ .Post.Date.Format "2006-01-02" }}">{{ .Post.DateFormatted }}</time>
+      </div>
+      <h1 class="article-title">{{ .Post.Title }}</h1>
+      {{ if .Post.Description }}
+      <p class="article-lead">{{ .Post.Description }}</p>
+      {{ end }}
+
+      {{ if .Post.Tags }}
+      <div class="tags-list">
+        {{ range .Post.Tags }}
+        <a href="/tags/{{ . | sanitizeTag }}/" class="tag-pill">{{ . }}</a>
+        {{ end }}
+      </div>
+      {{ end }}
+    </header>
+
+    <div class="article-body">
+      {{ .Post.ContentHTML }}
+    </div>
+
+    <footer class="article-footer">
+      <a href="/blog/" class="btn btn-secondary">&larr; Back to blog</a>
+    </footer>
+  </article>
+</div>
+{{ end }}

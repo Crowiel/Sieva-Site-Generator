@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Industrial PLC Communication Bridge — Your Name</title>
+  <meta name="description" content="Development of a custom communication bridge for legacy industrial PLCs, enabling modern SCADA integration with Modbus TCP/IP and OPC-UA protocols.">
+  <meta name="author" content="Your Name">
+  <meta name="theme-color" content="#0d1117">
+  
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/static/css/style.css">
+  
+  
+  <link rel="canonical" href="https://yourdomain.com/projects/plc-communication-bridge/">
+  
+
+  
+  
+  
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Industrial PLC Communication Bridge — Your Name">
+  <meta property="og:description" content="Development of a custom communication bridge for legacy industrial PLCs, enabling modern SCADA integration with Modbus TCP/IP and OPC-UA protocols.">
+  <meta property="og:site_name" content="Your Name">
+</head>
+<body>
+  
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <a href="/" class="brand-link">
+          <span class="brand-name">Your Name</span>
+          <span class="brand-role">Automation &amp; Embedded Systems</span>
+        </a>
+      </div>
+
+      <nav class="nav" id="main-nav" aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/" >Home</a></li>
+          <li><a href="/projects/" class="active">Projects</a></li>
+          <li><a href="/blog/" >Blog</a></li>
+          <li><a href="/about/" >About</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Toggle theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  
+  <main class="site-main" id="main-content">
+    
+<div class="container article-container">
+  <div class="breadcrumbs">
+    <a href="/">Home</a> / <a href="/projects/">Projects</a> / <span>Industrial PLC Communication Bridge</span>
+  </div>
+
+  <article class="single-article">
+    <header class="article-header">
+      <div class="article-meta">
+        <time datetime="2024-02-10">February 10, 2024</time>
+        
+        <span class="badge update-badge">1 Project Updates</span>
+        
+      </div>
+      <h1 class="article-title">Industrial PLC Communication Bridge</h1>
+      
+      <p class="article-lead">Development of a custom communication bridge for legacy industrial PLCs, enabling modern SCADA integration with Modbus TCP/IP and OPC-UA protocols.</p>
+      
+
+      
+      <div class="tags-list">
+        
+        <a href="/tags/industrial-automation/" class="tag-pill">Industrial Automation</a>
+        
+        <a href="/tags/plc/" class="tag-pill">PLC</a>
+        
+        <a href="/tags/modbus/" class="tag-pill">Modbus</a>
+        
+        <a href="/tags/opc-ua/" class="tag-pill">OPC-UA</a>
+        
+        <a href="/tags/c-/" class="tag-pill">C&#43;&#43;</a>
+        
+      </div>
+      
+    </header>
+
+    
+    
+
+    
+    <div class="article-body">
+      <h1>Industrial PLC Communication Bridge</h1>
+<p>This project involved developing a custom communication bridge to modernize legacy industrial automation systems by enabling connectivity between older PLCs and modern SCADA systems.</p>
+<h2><a id="analysis"></a>Project Background</h2>
+<p>Many industrial facilities operate with legacy PLCs that use proprietary or outdated communication protocols. This creates challenges when integrating with modern SCADA systems, IoT platforms, and cloud-based monitoring solutions.</p>
+<h3>The Challenge</h3>
+<ul>
+<li><strong>Legacy Systems</strong>: 15-year-old PLCs with RS-485 and proprietary protocols</li>
+<li><strong>Modern Requirements</strong>: Need for Ethernet connectivity and standard protocols</li>
+<li><strong>Minimal Downtime</strong>: Industrial processes cannot be interrupted for upgrades</li>
+<li><strong>Cost Constraints</strong>: Full PLC replacement would be extremely expensive</li>
+</ul>
+<h2><a id="protocols"></a>Protocol Implementation</h2>
+<h3>Supported Protocols</h3>
+<p><strong>Legacy Side</strong>:</p>
+<ul>
+<li>Modbus RTU over RS-485</li>
+<li>Proprietary serial protocols (manufacturer-specific)</li>
+<li>ASCII-based command protocols</li>
+</ul>
+<p><strong>Modern Side</strong>:</p>
+<ul>
+<li>Modbus TCP/IP</li>
+<li>OPC-UA</li>
+<li>MQTT for IoT integration</li>
+<li>RESTful API for web-based access</li>
+</ul>
+<h3>Communication Architecture</h3>
+<pre><code class="language-cpp">class ProtocolBridge {
+private:
+    SerialInterface legacyPort;
+    EthernetInterface modernPort;
+    ProtocolTranslator translator;
+    DataBuffer sharedMemory;
+    
+public:
+    class ModbusRTUHandler {
+        void readHoldingRegisters(uint16_t address, uint16_t count);
+        void writeMultipleRegisters(uint16_t address, const uint16_t* data);
+        void processResponse(const uint8_t* response);
+    };
+    
+    class ModbusTCPServer {
+        void handleClientConnection(TCPSocket&amp; client);
+        void processModbusTCPRequest(const uint8_t* request);
+        void sendModbusTCPResponse(const uint8_t* response);
+    };
+    
+    void startBridge();
+    void processDataExchange();
+};
+</code></pre>
+<h2><a id="hardware"></a>Hardware Platform</h2>
+<h3>System Specifications</h3>
+<ul>
+<li><strong>Processor</strong>: ARM Cortex-M7 (STM32H743)</li>
+<li><strong>Memory</strong>: 1MB Flash, 1MB RAM</li>
+<li><strong>Interfaces</strong>:
+<ul>
+<li>2x RS-485 ports (galvanically isolated)</li>
+<li>Ethernet 10/100 Mbps</li>
+<li>USB for configuration</li>
+<li>SD card for data logging</li>
+</ul>
+</li>
+</ul>
+<h3>Design Features</h3>
+<p><strong>Galvanic Isolation</strong>: All interfaces are isolated to prevent ground loops and improve safety in industrial environments.</p>
+<p><strong>Redundant Power Supply</strong>: Supports both 24V DC industrial power and PoE (Power over Ethernet).</p>
+<p><strong>Environmental Protection</strong>: IP65 rated enclosure suitable for factory floor installation.</p>
+<h2><a id="testing"></a>Implementation Results</h2>
+<h3>Performance Metrics</h3>
+<ul>
+<li><strong>Latency</strong>: &lt;10ms for standard Modbus transactions</li>
+<li><strong>Throughput</strong>: 1000 transactions per second</li>
+<li><strong>Reliability</strong>: 99.95% uptime in 6-month field testing</li>
+<li><strong>Concurrent Connections</strong>: Up to 20 SCADA clients simultaneously</li>
+</ul>
+<h3>Field Deployment</h3>
+<p>Successfully deployed in 3 manufacturing facilities:</p>
+<ol>
+<li><strong>Automotive Parts Manufacturing</strong>: 25 legacy PLCs connected to modern MES system</li>
+<li><strong>Food Processing Plant</strong>: Integration with new quality monitoring system</li>
+<li><strong>Chemical Processing</strong>: Connection to cloud-based predictive maintenance platform</li>
+</ol>
+<h2>Technical Challenges Solved</h2>
+<h3>Real-time Performance</h3>
+<p>Implemented priority-based message queuing to ensure critical control commands are processed immediately while allowing bulk data transfers to proceed in background.</p>
+<h3>Protocol Translation</h3>
+<p>Developed comprehensive mapping system to translate between different data representations and addressing schemes used by legacy and modern systems.</p>
+<h3>Industrial Reliability</h3>
+<p>Implemented watchdog systems, automatic recovery mechanisms, and comprehensive error logging to ensure 24/7 operation in harsh industrial environments.</p>
+<hr>
+<p>This project demonstrates expertise in industrial automation, embedded systems programming, and protocol implementation while solving real-world manufacturing challenges.</p>
+
+    </div>
+
+    
+    
+    <section class="project-updates-section" id="project-updates">
+      <div class="updates-header">
+        <h2>🛠️ Development Log & Field Updates (1)</h2>
+        <p>Chronological milestones and subsystem verification logs.</p>
+      </div>
+
+      <div class="updates-timeline">
+        
+        <article class="update-entry" id="plc-communication-bridge">
+          <a id="update-plc-communication-bridge" class="timeline-anchor"></a>
+          <div class="update-meta">
+            <span class="update-node"></span>
+            <time class="update-date" datetime="2024-04-20">April 20, 2024</time>
+          </div>
+          <div class="update-card">
+            <h3 class="update-title">Web Interface Update - Real-time Dashboard</h3>
+            
+            <p class="update-desc">Major update to the PLC communication bridge web interface, adding real-time monitoring dashboard with live data visualization.</p>
+            
+            <div class="update-body">
+              <h1>Web Interface Update - Real-time Dashboard</h1>
+<p>This update introduces a comprehensive real-time monitoring dashboard for the PLC Communication Bridge, providing operators with immediate visibility into system status and performance metrics.</p>
+<h2>New Features</h2>
+<h3>Live Data Visualization</h3>
+<ul>
+<li><strong>Real-time Charts</strong>: Interactive charts showing data flow rates, response times, and error rates</li>
+<li><strong>Connection Status</strong>: Visual indicators for each connected PLC and SCADA client</li>
+<li><strong>Historical Trends</strong>: 24-hour trend analysis with configurable time ranges</li>
+</ul>
+<h3>Enhanced Monitoring</h3>
+<ul>
+<li><strong>Performance Metrics</strong>: Live monitoring of CPU usage, memory consumption, and network throughput</li>
+<li><strong>Alert System</strong>: Configurable alerts for connection failures, high latency, and error conditions</li>
+<li><strong>Diagnostic Tools</strong>: Built-in network diagnostics and troubleshooting utilities</li>
+</ul>
+<h2>Technical Implementation</h2>
+<p>The dashboard uses WebSocket connections for real-time updates and D3.js for data visualization:</p>
+<pre><code class="language-typescript">interface DashboardMetrics {
+  connectionCount: number;
+  throughput: number;
+  responseTime: number;
+  errorRate: number;
+  timestamp: Date;
+}
+
+class RealtimeDashboard {
+  private websocket: WebSocket;
+  private metricsChart: D3Chart;
+  
+  constructor() {
+    this.initializeWebSocket();
+    this.setupCharts();
+  }
+  
+  private updateMetrics(data: DashboardMetrics): void {
+    this.metricsChart.addDataPoint(data);
+    this.updateStatusIndicators(data);
+  }
+}
+</code></pre>
+<h2>Deployment Results</h2>
+<ul>
+<li><strong>Response Time</strong>: Dashboard updates in &lt;50ms from device</li>
+<li><strong>Data Retention</strong>: 30-day historical data storage</li>
+<li><strong>Mobile Support</strong>: Responsive design works on tablets and phones</li>
+<li><strong>User Adoption</strong>: 95% of operators now use the dashboard daily</li>
+</ul>
+<p>This update significantly improves system visibility and operational efficiency.</p>
+
+            </div>
+          </div>
+        </article>
+        
+      </div>
+    </section>
+    
+
+    <footer class="article-footer">
+      <a href="/projects/" class="btn btn-secondary">&larr; Back to all projects</a>
+    </footer>
+  </article>
+
+  
+  
+  <div class="timeline-wrapper">
+    <button class="timeline-tab-button" id="timeline-tab-btn" onclick="toggleTimelineSidebar(event)" aria-label="Toggle Project Timeline" title="Toggle Timeline">
+      <span class="timeline-tab-icon">📅</span>
+      <span class="timeline-tab-text">Timeline</span>
+    </button>
+
+    <aside class="timeline-sidebar" id="timeline-sidebar" aria-label="Project Timeline Navigation">
+      <div class="timeline-header">
+        <h3 class="timeline-heading">Project Timeline</h3>
+        <button class="timeline-close-btn" onclick="toggleTimelineSidebar(event)" aria-label="Close timeline">✕</button>
+      </div>
+      <nav class="timeline-content">
+        
+        <a href="#analysis" class="timeline-nav-item" onclick="onTimelineClick(event, '#analysis')">
+          
+          <time class="timeline-nav-date">2023-12-01</time>
+          
+          <span class="timeline-nav-title">Requirements Analysis</span>
+        </a>
+        
+        <a href="#protocols" class="timeline-nav-item" onclick="onTimelineClick(event, '#protocols')">
+          
+          <time class="timeline-nav-date">2023-12-20</time>
+          
+          <span class="timeline-nav-title">Protocol Implementation</span>
+        </a>
+        
+        <a href="#hardware" class="timeline-nav-item" onclick="onTimelineClick(event, '#hardware')">
+          
+          <time class="timeline-nav-date">2024-01-10</time>
+          
+          <span class="timeline-nav-title">Hardware Development</span>
+        </a>
+        
+        <a href="#testing" class="timeline-nav-item" onclick="onTimelineClick(event, '#testing')">
+          
+          <time class="timeline-nav-date">2024-01-25</time>
+          
+          <span class="timeline-nav-title">Testing &amp; Validation</span>
+        </a>
+        
+        <a href="#update-demo-plc-communication-bridge-update-web-interface" class="timeline-nav-item" onclick="onTimelineClick(event, '#update-demo-plc-communication-bridge-update-web-interface')">
+          
+          <time class="timeline-nav-date">2024-04-20</time>
+          
+          <span class="timeline-nav-title">Web Interface Update</span>
+        </a>
+        
+      </nav>
+    </aside>
+  </div>
+  
+</div>
+
+  </main>
+
+  
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <div class="footer-left">
+        <p class="copyright">&copy; 2026 Your Name. All rights reserved. <span class="footer-divider">•</span> <span class="generator-credit">Powered by <a href="https://github.com/Crowiel/Sieva-Site-Generator" target="_blank" rel="noopener noreferrer">Sievä Site Generator</a></span> <span class="footer-divider">•</span> <a href="/privacy/" class="privacy-link">Privacy Policy</a></p>
+      </div>
+      <div class="footer-right">
+        <a href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:your.email@example.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  
+  <dialog id="lightbox-dialog" class="lightbox-modal" onclick="if(event.target===this)this.close()">
+    <div class="lightbox-content">
+      <button class="lightbox-close" onclick="document.getElementById('lightbox-dialog').close()" aria-label="Close dialog">✕</button>
+      <img id="lightbox-img" src="" alt="" />
+      <p id="lightbox-caption" class="lightbox-caption"></p>
+    </div>
+  </dialog>
+
+  
+  <script src="/static/js/main.js" defer></script>
+
+  
+</body>
+</html>
+
+
+<!-- 
+  Generated with Sievä Site Generator (v2)
+  https://github.com/Crowiel/Sieva-Site-Generator
+  Deterministic, zero-bloat static site generator written in Go
+-->
+

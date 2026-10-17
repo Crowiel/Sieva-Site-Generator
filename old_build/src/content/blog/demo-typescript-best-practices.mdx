@@ -1,0 +1,343 @@
+---
+title: "TypeScript Best Practices for Large Projects"
+date: "2024-09-10"
+description: "Proven patterns and practices for maintaining type safety and code quality in large-scale TypeScript applications."
+tags: ["web development", "typescript", "best practices", "software architecture"]
+featured: false
+---
+
+# TypeScript Best Practices for Large Projects
+
+TypeScript has become the de facto standard for large-scale JavaScript applications. Here are the patterns and practices that have helped me maintain sanity in complex codebases.
+
+## Type Safety Foundations
+
+### 1. Strict Mode is Non-Negotiable
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true
+  }
+}
+```
+
+### 2. Avoid `any` Like the Plague
+
+Instead of:
+```typescript
+function processData(data: any) {
+  return data.value;
+}
+```
+
+Use proper types:
+```typescript
+interface DataStructure {
+  value: string;
+  timestamp: number;
+}
+
+function processData(data: DataStructure) {
+  return data.value;
+}
+```
+
+### 3. Use `unknown` for Truly Unknown Types
+
+```typescript
+function parseJSON(jsonString: string): unknown {
+  return JSON.parse(jsonString);
+}
+
+// Force type checking before use
+const data = parseJSON('{"name": "John"}');
+if (typeof data === 'object' && data !== null && 'name' in data) {
+  console.log(data.name);
+}
+```
+
+## Advanced Type Patterns
+
+### Discriminated Unions
+
+Perfect for state management:
+
+```typescript
+type LoadingState = 
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'success'; data: string[] }
+  | { status: 'error'; error: Error };
+
+function handleState(state: LoadingState) {
+  switch(state.status) {
+    case 'idle':
+      return 'Not started';
+    case 'loading':
+      return 'Loading...';
+    case 'success':
+      return state.data.join(', '); // TypeScript knows data exists
+    case 'error':
+      return state.error.message; // TypeScript knows error exists
+  }
+}
+```
+
+### Utility Types
+
+```typescript
+// Pick only needed properties
+type UserPreview = Pick<User, 'id' | 'name' | 'avatar'>;
+
+// Make all properties optional
+type PartialUser = Partial<User>;
+
+// Make all properties required
+type RequiredUser = Required<User>;
+
+// Exclude properties
+type UserWithoutPassword = Omit<User, 'password'>;
+
+// Create types from values
+const CONFIG = {
+  development: 'dev',
+  staging: 'stg',
+  production: 'prod'
+} as const;
+
+type Environment = typeof CONFIG[keyof typeof CONFIG];
+// type Environment = "dev" | "stg" | "prod"
+```
+
+### Generic Constraints
+
+```typescript
+interface HasId {
+  id: string;
+}
+
+function findById<T extends HasId>(items: T[], id: string): T | undefined {
+  return items.find(item => item.id === id);
+}
+
+// Works with any type that has an id
+const user = findById(users, '123');
+const product = findById(products, '456');
+```
+
+## Project Organization
+
+### Domain-Driven Structure
+
+```
+src/
+├── domains/
+│   ├── users/
+│   │   ├── types.ts
+│   │   ├── api.ts
+│   │   ├── hooks.ts
+│   │   └── utils.ts
+│   ├── products/
+│   └── orders/
+├── shared/
+│   ├── types/
+│   ├── utils/
+│   └── components/
+└── config/
+```
+
+### Centralized Type Definitions
+
+```typescript
+// shared/types/api.ts
+export interface ApiResponse<T> {
+  data: T;
+  status: number;
+  message?: string;
+}
+
+export interface PaginatedResponse<T> extends ApiResponse<T[]> {
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+  };
+}
+
+// Usage
+type UsersResponse = PaginatedResponse<User>;
+```
+
+## Error Handling
+
+### Type-Safe Error Handling
+
+```typescript
+class AppError extends Error {
+  constructor(
+    message: string,
+    public code: string,
+    public statusCode: number = 500
+  ) {
+    super(message);
+    this.name = 'AppError';
+  }
+}
+
+class ValidationError extends AppError {
+  constructor(message: string) {
+    super(message, 'VALIDATION_ERROR', 400);
+  }
+}
+
+function handleError(error: unknown): string {
+  if (error instanceof ValidationError) {
+    return `Validation failed: ${error.message}`;
+  }
+  if (error instanceof AppError) {
+    return `Error ${error.code}: ${error.message}`;
+  }
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return 'An unknown error occurred';
+}
+```
+
+## API Integration
+
+### Type-Safe API Client
+
+```typescript
+interface ApiEndpoints {
+  '/users': {
+    GET: { response: User[] };
+    POST: { body: CreateUserDto; response: User };
+  };
+  '/users/:id': {
+    GET: { response: User };
+    PUT: { body: UpdateUserDto; response: User };
+    DELETE: { response: void };
+  };
+}
+
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+async function apiCall<
+  Path extends keyof ApiEndpoints,
+  Method extends keyof ApiEndpoints[Path] & HttpMethod
+>(
+  path: Path,
+  method: Method,
+  options?: ApiEndpoints[Path][Method] extends { body: infer B } ? { body: B } : never
+): Promise<ApiEndpoints[Path][Method] extends { response: infer R } ? R : never> {
+  // Implementation
+  throw new Error('Not implemented');
+}
+
+// Usage - fully type-safe!
+const users = await apiCall('/users', 'GET');
+const newUser = await apiCall('/users', 'POST', { 
+  body: { name: 'John', email: 'john@example.com' } 
+});
+```
+
+## Performance Tips
+
+### 1. Use `const` Assertions
+
+```typescript
+// Without const assertion
+const colors = ['red', 'green', 'blue'];
+// type: string[]
+
+// With const assertion
+const colors = ['red', 'green', 'blue'] as const;
+// type: readonly ["red", "green", "blue"]
+```
+
+### 2. Lazy Type Inference
+
+```typescript
+// Avoid
+const data: ComplexType = await fetchData();
+
+// Better - let TypeScript infer
+const data = await fetchData();
+// TypeScript infers the type automatically
+```
+
+## Testing
+
+### Type-Safe Test Utilities
+
+```typescript
+import { expect, test } from 'vitest';
+
+function expectType<T>(value: T): void {}
+
+test('user object has correct shape', () => {
+  const user = createUser();
+  
+  // Runtime check
+  expect(user).toHaveProperty('id');
+  
+  // Compile-time check
+  expectType<User>(user);
+});
+```
+
+## Common Pitfalls
+
+### 1. Over-Engineering Types
+
+```typescript
+// Bad - too complex
+type SuperComplexType<T extends Record<string, any>> = {
+  [K in keyof T]: T[K] extends Function 
+    ? ReturnType<T[K]> 
+    : T[K] extends object 
+      ? SuperComplexType<T[K]> 
+      : T[K];
+};
+
+// Good - simple and clear
+type SimplifiedType<T> = {
+  [K in keyof T]: T[K];
+};
+```
+
+### 2. Not Using Enums Wisely
+
+```typescript
+// Prefer union types over enums
+type Status = 'pending' | 'approved' | 'rejected';
+
+// Instead of
+enum Status {
+  Pending = 'pending',
+  Approved = 'approved',
+  Rejected = 'rejected'
+}
+```
+
+## Conclusion
+
+TypeScript's power comes from its type system. Use it wisely:
+
+1. **Start strict** - Enable all strict checks
+2. **Think in types** - Model your domain accurately
+3. **Keep it simple** - Don't over-engineer
+4. **Document with types** - They're self-documenting
+5. **Test types** - Use tools like `tsd` for type tests
+
+The goal is code that's impossible to misuse, not just correct code.
+
+Happy typing! ⌨️

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choosing the Right Microcontroller for Your IoT Project — Your Name</title>
+  <meta name="description" content="A comprehensive guide to selecting the perfect microcontroller for your next IoT project, covering ESP32, STM32, and Arduino platforms.">
+  <meta name="author" content="Your Name">
+  <meta name="theme-color" content="#0d1117">
+  
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/static/css/style.css">
+  
+  
+  <link rel="canonical" href="https://yourdomain.com/blog/choosing-the-right-microcontroller/">
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}], throwOnError: false});"></script>
+  
+  
+  
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Choosing the Right Microcontroller for Your IoT Project — Your Name">
+  <meta property="og:description" content="A comprehensive guide to selecting the perfect microcontroller for your next IoT project, covering ESP32, STM32, and Arduino platforms.">
+  <meta property="og:site_name" content="Your Name">
+</head>
+<body>
+  
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <a href="/" class="brand-link">
+          <span class="brand-name">Your Name</span>
+          <span class="brand-role">Automation &amp; Embedded Systems</span>
+        </a>
+      </div>
+
+      <nav class="nav" id="main-nav" aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/" >Home</a></li>
+          <li><a href="/projects/" >Projects</a></li>
+          <li><a href="/blog/" class="active">Blog</a></li>
+          <li><a href="/about/" >About</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Toggle theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  
+  <main class="site-main" id="main-content">
+    
+<div class="container article-container">
+  <div class="breadcrumbs">
+    <a href="/">Home</a> / <a href="/blog/">Blog</a> / <span>Choosing the Right Microcontroller for Your IoT Project</span>
+  </div>
+
+  <article class="single-article">
+    <header class="article-header">
+      <div class="article-meta">
+        <time datetime="2024-09-22">September 22, 2024</time>
+      </div>
+      <h1 class="article-title">Choosing the Right Microcontroller for Your IoT Project</h1>
+      
+      <p class="article-lead">A comprehensive guide to selecting the perfect microcontroller for your next IoT project, covering ESP32, STM32, and Arduino platforms.</p>
+      
+
+      
+      <div class="tags-list">
+        
+        <a href="/tags/iot/" class="tag-pill">iot</a>
+        
+        <a href="/tags/embedded-systems/" class="tag-pill">embedded systems</a>
+        
+        <a href="/tags/esp32/" class="tag-pill">esp32</a>
+        
+        <a href="/tags/hardware/" class="tag-pill">hardware</a>
+        
+      </div>
+      
+    </header>
+
+    <div class="article-body">
+      <h1>Choosing the Right Microcontroller for Your IoT Project</h1>
+<p>Selecting the right microcontroller can make or break your IoT project. With so many options available, it's essential to understand the key factors that influence your decision.</p>
+<h2>Key Factors to Consider</h2>
+<h3>1. Processing Power</h3>
+<p>The computational requirements of your project will determine the minimum processing power needed:</p>
+<ul>
+<li><strong>Simple sensors</strong>: 8-bit microcontrollers (ATmega series)</li>
+<li><strong>Complex data processing</strong>: 32-bit ARM Cortex (ESP32, STM32)</li>
+<li><strong>Machine learning</strong>: High-performance chips with dedicated accelerators</li>
+</ul>
+<h3>2. Connectivity Options</h3>
+<p>Modern IoT projects often require multiple connectivity options:</p>
+<ul>
+<li><strong>Wi-Fi</strong>: ESP32, ESP8266 for wireless connectivity</li>
+<li><strong>Bluetooth</strong>: ESP32 offers both Classic and BLE</li>
+<li><strong>LoRa</strong>: For long-range, low-power applications</li>
+<li><strong>Cellular</strong>: For remote locations without Wi-Fi</li>
+</ul>
+<h3>3. Power Consumption</h3>
+<p>Battery-powered projects demand careful consideration of power usage and duty cycle optimization. The theoretical operating lifetime <span class="math inline">\(T_{\text{runtime}}\)</span> is derived from average current draw:</p>
+<p><span class="math display">\[I_{\text{avg}} = I_{\text{active}} \cdot D + I_{\text{sleep}} \cdot (1 - D)
+\]</span></p>
+<p><span class="math display">\[T_{\text{runtime}} = \frac{C_{\text{battery}}}{I_{\text{avg}}} = \frac{C_{\text{battery}}}{I_{\text{active}} \cdot \left(\frac{t_{\text{active}}}{t_{\text{active}} + t_{\text{sleep}}}\right) + I_{\text{sleep}} \cdot \left(\frac{t_{\text{sleep}}}{t_{\text{active}} + t_{\text{sleep}}}\right)}
+\]</span></p>
+<p>For example, an active current of <span class="math inline">\(I_{\text{active}} = 120\text{ mA}\)</span> for <span class="math inline">\(200\text{ ms}\)</span> paired with <span class="math inline">\(I_{\text{sleep}} = 15\ \mu\text{A}\)</span> across a <span class="math inline">\(2400\text{ mAh}\)</span> cell yields multi-year autonomous deployment.</p>
+<pre><code class="language-cpp">// Example: ESP32 deep sleep mode
+esp_sleep_enable_timer_wakeup(60 * 1000000); // Wake up after 60 seconds
+esp_deep_sleep_start();
+</code></pre>
+<hr>
+<h2>Architectural Decision Matrix</h2>
+<p>Use this quick-path flowchart to select the matching hardware tier for your design:</p>
+<div class="mermaid-container"><pre class="mermaid">graph TD
+    Start[Design Requirements] --> Power{Power Source?}
+    Power -->|Mains / Continuous| Compute{Compute Needs?}
+    Power -->|Coin Cell / Solar / Battery| LowPower[Ultra-Low Power Constraints]
+    
+    Compute -->|Wi-Fi + Dual Core RTOS| ESP32[ESP32 / ESP32-S3]
+    Compute -->|Industrial Fieldbus / Hard Real-Time| STM32[STM32 ARM Cortex-M4/M7]
+    Compute -->|GPIO & Basic Timers| AVR[ATmega328P / ATTiny]
+    
+    LowPower --> Wireless{Wireless Range?}
+    Wireless -->|Long Range LoRaWAN| LoRa[STM32WLE5 / SAM R34]
+    Wireless -->|Short Range BLE Mesh| BLE[Nordic nRF52840]
+    Wireless -->|Offline Data Logger| MSP[TI MSP430]</pre></div>
+<hr>
+<h2>Popular Platforms Compared</h2>
+<h3>ESP32</h3>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Built-in Wi-Fi and Bluetooth</li>
+<li>Dual-core processor</li>
+<li>Large community support</li>
+<li>Affordable</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Higher power consumption</li>
+<li>3.3V logic (needs level shifters for 5V devices)</li>
+</ul>
+<h3>STM32</h3>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Excellent documentation</li>
+<li>Wide range of variants</li>
+<li>Professional-grade reliability</li>
+<li>Low power modes</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Steeper learning curve</li>
+<li>No built-in wireless (requires external modules)</li>
+</ul>
+<h3>Arduino (ATmega)</h3>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Beginner-friendly</li>
+<li>Massive library ecosystem</li>
+<li>Reliable and proven</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Limited processing power</li>
+<li>No native wireless capabilities</li>
+<li>5V logic can complicate modern sensor integration</li>
+</ul>
+<h2>Real-World Example</h2>
+<p>For my recent smart home automation project, I chose the ESP32 because:</p>
+<ol>
+<li>Built-in Wi-Fi eliminated the need for additional modules</li>
+<li>Dual-core allowed me to handle UI and sensor processing separately</li>
+<li>Cost-effective for prototyping multiple nodes</li>
+<li>Large community meant quick solutions to common problems</li>
+</ol>
+<h2>Conclusion</h2>
+<p>There's no one-size-fits-all answer. Consider your specific requirements:</p>
+<ul>
+<li><strong>Budget constraints</strong> → Arduino or ESP8266</li>
+<li><strong>Complex processing</strong> → ESP32 or STM32F4</li>
+<li><strong>Ultra-low power</strong> → STM32L series</li>
+<li><strong>Rapid prototyping</strong> → ESP32 or Arduino</li>
+</ul>
+<p>The best microcontroller is the one that meets your project requirements while staying within your technical comfort zone and budget.</p>
+<p>Happy building! 🔧</p>
+
+    </div>
+
+    <footer class="article-footer">
+      <a href="/blog/" class="btn btn-secondary">&larr; Back to blog</a>
+    </footer>
+  </article>
+</div>
+
+  </main>
+
+  
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <div class="footer-left">
+        <p class="copyright">&copy; 2026 Your Name. All rights reserved. <span class="footer-divider">•</span> <span class="generator-credit">Powered by <a href="https://github.com/Crowiel/Sieva-Site-Generator" target="_blank" rel="noopener noreferrer">Sievä Site Generator</a></span> <span class="footer-divider">•</span> <a href="/privacy/" class="privacy-link">Privacy Policy</a></p>
+      </div>
+      <div class="footer-right">
+        <a href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:your.email@example.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  
+  <dialog id="lightbox-dialog" class="lightbox-modal" onclick="if(event.target===this)this.close()">
+    <div class="lightbox-content">
+      <button class="lightbox-close" onclick="document.getElementById('lightbox-dialog').close()" aria-label="Close dialog">✕</button>
+      <img id="lightbox-img" src="" alt="" />
+      <p id="lightbox-caption" class="lightbox-caption"></p>
+    </div>
+  </dialog>
+
+  
+  <script src="/static/js/main.js" defer></script>
+
+  
+  
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    const renderMermaid = (theme) => {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: theme,
+        fontFamily: 'var(--font-sans)',
+        securityLevel: 'loose',
+        themeVariables: {
+          darkMode: theme === 'dark',
+          background: theme === 'dark' ? '#161b22' : '#eee7d8',
+          primaryColor: theme === 'dark' ? '#1c2128' : '#efe8dc',
+          primaryBorderColor: theme === 'dark' ? '#30363d' : '#d4ccb8',
+          primaryTextColor: theme === 'dark' ? '#e6edf3' : '#2c3e50',
+          lineColor: theme === 'dark' ? '#8b949e' : '#5e6d7e'
+        }
+      });
+      document.querySelectorAll('.mermaid').forEach((el) => {
+        if (!el.getAttribute('data-mermaid-src')) {
+          el.setAttribute('data-mermaid-src', el.textContent.trim());
+        }
+        el.removeAttribute('data-processed');
+        el.textContent = el.getAttribute('data-mermaid-src');
+      });
+      mermaid.run();
+    };
+
+    const currentTheme = document.documentElement.getAttribute('data-theme') === 'light' ? 'neutral' : 'dark';
+    renderMermaid(currentTheme);
+
+    window.addEventListener('themeChanged', (e) => {
+      const nextTheme = e.detail && e.detail.theme === 'light' ? 'neutral' : 'dark';
+      renderMermaid(nextTheme);
+    });
+  </script>
+  
+</body>
+</html>
+
+
+<!-- 
+  Generated with Sievä Site Generator (v2)
+  https://github.com/Crowiel/Sieva-Site-Generator
+  Deterministic, zero-bloat static site generator written in Go
+-->
+

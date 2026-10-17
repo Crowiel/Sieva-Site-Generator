@@ -1,0 +1,22 @@
+{{ define "content" }}
+<div class="container page-container">
+  <header class="page-header">
+    <div class="breadcrumbs">
+      <a href="/">Home</a> / <span>Tags</span>
+    </div>
+    <h1 class="page-title">{{ .PageMeta.Title }}</h1>
+    <p class="page-description">{{ .PageMeta.Description }}</p>
+  </header>
+
+  <div class="tags-directory">
+    <div class="tags-cloud">
+      {{ range .SiteData.Tags }}
+      <a href="{{ .URL }}" class="tag-card">
+        <span class="tag-name">{{ .Name }}</span>
+        <span class="tag-count">{{ .Count }}</span>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}

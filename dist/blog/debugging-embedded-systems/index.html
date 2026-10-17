@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debugging Embedded Systems: Tips and Tools — Your Name</title>
+  <meta name="description" content="Essential debugging techniques and tools for embedded systems development, from serial debugging to logic analyzers.">
+  <meta name="author" content="Your Name">
+  <meta name="theme-color" content="#0d1117">
+  
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/static/css/style.css">
+  
+  
+  <link rel="canonical" href="https://yourdomain.com/blog/debugging-embedded-systems/">
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}], throwOnError: false});"></script>
+  
+  
+  
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Debugging Embedded Systems: Tips and Tools — Your Name">
+  <meta property="og:description" content="Essential debugging techniques and tools for embedded systems development, from serial debugging to logic analyzers.">
+  <meta property="og:site_name" content="Your Name">
+</head>
+<body>
+  
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <a href="/" class="brand-link">
+          <span class="brand-name">Your Name</span>
+          <span class="brand-role">Automation &amp; Embedded Systems</span>
+        </a>
+      </div>
+
+      <nav class="nav" id="main-nav" aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/" >Home</a></li>
+          <li><a href="/projects/" >Projects</a></li>
+          <li><a href="/blog/" class="active">Blog</a></li>
+          <li><a href="/about/" >About</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Toggle theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  
+  <main class="site-main" id="main-content">
+    
+<div class="container article-container">
+  <div class="breadcrumbs">
+    <a href="/">Home</a> / <a href="/blog/">Blog</a> / <span>Debugging Embedded Systems: Tips and Tools</span>
+  </div>
+
+  <article class="single-article">
+    <header class="article-header">
+      <div class="article-meta">
+        <time datetime="2024-10-01">October 1, 2024</time>
+      </div>
+      <h1 class="article-title">Debugging Embedded Systems: Tips and Tools</h1>
+      
+      <p class="article-lead">Essential debugging techniques and tools for embedded systems development, from serial debugging to logic analyzers.</p>
+      
+
+      
+      <div class="tags-list">
+        
+        <a href="/tags/embedded-systems/" class="tag-pill">embedded systems</a>
+        
+        <a href="/tags/debugging/" class="tag-pill">debugging</a>
+        
+        <a href="/tags/hardware/" class="tag-pill">hardware</a>
+        
+        <a href="/tags/tools/" class="tag-pill">tools</a>
+        
+      </div>
+      
+    </header>
+
+    <div class="article-body">
+      <h1>Debugging Embedded Systems: Tips and Tools</h1>
+<p>Debugging embedded systems presents unique challenges compared to traditional software development. Here's a comprehensive guide to the essential techniques and tools.</p>
+<h2>The Debugging Toolkit</h2>
+<h3>1. Serial Debugging: Your First Line of Defense</h3>
+<pre><code class="language-cpp">// ESP32 example
+void setup() {
+  Serial.begin(115200);
+  Serial.println(&quot;System starting...&quot;);
+}
+
+void loop() {
+  int sensorValue = analogRead(A0);
+  Serial.printf(&quot;Sensor: %d, Free heap: %d\n&quot;, 
+                sensorValue, ESP.getFreeHeap());
+  delay(1000);
+}
+</code></pre>
+<p><strong>Pro tip</strong>: Use structured logging with prefixes:</p>
+<pre><code class="language-cpp">#define DEBUG_SENSOR &quot;[SENSOR] &quot;
+#define DEBUG_NETWORK &quot;[NET] &quot;
+#define DEBUG_ERROR &quot;[ERROR] &quot;
+
+Serial.println(DEBUG_SENSOR &quot;Temperature: 25.4°C&quot;);
+</code></pre>
+<h3>2. LED Debugging: When Serial Isn't Available</h3>
+<p>The humble LED can save hours of debugging:</p>
+<pre><code class="language-cpp">#define DEBUG_LED 2
+
+void signalError(int errorCode) {
+  for(int i = 0; i &lt; errorCode; i++) {
+    digitalWrite(DEBUG_LED, HIGH);
+    delay(200);
+    digitalWrite(DEBUG_LED, LOW);
+    delay(200);
+  }
+  delay(1000);
+}
+</code></pre>
+<h3>3. Logic Analyzers &amp; Hardware Probes</h3>
+<p>Essential for verifying hardware timing, protocol violations, and bus integrity:</p>
+<ul>
+<li><strong>I2C/SPI communication</strong>: Capture setup/hold violations (<span class="math inline">\(t_{\text{SU:DAT}}\)</span>, <span class="math inline">\(t_{\text{HD:DAT}}\)</span>)</li>
+<li><strong>Timing issues</strong>: Glitch detection and clock jitter</li>
+<li><strong>Protocol verification</strong>: Decoding Modbus, CAN, or UART frames</li>
+</ul>
+<h4>Bus Timing &amp; Pull-Up Dimensioning</h4>
+<p>For reliable I2C communication at standard (<span class="math inline">\(100\text{ kHz}\)</span>) or fast mode (<span class="math inline">\(400\text{ kHz}\)</span>), pull-up resistors <span class="math inline">\(R_p\)</span> must satisfy rise-time and current sink limits governed by total bus capacitance <span class="math inline">\(C_b\)</span>:</p>
+<p><span class="math display">\[R_{\min} = \frac{V_{DD} - V_{OL}}{I_{OL}}, \quad R_{\max} = \frac{t_r}{0.8473 \cdot C_b}
+\]</span></p>
+<p>For an asynchronous digital logic analyzer to reliably resolve digital transitions without aliasing, sampling frequency must obey:</p>
+<p><span class="math display">\[f_{\text{sample}} \ge 4 \cdot f_{\text{bus}}
+\]</span></p>
+<hr>
+<h3>Hardware Debugging Chain: GDB to SWD Target</h3>
+<p>Understanding the communication flow between your IDE and silicon hardware eliminates guesswork when breakpoints fail to bind:</p>
+<div class="mermaid-container"><pre class="mermaid">sequenceDiagram
+    autonumber
+    actor Dev as Developer (VS Code / GDB)
+    participant Server as OpenOCD / J-Link GDB Server
+    participant Probe as Hardware Debug Probe (ST-Link / CMSIS-DAP)
+    participant Core as ARM Cortex-M Target (SWD Core)
+
+    Dev->>Server: target remote :3333
+    Server->>Probe: USB Bulk Control Transfer
+    Probe->>Core: SWD Line Reset & Read IDCODE (0x1BA01477)
+    Core-->>Probe: Core ID Valid (Cortex-M4 r0p1)
+    Probe-->>Server: Connected to ARM Debug Port (DP)
+    Server-->>Dev: Remote Debug Session Established
+
+    Dev->>Server: monitor reset halt
+    Server->>Probe: Write DHCSR (C_DEBUGEN | C_HALT)
+    Probe->>Core: Assert Hardware Halt Request
+    Core-->>Probe: Core Halted (PC = 0x08000184)
+    Probe-->>Server: Halted Notification
+    Server-->>Dev: Breakpoint Hit at main()</pre></div>
+<hr>
+<h2>Common Debugging Scenarios</h2>
+<h3>Issue: I2C Device Not Responding</h3>
+<p><strong>Debug Steps:</strong></p>
+<ol>
+<li>Check pull-up resistors (typically 4.7kΩ)</li>
+<li>Scan I2C bus:</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;Wire.h&gt;
+
+void scanI2C() {
+  Serial.println(&quot;Scanning I2C bus...&quot;);
+  byte count = 0;
+  
+  for(byte i = 1; i &lt; 127; i++) {
+    Wire.beginTransmission(i);
+    if(Wire.endTransmission() == 0) {
+      Serial.printf(&quot;Device found at 0x%02X\n&quot;, i);
+      count++;
+    }
+  }
+  Serial.printf(&quot;Found %d device(s)\n&quot;, count);
+}
+</code></pre>
+<ol start="3">
+<li>Verify voltage levels (3.3V vs 5V)</li>
+<li>Check physical connections</li>
+</ol>
+<h3>Issue: Random Crashes/Resets</h3>
+<p><strong>Common causes:</strong></p>
+<ol>
+<li><strong>Power issues</strong>: Insufficient current, voltage drops</li>
+<li><strong>Stack overflow</strong>: Check stack size</li>
+<li><strong>Watchdog timer</strong>: Not being fed regularly</li>
+<li><strong>Memory leaks</strong>: Monitor heap usage</li>
+</ol>
+<pre><code class="language-cpp">// Watchdog feeding
+void loop() {
+  feedWatchdog();  // Reset watchdog timer
+  
+  // Your code here
+  
+  // Monitor memory
+  if(ESP.getFreeHeap() &lt; 10000) {
+    Serial.println(&quot;WARNING: Low memory!&quot;);
+  }
+}
+</code></pre>
+<h3>Issue: Timing Problems</h3>
+<p>Use built-in timers for precise measurements:</p>
+<pre><code class="language-cpp">unsigned long startTime, endTime;
+
+startTime = micros();
+performCriticalOperation();
+endTime = micros();
+
+Serial.printf(&quot;Operation took %lu µs\n&quot;, endTime - startTime);
+</code></pre>
+<h2>Advanced Debugging Techniques</h2>
+<h3>1. Assert Statements</h3>
+<pre><code class="language-cpp">#define ASSERT(condition, message) \
+  if(!(condition)) { \
+    Serial.printf(&quot;ASSERT FAILED: %s at %s:%d\n&quot;, \
+                  message, __FILE__, __LINE__); \
+    while(1); \
+  }
+
+ASSERT(temperature &lt; 100, &quot;Temperature too high!&quot;);
+</code></pre>
+<h3>2. Memory Dumping</h3>
+<pre><code class="language-cpp">void dumpMemory(uint8_t* addr, size_t len) {
+  for(size_t i = 0; i &lt; len; i++) {
+    if(i % 16 == 0) Serial.printf(&quot;\n%08X: &quot;, (uint32_t)(addr + i));
+    Serial.printf(&quot;%02X &quot;, addr[i]);
+  }
+  Serial.println();
+}
+</code></pre>
+<h3>3. State Machines with Debug Output</h3>
+<pre><code class="language-cpp">enum State {
+  INIT,
+  CONNECTING,
+  CONNECTED,
+  ERROR
+};
+
+State currentState = INIT;
+
+void setState(State newState) {
+  const char* stateNames[] = {&quot;INIT&quot;, &quot;CONNECTING&quot;, &quot;CONNECTED&quot;, &quot;ERROR&quot;};
+  Serial.printf(&quot;State: %s -&gt; %s\n&quot;, 
+                stateNames[currentState], 
+                stateNames[newState]);
+  currentState = newState;
+}
+</code></pre>
+<h2>Essential Hardware Tools</h2>
+<h3>Must-Have</h3>
+<ol>
+<li><strong>Multimeter</strong>: Voltage, current, continuity checking</li>
+<li><strong>USB-to-Serial adapter</strong>: For debugging without built-in USB</li>
+<li><strong>Cheap logic analyzer</strong>: Protocol debugging</li>
+<li><strong>Oscilloscope</strong>: For analog signals and noise issues</li>
+</ol>
+<h3>Nice-to-Have</h3>
+<ol>
+<li><strong>Bench power supply</strong>: Stable, adjustable power</li>
+<li><strong>Hot air station</strong>: For SMD rework</li>
+<li><strong>Proper debugger</strong>: ST-Link, J-Link for ARM debugging</li>
+</ol>
+<h2>Software Tools</h2>
+<h3>Free &amp; Essential</h3>
+<ul>
+<li><strong>Arduino IDE/PlatformIO</strong>: Development and debugging</li>
+<li><strong>PuTTY/CoolTerm</strong>: Serial terminal</li>
+<li><strong>Sigrok PulseView</strong>: Logic analyzer software</li>
+</ul>
+<h3>Professional</h3>
+<ul>
+<li><strong>Segger Ozone</strong>: Advanced debugging</li>
+<li><strong>Percepio Tracealyzer</strong>: RTOS debugging</li>
+</ul>
+<h2>Best Practices</h2>
+<ol>
+<li><strong>Add debug code early</strong>: Don't wait until things break</li>
+<li><strong>Use version control</strong>: Track what changed when issues appeared</li>
+<li><strong>Document weird behaviors</strong>: They often come back</li>
+<li><strong>Keep a debug log</strong>: Track issues and solutions</li>
+<li><strong>Test incrementally</strong>: Don't change too much at once</li>
+</ol>
+<h2>Debugging Workflow</h2>
+<pre><code>1. Reproduce the issue consistently
+   ↓
+2. Add logging around the problem area
+   ↓
+3. Form a hypothesis
+   ↓
+4. Test the hypothesis
+   ↓
+5. Fix and verify
+   ↓
+6. Document the solution
+</code></pre>
+<h2>Conclusion</h2>
+<p>Embedded debugging is part art, part science. The key is having the right tools and methodologies. Start with simple serial debugging, and gradually add more sophisticated tools as needed.</p>
+<p>Remember: <strong>The best debugging tool is a clear understanding of your system.</strong></p>
+<p>Happy debugging! 🔍</p>
+
+    </div>
+
+    <footer class="article-footer">
+      <a href="/blog/" class="btn btn-secondary">&larr; Back to blog</a>
+    </footer>
+  </article>
+</div>
+
+  </main>
+
+  
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <div class="footer-left">
+        <p class="copyright">&copy; 2026 Your Name. All rights reserved. <span class="footer-divider">•</span> <span class="generator-credit">Powered by <a href="https://github.com/Crowiel/Sieva-Site-Generator" target="_blank" rel="noopener noreferrer">Sievä Site Generator</a></span> <span class="footer-divider">•</span> <a href="/privacy/" class="privacy-link">Privacy Policy</a></p>
+      </div>
+      <div class="footer-right">
+        <a href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:your.email@example.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  
+  <dialog id="lightbox-dialog" class="lightbox-modal" onclick="if(event.target===this)this.close()">
+    <div class="lightbox-content">
+      <button class="lightbox-close" onclick="document.getElementById('lightbox-dialog').close()" aria-label="Close dialog">✕</button>
+      <img id="lightbox-img" src="" alt="" />
+      <p id="lightbox-caption" class="lightbox-caption"></p>
+    </div>
+  </dialog>
+
+  
+  <script src="/static/js/main.js" defer></script>
+
+  
+  
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    const renderMermaid = (theme) => {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: theme,
+        fontFamily: 'var(--font-sans)',
+        securityLevel: 'loose',
+        themeVariables: {
+          darkMode: theme === 'dark',
+          background: theme === 'dark' ? '#161b22' : '#eee7d8',
+          primaryColor: theme === 'dark' ? '#1c2128' : '#efe8dc',
+          primaryBorderColor: theme === 'dark' ? '#30363d' : '#d4ccb8',
+          primaryTextColor: theme === 'dark' ? '#e6edf3' : '#2c3e50',
+          lineColor: theme === 'dark' ? '#8b949e' : '#5e6d7e'
+        }
+      });
+      document.querySelectorAll('.mermaid').forEach((el) => {
+        if (!el.getAttribute('data-mermaid-src')) {
+          el.setAttribute('data-mermaid-src', el.textContent.trim());
+        }
+        el.removeAttribute('data-processed');
+        el.textContent = el.getAttribute('data-mermaid-src');
+      });
+      mermaid.run();
+    };
+
+    const currentTheme = document.documentElement.getAttribute('data-theme') === 'light' ? 'neutral' : 'dark';
+    renderMermaid(currentTheme);
+
+    window.addEventListener('themeChanged', (e) => {
+      const nextTheme = e.detail && e.detail.theme === 'light' ? 'neutral' : 'dark';
+      renderMermaid(nextTheme);
+    });
+  </script>
+  
+</body>
+</html>
+
+
+<!-- 
+  Generated with Sievä Site Generator (v2)
+  https://github.com/Crowiel/Sieva-Site-Generator
+  Deterministic, zero-bloat static site generator written in Go
+-->
+

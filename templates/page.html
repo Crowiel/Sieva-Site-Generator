@@ -1,0 +1,20 @@
+{{ define "content" }}
+<div class="container article-container">
+  <div class="breadcrumbs">
+    <a href="/">Home</a> / <span>{{ .Post.Title }}</span>
+  </div>
+
+  <article class="single-article page-article">
+    <header class="article-header">
+      <h1 class="article-title">{{ .Post.Title }}</h1>
+      {{ if .Post.Description }}
+      <p class="article-lead">{{ .Post.Description }}</p>
+      {{ end }}
+    </header>
+
+    <div class="article-body">
+      {{ .Post.ContentHTML }}
+    </div>
+  </article>
+</div>
+{{ end }}

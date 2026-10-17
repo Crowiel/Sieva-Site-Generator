@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building a Zero-Bloat Static Site Generator in Go — Your Name</title>
+  <meta name="description" content="Why an embedded systems architect replaced client-side chart libraries, multi-stage compilation pipelines, and heavy web frameworks with a deterministic, sub-150ms static site builder in Go.">
+  <meta name="author" content="Your Name">
+  <meta name="theme-color" content="#0d1117">
+  
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/static/css/style.css">
+  
+  
+  <link rel="canonical" href="https://yourdomain.com/blog/building-a-zero-bloat-static-site-generator-in-go/">
+  
+
+  
+  
+  
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Building a Zero-Bloat Static Site Generator in Go — Your Name">
+  <meta property="og:description" content="Why an embedded systems architect replaced client-side chart libraries, multi-stage compilation pipelines, and heavy web frameworks with a deterministic, sub-150ms static site builder in Go.">
+  <meta property="og:site_name" content="Your Name">
+</head>
+<body>
+  
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <a href="/" class="brand-link">
+          <span class="brand-name">Your Name</span>
+          <span class="brand-role">Automation &amp; Embedded Systems</span>
+        </a>
+      </div>
+
+      <nav class="nav" id="main-nav" aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/" >Home</a></li>
+          <li><a href="/projects/" >Projects</a></li>
+          <li><a href="/blog/" class="active">Blog</a></li>
+          <li><a href="/about/" >About</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Toggle theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  
+  <main class="site-main" id="main-content">
+    
+<div class="container article-container">
+  <div class="breadcrumbs">
+    <a href="/">Home</a> / <a href="/blog/">Blog</a> / <span>Building a Zero-Bloat Static Site Generator in Go</span>
+  </div>
+
+  <article class="single-article">
+    <header class="article-header">
+      <div class="article-meta">
+        <time datetime="2026-10-16">October 16, 2026</time>
+      </div>
+      <h1 class="article-title">Building a Zero-Bloat Static Site Generator in Go</h1>
+      
+      <p class="article-lead">Why an embedded systems architect replaced client-side chart libraries, multi-stage compilation pipelines, and heavy web frameworks with a deterministic, sub-150ms static site builder in Go.</p>
+      
+
+      
+      <div class="tags-list">
+        
+        <a href="/tags/go/" class="tag-pill">Go</a>
+        
+        <a href="/tags/architecture/" class="tag-pill">Architecture</a>
+        
+        <a href="/tags/performance/" class="tag-pill">Performance</a>
+        
+        <a href="/tags/web-development/" class="tag-pill">Web Development</a>
+        
+        <a href="/tags/minimalism/" class="tag-pill">Minimalism</a>
+        
+      </div>
+      
+    </header>
+
+    <div class="article-body">
+      <h1>Building a Zero-Bloat Static Site Generator in Go</h1>
+<p>In the embedded and bare-metal worlds, every byte of memory, every clock cycle, and every bus transaction is intentional. When designing firmware for microcontrollers or deterministically constrained industrial controllers, computational waste isn't merely an annoyance—it's a system failure.</p>
+<p>Yet, when we look at contemporary web development, that engineering discipline is frequently abandoned. Portfolios consisting of static text and technical diagrams regularly load megabytes of JavaScript, complex hydration routines, and client-side visualization frameworks just to draw a few rectangles on a screen.</p>
+<p>When updating my personal portfolio, I decided to apply embedded systems principles to my web toolchain: <strong>Sieva Site Generator (v2)</strong> was born.</p>
+<hr>
+<h2>1. The Flaw of Client-Side Static Visualization</h2>
+<p>One of the distinctive features of an engineering portfolio is the project execution schedule: visualizing milestones, hardware revision phases, and firmware sprints using Gantt charts and progress indicators.</p>
+<p>In version 1 of my site, this was accomplished using a popular approach:</p>
+<ol>
+<li>Markdown frontmatter contained a JSON list of tasks.</li>
+<li>The HTML renderer serialized that data into DOM data attributes: <code>&lt;div data-gantt='[{&quot;name&quot;:&quot;Hardware&quot;,...}]'&gt;</code>.</li>
+<li>A 16 KB client script (<code>gantt.js</code>) loaded after <code>DOMContentLoaded</code>, traversed the DOM, calculated calendar coordinates, dynamically created <code>&lt;svg&gt;</code> nodes, and injected them into the page.</li>
+</ol>
+<p>Consider what this actually means:</p>
+<ul>
+<li>The milestone dates and percentages are completely static and known when the author writes the article.</li>
+<li>Yet every visitor's laptop or mobile phone was forced to expend battery and CPU cycles recalculating the exact same pixel offsets and re-instantiating DOM elements.</li>
+</ul>
+<h3>The Fix: Pre-rendering Vector SVG at Build Time</h3>
+<p>In v2, the Go build pipeline takes that task array and computes the entire SVG coordinate system during compilation.</p>
+<pre><code class="language-go">// Direct build-time calculation of SVG elements in Go:
+xStart := labelWidth + (startDiff / totalDuration) * chartWidth
+xEnd   := labelWidth + (endDiff / totalDuration) * chartWidth
+
+// Emits standard SVG rects directly into static HTML:
+sb.WriteString(fmt.Sprintf(
+    `&lt;rect x=&quot;%.1f&quot; y=&quot;%d&quot; width=&quot;%.1f&quot; height=&quot;%d&quot; rx=&quot;5&quot; fill=&quot;%s&quot; /&gt;`,
+    xStart, yBar, progW, barHeight, task.Color,
+))
+</code></pre>
+<p>The output is clean, standard, semantic SVG inlined directly in the static HTML:</p>
+<ul>
+<li><strong>0ms Client Execution</strong>: The visitor's device simply paints the vector paths.</li>
+<li><strong>Zero Dependencies</strong>: No client charting library, no canvas Polyfills, no client-side resize watchers.</li>
+<li><strong>Print &amp; High-DPI Friendly</strong>: Vector precision at every resolution.</li>
+<li><strong>Click to Enlarge</strong>: A native <code>&lt;dialog id=&quot;gantt-dialog&quot;&gt;</code> with dark backdrop blur allows visitors to inspect dense schedules at full resolution without third-party modal libraries.</li>
+</ul>
+<hr>
+<h2>2. Single-Pass Compilation vs. Multi-Stage Pipelines</h2>
+<p>The previous generator utilized Deno and the unified/remark ecosystem. While versatile, it used a two-stage compilation where Markdown was converted into an intermediate 168 KB TypeScript file (<code>posts.ts</code>), which was then re-imported by a second script to generate static HTML.</p>
+<p>This two-stage approach introduced subtle synchronization issues, slow build times (2.8 to 4.2 seconds), and dependency bloat.</p>
+<p>By contrast, the Go implementation operates as a single-pass streaming pipeline:</p>
+<ol>
+<li>Read configuration through an upstream-safe loader.</li>
+<li>Walk <code>content/</code>, extracting YAML frontmatter and rendering Markdown AST via <code>goldmark</code>.</li>
+<li>Interpolate memory structures directly into type-safe Go templates (<code>html/template</code>).</li>
+<li>Write symmetric directory trees (<code>dist/projects/slug/index.html</code>).</li>
+</ol>
+<p>The entire production site now builds in <strong>~104 milliseconds</strong>—roughly a 30x speedup.</p>
+<hr>
+<h2>3. Dual Build Targets: Clean Production vs. Demo Fixtures</h2>
+<p>A common flaw in portfolio templates is the leakage of example content into production builds. To solve this, the generator enforces strict prefix-based isolation:</p>
+<ul>
+<li><strong>Production Release (<code>sieva-ssg build</code>)</strong>: Strictly excludes any file with a <code>demo-</code> prefix. It processes only real, verified projects and articles, producing a pristine production directory.</li>
+<li><strong>Demo Suite (<code>sieva-ssg build-demo</code>)</strong>: Ingests test fixtures, living syntax manuals, and reference projects for local preview or public sandbox deployments.</li>
+</ul>
+<p>Visitors can explore the full demo suite, interactive shortcodes, and component reference at <a href="https://demo.mattisievanen.fi">demo.mattisievanen.fi</a>.</p>
+<hr>
+<h2>4. Upstream Git Safety: Two-Tier Configuration</h2>
+<p>When open-sourcing or forking an SSG, updating the engine from upstream often results in painful git merge conflicts over personal configuration files.</p>
+<p>We solved this with a two-tier configuration model:</p>
+<ul>
+<li><strong><code>config-default.json</code></strong>: Tracked in git as the canonical schema and baseline defaults.</li>
+<li><strong><code>config.json</code></strong>: Ignored in <code>.gitignore</code> to store personal overrides (name, bio, contact handles, domain).</li>
+</ul>
+<p>At runtime, Go unmarshals <code>config-default.json</code> first, then overlays <code>config.json</code>. An author can run <code>git pull upstream main</code> at any time to receive core engine updates without ever overwriting their portfolio metadata.</p>
+<hr>
+<h2>5. The Verified Results: Less is Truly More</h2>
+<p>Here is the asset footprint and audit comparison of the v2 redesign:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Metric</th>
+<th style="text-align:left">Legacy v1 (Deno)</th>
+<th style="text-align:left">Sieva Site Generator (v2)</th>
+<th style="text-align:left">Delta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Client JavaScript</strong></td>
+<td style="text-align:left">46.2 KB</td>
+<td style="text-align:left"><strong>2.3 KB</strong></td>
+<td style="text-align:left"><strong>-95.0%</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Client Stylesheets</strong></td>
+<td style="text-align:left">51.5 KB</td>
+<td style="text-align:left"><strong>12.8 KB</strong></td>
+<td style="text-align:left"><strong>-75.1%</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Build Time (Production)</strong></td>
+<td style="text-align:left">2.8s – 4.2s</td>
+<td style="text-align:left"><strong>104.1 ms</strong></td>
+<td style="text-align:left"><strong>~30x faster</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Largest Contentful Paint (LCP)</strong></td>
+<td style="text-align:left">~1.1s</td>
+<td style="text-align:left"><strong>0.11 s</strong></td>
+<td style="text-align:left"><strong>Instant paint</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Cumulative Layout Shift (CLS)</strong></td>
+<td style="text-align:left">0.045</td>
+<td style="text-align:left"><strong>0.000</strong></td>
+<td style="text-align:left"><strong>Zero jitter</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Interaction to Next Paint (INP)</strong></td>
+<td style="text-align:left">~40 ms</td>
+<td style="text-align:left"><strong>0 ms</strong></td>
+<td style="text-align:left"><strong>Instant response</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>6. Engineering Takeaway</h2>
+<p>Software craftsmanship is defined not by how much you can add, but by how much you can strip away while preserving full utility, elegance, and reliability.</p>
+<p>Whether programming an ARM Cortex-M4 microcontroller or generating a static engineering portfolio, mechanical sympathy and deterministic simplicity remain the gold standard.</p>
+
+    </div>
+
+    <footer class="article-footer">
+      <a href="/blog/" class="btn btn-secondary">&larr; Back to blog</a>
+    </footer>
+  </article>
+</div>
+
+  </main>
+
+  
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <div class="footer-left">
+        <p class="copyright">&copy; 2026 Your Name. All rights reserved. <span class="footer-divider">•</span> <span class="generator-credit">Powered by <a href="https://github.com/Crowiel/Sieva-Site-Generator" target="_blank" rel="noopener noreferrer">Sievä Site Generator</a></span> <span class="footer-divider">•</span> <a href="/privacy/" class="privacy-link">Privacy Policy</a></p>
+      </div>
+      <div class="footer-right">
+        <a href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:your.email@example.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  
+  <dialog id="lightbox-dialog" class="lightbox-modal" onclick="if(event.target===this)this.close()">
+    <div class="lightbox-content">
+      <button class="lightbox-close" onclick="document.getElementById('lightbox-dialog').close()" aria-label="Close dialog">✕</button>
+      <img id="lightbox-img" src="" alt="" />
+      <p id="lightbox-caption" class="lightbox-caption"></p>
+    </div>
+  </dialog>
+
+  
+  <script src="/static/js/main.js" defer></script>
+
+  
+</body>
+</html>
+
+
+<!-- 
+  Generated with Sievä Site Generator (v2)
+  https://github.com/Crowiel/Sieva-Site-Generator
+  Deterministic, zero-bloat static site generator written in Go
+-->
+

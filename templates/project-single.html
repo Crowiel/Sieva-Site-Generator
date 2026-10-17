@@ -1,0 +1,132 @@
+{{ define "content" }}
+<div class="container article-container">
+  <div class="breadcrumbs">
+    <a href="/">Home</a> / <a href="/projects/">Projects</a> / <span>{{ .Post.Title }}</span>
+  </div>
+
+  <article class="single-article">
+    <header class="article-header">
+      <div class="article-meta">
+        <time datetime="{{ .Post.Date.Format "2006-01-02" }}">{{ .Post.DateFormatted }}</time>
+        {{ if .Post.Updates }}
+        <span class="badge update-badge">{{ len .Post.Updates }} Project Updates</span>
+        {{ end }}
+      </div>
+      <h1 class="article-title">{{ .Post.Title }}</h1>
+      {{ if .Post.Description }}
+      <p class="article-lead">{{ .Post.Description }}</p>
+      {{ end }}
+
+      {{ if .Post.Tags }}
+      <div class="tags-list">
+        {{ range .Post.Tags }}
+        <a href="/tags/{{ . | sanitizeTag }}/" class="tag-pill">{{ . }}</a>
+        {{ end }}
+      </div>
+      {{ end }}
+    </header>
+
+    <!-- Pre-rendered SVG Gantt Chart Section if present -->
+    {{ if .Post.GanttSVG }}
+    <section class="gantt-section" aria-label="Project Execution Gantt Schedule">
+      <div class="gantt-header">
+        <h2 class="gantt-title">📅 Engineering Schedule & Milestone Progress</h2>
+        <button type="button" class="gantt-expand-btn" onclick="openGanttModal()" aria-label="Click to enlarge Gantt chart" title="Click to enlarge schedule">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+          <span>Click to Enlarge</span>
+        </button>
+      </div>
+      <div class="gantt-container" onclick="openGanttModal()" style="cursor: zoom-in;" title="Click to view full-resolution schedule">
+        {{ .Post.GanttSVG }}
+      </div>
+    </section>
+
+    <!-- Modal Dialog for Enlarged Gantt View -->
+    <dialog id="gantt-dialog" class="gantt-modal" onclick="if(event.target===this)this.close()">
+      <div class="gantt-modal-content">
+        <div class="gantt-modal-header">
+          <h3>Engineering Schedule & Milestone Progress</h3>
+          <button class="lightbox-close" onclick="document.getElementById('gantt-dialog').close()" aria-label="Close dialog">✕</button>
+        </div>
+        <div class="gantt-modal-body">
+          {{ .Post.GanttSVG }}
+        </div>
+      </div>
+    </dialog>
+    {{ end }}
+
+    <!-- Main Project Index Content -->
+    <div class="article-body">
+      {{ .Post.ContentHTML }}
+    </div>
+
+    <!-- Project Updates Timeline / Feed -->
+    {{ if .Post.Updates }}
+    <section class="project-updates-section" id="project-updates">
+      <div class="updates-header">
+        <h2>🛠️ Development Log & Field Updates ({{ len .Post.Updates }})</h2>
+        <p>Chronological milestones and subsystem verification logs.</p>
+      </div>
+
+      <div class="updates-timeline">
+        {{ range .Post.Updates }}
+        <article class="update-entry" id="{{ .Slug }}">
+          <a id="update-{{ .Slug }}" class="timeline-anchor"></a>
+          <div class="update-meta">
+            <span class="update-node"></span>
+            <time class="update-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .DateFormatted }}</time>
+          </div>
+          <div class="update-card">
+            <h3 class="update-title">{{ .Title }}</h3>
+            {{ if .Description }}
+            <p class="update-desc">{{ .Description }}</p>
+            {{ end }}
+            <div class="update-body">
+              {{ .ContentHTML }}
+            </div>
+          </div>
+        </article>
+        {{ end }}
+      </div>
+    </section>
+    {{ end }}
+
+    <footer class="article-footer">
+      <a href="/projects/" class="btn btn-secondary">&larr; Back to all projects</a>
+    </footer>
+  </article>
+
+  <!-- Pullout Timeline Sidebar (if timeline items exist) -->
+  {{ if .Post.Frontmatter.Timeline }}
+  <div class="timeline-wrapper">
+    <button class="timeline-tab-button" id="timeline-tab-btn" onclick="toggleTimelineSidebar(event)" aria-label="Toggle Project Timeline" title="Toggle Timeline">
+      <span class="timeline-tab-icon">📅</span>
+      <span class="timeline-tab-text">Timeline</span>
+    </button>
+
+    <aside class="timeline-sidebar" id="timeline-sidebar" aria-label="Project Timeline Navigation">
+      <div class="timeline-header">
+        <h3 class="timeline-heading">Project Timeline</h3>
+        <button class="timeline-close-btn" onclick="toggleTimelineSidebar(event)" aria-label="Close timeline">✕</button>
+      </div>
+      <nav class="timeline-content">
+        {{ range .Post.Frontmatter.Timeline }}
+        <a href="{{ if .Link }}{{ .Link }}{{ else }}#{{ end }}" class="timeline-nav-item" onclick="onTimelineClick(event, '{{ .Link }}')">
+          {{ if .Date }}
+          <time class="timeline-nav-date">{{ .Date }}</time>
+          {{ end }}
+          <span class="timeline-nav-title">{{ .Title }}</span>
+        </a>
+        {{ end }}
+      </nav>
+    </aside>
+  </div>
+  {{ end }}
+</div>
+{{ end }}
+

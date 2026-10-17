@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sieva SSG: Component &amp; Syntax Reference Guide — Your Name</title>
+  <meta name="description" content="An interactive, practical reference manual showcasing frontmatter schemas, custom shortcode directives, galleries, and components in Sieva Site Generator (v2).">
+  <meta name="author" content="Your Name">
+  <meta name="theme-color" content="#0d1117">
+  
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/static/css/style.css">
+  
+  
+  <link rel="canonical" href="https://yourdomain.com/blog/ssg-features-and-syntax-guide/">
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}], throwOnError: false});"></script>
+  
+  
+  
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Sieva SSG: Component &amp; Syntax Reference Guide — Your Name">
+  <meta property="og:description" content="An interactive, practical reference manual showcasing frontmatter schemas, custom shortcode directives, galleries, and components in Sieva Site Generator (v2).">
+  <meta property="og:site_name" content="Your Name">
+</head>
+<body>
+  
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <a href="/" class="brand-link">
+          <span class="brand-name">Your Name</span>
+          <span class="brand-role">Automation &amp; Embedded Systems</span>
+        </a>
+      </div>
+
+      <nav class="nav" id="main-nav" aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/" >Home</a></li>
+          <li><a href="/projects/" >Projects</a></li>
+          <li><a href="/blog/" class="active">Blog</a></li>
+          <li><a href="/about/" >About</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Toggle theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  
+  <main class="site-main" id="main-content">
+    
+<div class="container article-container">
+  <div class="breadcrumbs">
+    <a href="/">Home</a> / <a href="/blog/">Blog</a> / <span>Sieva SSG: Component &amp; Syntax Reference Guide</span>
+  </div>
+
+  <article class="single-article">
+    <header class="article-header">
+      <div class="article-meta">
+        <time datetime="2026-10-16">October 16, 2026</time>
+      </div>
+      <h1 class="article-title">Sieva SSG: Component &amp; Syntax Reference Guide</h1>
+      
+      <p class="article-lead">An interactive, practical reference manual showcasing frontmatter schemas, custom shortcode directives, galleries, and components in Sieva Site Generator (v2).</p>
+      
+
+      
+      <div class="tags-list">
+        
+        <a href="/tags/ssg/" class="tag-pill">SSG</a>
+        
+        <a href="/tags/documentation/" class="tag-pill">Documentation</a>
+        
+        <a href="/tags/markdown/" class="tag-pill">Markdown</a>
+        
+        <a href="/tags/directives/" class="tag-pill">Directives</a>
+        
+        <a href="/tags/design-system/" class="tag-pill">Design System</a>
+        
+      </div>
+      
+    </header>
+
+    <div class="article-body">
+      <h1>Sieva SSG: Component &amp; Syntax Reference Guide</h1>
+<p>Welcome to the <strong>Sieva Site Generator (v2)</strong> interactive syntax reference. This page serves as a living test fixture and demonstration of all Markdown extensions, frontmatter options, and embedded UI directives supported by the Go static site engine.</p>
+<hr>
+<h2>1. Post Frontmatter Specification</h2>
+<p>Every article, note, or project begins with standard YAML frontmatter enclosed in <code>---</code> delimiters:</p>
+<pre><code class="language-yaml">---
+title: &quot;Article Title&quot;
+date: &quot;2026-10-16&quot;
+description: &quot;A concise summary for cards, RSS feeds, and SEO meta tags.&quot;
+tags: [&quot;Go&quot;, &quot;Embedded&quot;, &quot;Performance&quot;]
+featured: true # Highlights the post on the homepage
+---
+</code></pre>
+<h3>Frontmatter Fields</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Field</th>
+<th style="text-align:left">Type</th>
+<th style="text-align:left">Required</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>title</code></td>
+<td style="text-align:left"><code>string</code></td>
+<td style="text-align:left"><strong>Yes</strong></td>
+<td style="text-align:left">Display title rendered in <code>&lt;h1&gt;</code> and meta tags.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>date</code></td>
+<td style="text-align:left"><code>YYYY-MM-DD</code></td>
+<td style="text-align:left"><strong>Yes</strong></td>
+<td style="text-align:left">Publication date used for chronological sorting.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>description</code></td>
+<td style="text-align:left"><code>string</code></td>
+<td style="text-align:left">Optional</td>
+<td style="text-align:left">Article snippet displayed on index rows and openGraph.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>tags</code></td>
+<td style="text-align:left"><code>array</code></td>
+<td style="text-align:left">Optional</td>
+<td style="text-align:left">Categorization tags indexed under <code>/tags/&lt;tag&gt;/</code>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>featured</code></td>
+<td style="text-align:left"><code>boolean</code></td>
+<td style="text-align:left">Optional</td>
+<td style="text-align:left">Pins the article to the featured list on the homepage.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>2. Interactive Image Galleries (<code>Gallery:</code>)</h2>
+<p>The parser natively handles the <code>Gallery:</code> directive. Simply list image filenames separated by commas. Images reside directly in the bundle's <code>img/</code> folder or organized subdirectories (e.g. <code>content/blog/&lt;slug&gt;/img/subfolder/</code> or <code>content/projects/&lt;slug&gt;/img/subfolder/</code>), with optional custom captions in parentheses:</p>
+<pre><code class="language-markdown"># Standard filenames:
+&lt;div class=&quot;gallery-grid&quot; role=&quot;region&quot; aria-label=&quot;Image Gallery&quot;&gt;
+  &lt;figure class=&quot;gallery-item&quot;&gt;
+    &lt;img src=&quot;/media/blog/demo-ssg-features-and-syntax-guide/test1.png&quot; alt=&quot;test1.png&quot; loading=&quot;lazy&quot; onclick=&quot;openLightbox(this.src, this.alt)&quot; /&gt;
+  &lt;/figure&gt;
+  &lt;figure class=&quot;gallery-item&quot;&gt;
+    &lt;img src=&quot;/media/blog/demo-ssg-features-and-syntax-guide/test2.png&quot; alt=&quot;test2.png&quot; loading=&quot;lazy&quot; onclick=&quot;openLightbox(this.src, this.alt)&quot; /&gt;
+  &lt;/figure&gt;
+  &lt;figure class=&quot;gallery-item&quot;&gt;
+    &lt;img src=&quot;/media/blog/demo-ssg-features-and-syntax-guide/test3.png&quot; alt=&quot;test3.png&quot; loading=&quot;lazy&quot; onclick=&quot;openLightbox(this.src, this.alt)&quot; /&gt;
+  &lt;/figure&gt;&lt;/div&gt;
+
+# Subfolders and custom captions:
+&lt;div class=&quot;gallery-grid&quot; role=&quot;region&quot; aria-label=&quot;Image Gallery&quot;&gt;
+  &lt;figure class=&quot;gallery-item&quot;&gt;
+    &lt;img src=&quot;/media/blog/benchmarks/thermal-scan.png&quot; alt=&quot;Thermal Chamber Run&quot; loading=&quot;lazy&quot; onclick=&quot;openLightbox(this.src, this.alt)&quot; /&gt;
+  &lt;/figure&gt;
+  &lt;figure class=&quot;gallery-item&quot;&gt;
+    &lt;img src=&quot;/media/blog/scope/spi-clk.png&quot; alt=&quot;SPI Clock Jitter&quot; loading=&quot;lazy&quot; onclick=&quot;openLightbox(this.src, this.alt)&quot; /&gt;
+  &lt;/figure&gt;&lt;/div&gt;
+</code></pre>
+<h3>Rendered Gallery Output:</h3>
+<div class="gallery-grid" role="region" aria-label="Image Gallery">
+  <figure class="gallery-item">
+    <img src="/media/blog/demo-ssg-features-and-syntax-guide/test1.png" alt="test1.png" loading="lazy" onclick="openLightbox(this.src, this.alt)" />
+  </figure>
+  <figure class="gallery-item">
+    <img src="/media/blog/demo-ssg-features-and-syntax-guide/test2.png" alt="test2.png" loading="lazy" onclick="openLightbox(this.src, this.alt)" />
+  </figure>
+  <figure class="gallery-item">
+    <img src="/media/blog/demo-ssg-features-and-syntax-guide/test3.png" alt="test3.png" loading="lazy" onclick="openLightbox(this.src, this.alt)" />
+  </figure></div>
+<p><em>(Click any thumbnail above to view it in full resolution with the native keyboard-accessible lightbox).</em></p>
+<hr>
+<h2>3. Skill &amp; Competency Grids (<code>SkillCards:</code>)</h2>
+<p>Use the <code>SkillCards:</code> shortcode to render grouped skill boxes without writing messy HTML:</p>
+<pre><code class="language-markdown">&lt;div class=&quot;skills-grid&quot;&gt;
+  &lt;div class=&quot;skill-category&quot;&gt;
+    &lt;h3&gt;Firmware &amp;amp; Bare Metal&lt;/h3&gt;
+    &lt;ul&gt;
+      &lt;li&gt;C (C99/C11)&lt;/li&gt;
+      &lt;li&gt;C++20&lt;/li&gt;
+      &lt;li&gt;FreeRTOS&lt;/li&gt;
+      &lt;li&gt;Embedded Linux&lt;/li&gt;
+      &lt;li&gt;Zephyr RTOS&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;skill-category&quot;&gt;
+    &lt;h3&gt;Hardware &amp;amp; Interfaces&lt;/h3&gt;
+    &lt;ul&gt;
+      &lt;li&gt;ARM Cortex-M&lt;/li&gt;
+      &lt;li&gt;ESP32&lt;/li&gt;
+      &lt;li&gt;STM32&lt;/li&gt;
+      &lt;li&gt;SPI&lt;/li&gt;
+      &lt;li&gt;I2C&lt;/li&gt;
+      &lt;li&gt;CAN Bus&lt;/li&gt;
+      &lt;li&gt;UART&lt;/li&gt;
+      &lt;li&gt;PCB Layout&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;skill-category&quot;&gt;
+    &lt;h3&gt;Systems &amp;amp; Toolchains&lt;/h3&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Go&lt;/li&gt;
+      &lt;li&gt;Rust&lt;/li&gt;
+      &lt;li&gt;Python&lt;/li&gt;
+      &lt;li&gt;Docker&lt;/li&gt;
+      &lt;li&gt;Git&lt;/li&gt;
+      &lt;li&gt;GDB&lt;/li&gt;
+      &lt;li&gt;Oscilloscopes&lt;/li&gt;
+      &lt;li&gt;Logic Analyzers&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;&lt;/div&gt;
+</code></pre>
+<h3>Rendered Skill Cards Output:</h3>
+<div class="skills-grid">
+  <div class="skill-category">
+    <h3>Firmware &amp; Bare Metal</h3>
+    <ul>
+      <li>C (C99/C11)</li>
+      <li>C++20</li>
+      <li>FreeRTOS</li>
+      <li>Embedded Linux</li>
+      <li>Zephyr RTOS</li>
+    </ul>
+  </div>
+  <div class="skill-category">
+    <h3>Hardware &amp; Interfaces</h3>
+    <ul>
+      <li>ARM Cortex-M</li>
+      <li>ESP32</li>
+      <li>STM32</li>
+      <li>SPI</li>
+      <li>I2C</li>
+      <li>CAN Bus</li>
+      <li>UART</li>
+      <li>PCB Layout</li>
+    </ul>
+  </div>
+  <div class="skill-category">
+    <h3>Systems &amp; Toolchains</h3>
+    <ul>
+      <li>Go</li>
+      <li>Rust</li>
+      <li>Python</li>
+      <li>Docker</li>
+      <li>Git</li>
+      <li>GDB</li>
+      <li>Oscilloscopes</li>
+      <li>Logic Analyzers</li>
+    </ul>
+  </div></div>
+<hr>
+<h2>4. Contact &amp; Social Action Badges (<code>ContactButtons:</code>)</h2>
+<p>You can generate styled action buttons linked directly to your social and communication channels configured in <code>config.json</code>:</p>
+<pre><code class="language-markdown">&lt;div class=&quot;contact-buttons&quot;&gt;
+  &lt;a href=&quot;#&quot; class=&quot;contact-btn&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;Email, GitHub, LinkedIn&lt;/a&gt;&lt;/div&gt;
+</code></pre>
+<h3>Rendered Buttons Output:</h3>
+<div class="contact-buttons">
+  <a href="#" class="contact-btn" target="_blank" rel="noopener noreferrer">Email, GitHub, LinkedIn</a></div>
+<hr>
+<h2>5. Code Blocks &amp; Automated Copy Buttons</h2>
+<p>All fenced code blocks automatically receive syntax-aware styling and a <strong>Copy</strong> button:</p>
+<pre><code class="language-go">package main
+
+import &quot;fmt&quot;
+
+func main() {
+    // Zero-bloat static compilation in Go
+    fmt.Println(&quot;Deterministic single-pass builds under 150ms!&quot;)
+}
+</code></pre>
+<pre><code class="language-bash"># Production release build (skips all demo-* content)
+./sieva-ssg.exe build
+
+# Development build including demo fixtures
+./sieva-ssg.exe build-demo
+
+# Start auto-rebuilding local dev server
+./sieva-ssg.exe dev --port 8000
+</code></pre>
+<hr>
+<h2>6. Semantic Callouts &amp; Blockquotes</h2>
+<p>Standard Markdown blockquotes are styled with theme-aware accent borders:</p>
+<blockquote>
+<p><strong>Engineering Principle:</strong> Computational waste is a bug. Static web pages do not need runtime JavaScript interpreters or dynamic layout recalculation on every browser paint. Pre-render vector assets at build time.</p>
+</blockquote>
+<hr>
+<h2>7. Responsive Tables</h2>
+<p>Tables are styled with alternating zebra rows, sticky header contrast, and clean borders:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Feature</th>
+<th style="text-align:left">Sieva SSG (v2)</th>
+<th style="text-align:left">Legacy Deno (v1)</th>
+<th style="text-align:left">Next.js / Astro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Language</strong></td>
+<td style="text-align:left">Go (single binary)</td>
+<td style="text-align:left">Deno + TypeScript</td>
+<td style="text-align:left">Node.js + npm</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Build Time</strong></td>
+<td style="text-align:left"><strong>~104 ms</strong></td>
+<td style="text-align:left">2.8 - 4.2 s</td>
+<td style="text-align:left">4.0 - 12.0 s</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Client JavaScript</strong></td>
+<td style="text-align:left"><strong>&lt; 2.5 KB</strong></td>
+<td style="text-align:left">~46 KB</td>
+<td style="text-align:left">80 - 250 KB</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Gantt Charts</strong></td>
+<td style="text-align:left"><strong>Build-time Vector SVG</strong></td>
+<td style="text-align:left">Client runtime script</td>
+<td style="text-align:left">React library</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Lighthouse Performance</strong></td>
+<td style="text-align:left"><strong>100 / 100</strong></td>
+<td style="text-align:left">94 / 100</td>
+<td style="text-align:left">85 - 95 / 100</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>8. Mathematical Typography (<code>$...$</code> and <code>$$...$$</code>)</h2>
+<p>Sieva SSG integrates LaTeX mathematical expression parsing. Enclose inline math within single dollar signs (<code>$...$</code>) and standalone equation blocks within double dollar signs (<code>$$...$$</code>).</p>
+<p>Crucially, <strong>KaTeX is loaded strictly on-demand</strong>. If an article has no math expressions, 0 KB of KaTeX scripts or stylesheets are delivered to the browser.</p>
+<h3>Inline Math Example:</h3>
+<p>A classic physics relation: <span class="math inline">\(E = m c^2\)</span>, or Euler's identity: <span class="math inline">\(e^{i\pi} + 1 = 0\)</span>.</p>
+<h3>Block Equation Example:</h3>
+<p>Discrete Fourier Transform (DFT) synthesis equation:</p>
+<p><span class="math display">\[X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j \frac{2\pi}{N} k n}, \quad k = 0, \dots, N-1
+\]</span></p>
+<p>Ohm's Law and Power in complex AC circuits:</p>
+<p><span class="math display">\[P = \frac{1}{T} \int_{0}^{T} v(t) \cdot i(t) \, dt = V_{\text{rms}} \cdot I_{\text{rms}} \cdot \cos(\varphi)
+\]</span></p>
+<hr>
+<h2>9. Interactive Mermaid Diagrams (<code>```mermaid</code>)</h2>
+<p>Complex technical specifications, state machines, and embedded communication pipelines can be drawn natively in Markdown using standard fenced code blocks with the <code>mermaid</code> language identifier:</p>
+<pre><code class="language-markdown">```mermaid
+stateDiagram-v2
+    [*] --&gt; Idle
+    Idle --&gt; Sampling : Timer Interrupt
+    Sampling --&gt; Processing : DMA Transfer Complete
+    Processing --&gt; Transmitting : Checksum Valid
+    Processing --&gt; ErrorState : CRC Mismatch
+    Transmitting --&gt; Idle : ACK Received
+    ErrorState --&gt; Idle : Reset
+```
+</code></pre>
+<h3>Rendered Diagram Output:</h3>
+<div class="mermaid-container"><pre class="mermaid">stateDiagram-v2
+    [*] --> Idle
+    Idle --> Sampling : Timer Interrupt
+    Sampling --> Processing : DMA Transfer Complete
+    Processing --> Transmitting : Checksum Valid
+    Processing --> ErrorState : CRC Mismatch
+    Transmitting --> Idle : ACK Received
+    ErrorState --> Idle : Reset</pre></div>
+<p>Like the math engine, Mermaid is loaded <strong>on-demand only when a page contains a <code>.mermaid</code> block</strong>. Furthermore, the diagram listener is wired into the theme toggle: switching between Dark Mode and Light Mode automatically re-renders the diagram using appropriate palette variables.</p>
+<hr>
+<p><em>This guide is generated automatically when building in demo mode (<code>sieva-ssg build-demo</code> or <code>sieva-ssg dev</code>). In production release builds (<code>sieva-ssg build</code>), all <code>demo-*</code> files are skipped automatically.</em></p>
+
+    </div>
+
+    <footer class="article-footer">
+      <a href="/blog/" class="btn btn-secondary">&larr; Back to blog</a>
+    </footer>
+  </article>
+</div>
+
+  </main>
+
+  
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <div class="footer-left">
+        <p class="copyright">&copy; 2026 Your Name. All rights reserved. <span class="footer-divider">•</span> <span class="generator-credit">Powered by <a href="https://github.com/Crowiel/Sieva-Site-Generator" target="_blank" rel="noopener noreferrer">Sievä Site Generator</a></span> <span class="footer-divider">•</span> <a href="/privacy/" class="privacy-link">Privacy Policy</a></p>
+      </div>
+      <div class="footer-right">
+        <a href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:your.email@example.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  
+  <dialog id="lightbox-dialog" class="lightbox-modal" onclick="if(event.target===this)this.close()">
+    <div class="lightbox-content">
+      <button class="lightbox-close" onclick="document.getElementById('lightbox-dialog').close()" aria-label="Close dialog">✕</button>
+      <img id="lightbox-img" src="" alt="" />
+      <p id="lightbox-caption" class="lightbox-caption"></p>
+    </div>
+  </dialog>
+
+  
+  <script src="/static/js/main.js" defer></script>
+
+  
+  
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    const renderMermaid = (theme) => {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: theme,
+        fontFamily: 'var(--font-sans)',
+        securityLevel: 'loose',
+        themeVariables: {
+          darkMode: theme === 'dark',
+          background: theme === 'dark' ? '#161b22' : '#eee7d8',
+          primaryColor: theme === 'dark' ? '#1c2128' : '#efe8dc',
+          primaryBorderColor: theme === 'dark' ? '#30363d' : '#d4ccb8',
+          primaryTextColor: theme === 'dark' ? '#e6edf3' : '#2c3e50',
+          lineColor: theme === 'dark' ? '#8b949e' : '#5e6d7e'
+        }
+      });
+      document.querySelectorAll('.mermaid').forEach((el) => {
+        if (!el.getAttribute('data-mermaid-src')) {
+          el.setAttribute('data-mermaid-src', el.textContent.trim());
+        }
+        el.removeAttribute('data-processed');
+        el.textContent = el.getAttribute('data-mermaid-src');
+      });
+      mermaid.run();
+    };
+
+    const currentTheme = document.documentElement.getAttribute('data-theme') === 'light' ? 'neutral' : 'dark';
+    renderMermaid(currentTheme);
+
+    window.addEventListener('themeChanged', (e) => {
+      const nextTheme = e.detail && e.detail.theme === 'light' ? 'neutral' : 'dark';
+      renderMermaid(nextTheme);
+    });
+  </script>
+  
+</body>
+</html>
+
+
+<!-- 
+  Generated with Sievä Site Generator (v2)
+  https://github.com/Crowiel/Sieva-Site-Generator
+  Deterministic, zero-bloat static site generator written in Go
+-->
+

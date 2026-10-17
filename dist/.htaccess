@@ -1,74 +1,26 @@
-# Portfolio Website - Clean URLs and Apache Configuration
-RewriteEngine On
-
-# Disable directory listing
+# Apache 2.4+ Configuration for yourdomain.com
 Options -Indexes
+DirectorySlash On
 
-# Prevent Apache from adding trailing slashes to directories
-DirectorySlash Off
-
-# Remove .html extension from URLs
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_URI} !^/(projects|articles|topics)/
-RewriteRule ^([^.]+)$ $1.html [NC,L]
-
-# Redirect .html URLs to clean URLs (optional - for SEO)
-RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
-RewriteRule ^ /%1 [NC,L,R=301]
-
-# Handle projects directory
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^projects/([^/.]+)/?$ projects/$1.html [NC,L]
-
-# Handle articles directory (blog posts)
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^articles/([^/.]+)/?$ articles/$1.html [NC,L]
-
-# Handle topics directory (tags)
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^topics/([^/.]+)/?$ topics/$1.html [NC,L]
-
-# Disable directory listing
-Options -Indexes
-
-# Custom error pages (optional)
-ErrorDocument 404 /404.html
-
-# Security headers
-<IfModule mod_headers.c>
-    Header always set X-Content-Type-Options nosniff
-    Header always set X-Frame-Options DENY
-    Header always set X-XSS-Protection "1; mode=block"
-    Header always set Referrer-Policy "strict-origin-when-cross-origin"
-    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+<IfModule mod_mime.c>
+  AddType image/svg+xml .svg
+  AddType font/woff2 .woff2
 </IfModule>
 
-# Cache static assets
 <IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType text/css "access plus 1 month"
-    ExpiresByType application/javascript "access plus 1 month"
-    ExpiresByType image/png "access plus 6 months"
-    ExpiresByType image/jpg "access plus 6 months"
-    ExpiresByType image/jpeg "access plus 6 months"
-    ExpiresByType image/gif "access plus 6 months"
-    ExpiresByType image/svg+xml "access plus 6 months"
-    ExpiresByType application/pdf "access plus 1 month"
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
 </IfModule>
 
-# Gzip compression
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/plain
-    AddOutputFilterByType DEFLATE text/html
-    AddOutputFilterByType DEFLATE text/xml
-    AddOutputFilterByType DEFLATE text/css
-    AddOutputFilterByType DEFLATE application/xml
-    AddOutputFilterByType DEFLATE application/xhtml+xml
-    AddOutputFilterByType DEFLATE application/rss+xml
-    AddOutputFilterByType DEFLATE application/javascript
-    AddOutputFilterByType DEFLATE application/x-javascript
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
+
+ErrorDocument 404 /404.html

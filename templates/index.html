@@ -1,0 +1,78 @@
+{{ define "content" }}
+<div class="homepage">
+  <!-- Projects Section (Row list format matching Picture 3) -->
+  <section class="section section-projects">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">Projects</h1>
+          <p class="section-desc">Selected embedded hardware designs, communication bridges, and firmware implementations.</p>
+        </div>
+        <a href="/projects/" class="link-arrow">View All ({{ len .SiteData.Projects }}) &rarr;</a>
+      </div>
+
+      <div class="posts-list">
+        {{ range .SiteData.RecentProjects }}
+        <article class="post-row">
+          <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">
+            {{ .DateFormatted }}
+            {{ if .Updates }}
+            <span class="badge update-badge" style="display: inline-block; margin-top: 4px;">{{ len .Updates }} update{{ if ne (len .Updates) 1 }}s{{ end }}</span>
+            {{ end }}
+          </time>
+          <div class="post-content-preview">
+            <h2 class="post-title"><a href="{{ .URL }}">{{ .Title }}</a></h2>
+            <p class="post-snippet">{{ .Description }}</p>
+            {{ if .Tags }}
+            <div class="tags-list">
+              {{ range .Tags }}
+              <a href="/tags/{{ . | sanitizeTag }}/" class="tag-pill tag-pill-sm">{{ . }}</a>
+              {{ end }}
+            </div>
+            {{ end }}
+          </div>
+          <div class="post-action">
+            <a href="{{ .URL }}" class="link-arrow">View &rarr;</a>
+          </div>
+        </article>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Section -->
+  <section class="section section-blog">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Blog</h2>
+          <p class="section-desc">Thoughts, write-ups, and insights on embedded systems, hardware, and engineering.</p>
+        </div>
+        <a href="/blog/" class="link-arrow">All Posts ({{ len .SiteData.BlogPosts }}) &rarr;</a>
+      </div>
+
+      <div class="posts-list">
+        {{ range .SiteData.RecentBlog }}
+        <article class="post-row">
+          <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .DateFormatted }}</time>
+          <div class="post-content-preview">
+            <h3 class="post-title"><a href="{{ .URL }}">{{ .Title }}</a></h3>
+            <p class="post-snippet">{{ .Description }}</p>
+            {{ if .Tags }}
+            <div class="tags-list">
+              {{ range .Tags }}
+              <a href="/tags/{{ . | sanitizeTag }}/" class="tag-pill tag-pill-sm">{{ . }}</a>
+              {{ end }}
+            </div>
+            {{ end }}
+          </div>
+          <div class="post-action">
+            <a href="{{ .URL }}" class="link-arrow">Read &rarr;</a>
+          </div>
+        </article>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+</div>
+{{ end }}
