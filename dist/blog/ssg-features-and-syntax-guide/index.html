@@ -171,7 +171,7 @@ featured: true # Highlights the post on the homepage
 <h2>2. Interactive Image Galleries (<code>Gallery:</code>)</h2>
 <p>The parser natively handles the <code>Gallery:</code> directive. Simply list image filenames separated by commas. Images reside directly in the bundle's <code>img/</code> folder or organized subdirectories (e.g. <code>content/blog/&lt;slug&gt;/img/subfolder/</code> or <code>content/projects/&lt;slug&gt;/img/subfolder/</code>), with optional custom captions in parentheses:</p>
 <pre><code class="language-markdown"># Standard filenames:
-&lt;div class=&quot;gallery-grid&quot; role=&quot;region&quot; aria-label=&quot;Image Gallery&quot;&gt;
+&lt;div class=&quot;gallery-grid gallery-count-3&quot; role=&quot;region&quot; aria-label=&quot;Image Gallery&quot;&gt;
   &lt;figure class=&quot;gallery-item&quot;&gt;
     &lt;img src=&quot;/media/blog/demo-ssg-features-and-syntax-guide/test1.png&quot; alt=&quot;test1.png&quot; loading=&quot;lazy&quot; onclick=&quot;openLightbox(this.src, this.alt)&quot; /&gt;
   &lt;/figure&gt;
@@ -183,7 +183,7 @@ featured: true # Highlights the post on the homepage
   &lt;/figure&gt;&lt;/div&gt;
 
 # Subfolders and custom captions:
-&lt;div class=&quot;gallery-grid&quot; role=&quot;region&quot; aria-label=&quot;Image Gallery&quot;&gt;
+&lt;div class=&quot;gallery-grid gallery-count-2&quot; role=&quot;region&quot; aria-label=&quot;Image Gallery&quot;&gt;
   &lt;figure class=&quot;gallery-item&quot;&gt;
     &lt;img src=&quot;/media/blog/benchmarks/thermal-scan.png&quot; alt=&quot;Thermal Chamber Run&quot; loading=&quot;lazy&quot; onclick=&quot;openLightbox(this.src, this.alt)&quot; /&gt;
   &lt;/figure&gt;
@@ -192,7 +192,7 @@ featured: true # Highlights the post on the homepage
   &lt;/figure&gt;&lt;/div&gt;
 </code></pre>
 <h3>Rendered Gallery Output:</h3>
-<div class="gallery-grid" role="region" aria-label="Image Gallery">
+<div class="gallery-grid gallery-count-3" role="region" aria-label="Image Gallery">
   <figure class="gallery-item">
     <img src="/media/blog/demo-ssg-features-and-syntax-guide/test1.png" alt="test1.png" loading="lazy" onclick="openLightbox(this.src, this.alt)" />
   </figure>

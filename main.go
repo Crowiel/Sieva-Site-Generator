@@ -1,10 +1,11 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 
 	"sieva-ssg/internal/config"
@@ -14,28 +15,57 @@ import (
 )
 
 func main() {
-	configPath := flag.String("config", "", "Path to configuration file (default: config.json)")
-	port := flag.Int("port", 0, "Server port (overrides config port)")
-	demoFlag := flag.Bool("demo", false, "Include demo content (files starting with demo-)")
-	flag.Parse()
+	var configPath string
+	var port int
+	var demoFlag bool
+	var cmd string
 
-	cfg, err := config.Load(*configPath)
+	args := os.Args[1:]
+	for i := 0; i < len(args); i++ {
+		arg := args[i]
+		if arg == "-port" || arg == "--port" {
+			if i+1 < len(args) {
+				i++
+				p, err := strconv.Atoi(args[i])
+				if err == nil {
+					port = p
+				}
+			}
+		} else if strings.HasPrefix(arg, "-port=") || strings.HasPrefix(arg, "--port=") {
+			val := strings.SplitN(arg, "=", 2)[1]
+			p, err := strconv.Atoi(val)
+			if err == nil {
+				port = p
+			}
+		} else if arg == "-config" || arg == "--config" {
+			if i+1 < len(args) {
+				i++
+				configPath = args[i]
+			}
+		} else if strings.HasPrefix(arg, "-config=") || strings.HasPrefix(arg, "--config=") {
+			configPath = strings.SplitN(arg, "=", 2)[1]
+		} else if arg == "-demo" || arg == "--demo" {
+			demoFlag = true
+		} else if !strings.HasPrefix(arg, "-") && cmd == "" {
+			cmd = arg
+		}
+	}
+
+	if cmd == "" {
+		cmd = "build"
+	}
+
+	cfg, err := config.Load(configPath)
 	if err != nil {
 		log.Fatalf("❌ Failed to load config: %v", err)
 	}
 
-	if *port > 0 {
-		cfg.Server.Port = *port
-	}
-
-	args := flag.Args()
-	cmd := "build"
-	if len(args) > 0 {
-		cmd = args[0]
+	if port > 0 {
+		cfg.Server.Port = port
 	}
 
 	// Check for demo commands or flags
-	includeDemo := *demoFlag
+	includeDemo := demoFlag
 	if cmd == "build-demo" {
 		includeDemo = true
 	} else if cmd == "dev" {

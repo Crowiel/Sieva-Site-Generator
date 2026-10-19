@@ -36,6 +36,8 @@ var (
 		),
 	)
 	placeholderRegex = regexp.MustCompile(`\{\{\s*([a-zA-Z0-9_.]+)\s*\}\}`)
+	headingIDRegex   = regexp.MustCompile(`(?i)<h([1-6])>(.*?)\s*\{#([a-zA-Z0-9_-]+)\}</h[1-6]>`)
+	calloutRegex     = regexp.MustCompile(`(?s)<blockquote>\s*<p>\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*(?:</p>|<br\s*/?>|\n)?([\s\S]*?)</blockquote>`)
 )
 
 func replaceConfigPlaceholders(text string, cfg *config.Config) string {
@@ -91,6 +93,37 @@ func transformMermaidBlocks(renderedHTML string) string {
 		raw = strings.ReplaceAll(raw, "&#39;", "'")
 		raw = strings.ReplaceAll(raw, "&quot;", "\"")
 		return fmt.Sprintf(`<div class="mermaid-container"><pre class="mermaid">%s</pre></div>`, strings.TrimSpace(raw))
+	})
+}
+
+func transformCallouts(html string) string {
+	return calloutRegex.ReplaceAllStringFunc(html, func(m string) string {
+		sub := calloutRegex.FindStringSubmatch(m)
+		if len(sub) < 3 {
+			return m
+		}
+		alertType := strings.ToUpper(sub[1])
+		body := strings.TrimSpace(sub[2])
+		if !strings.HasPrefix(body, "<p") && !strings.HasPrefix(body, "<h") {
+			body = "<p>" + body
+		}
+
+		var icon string
+		switch alertType {
+		case "NOTE":
+			icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`
+		case "TIP":
+			icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>`
+		case "WARNING":
+			icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`
+		case "IMPORTANT":
+			icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`
+		case "CAUTION":
+			icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`
+		}
+
+		return fmt.Sprintf(`<div class="callout callout-%s"><div class="callout-header"><span class="callout-icon">%s</span><span class="callout-title">%s</span></div><div class="callout-body">%s</div></div>`,
+			strings.ToLower(alertType), icon, alertType, body)
 	})
 }
 
@@ -155,6 +188,14 @@ func ParseFile(path string, cfg *config.Config, projectSlug string, contentType 
 	hasMermaid := strings.Contains(body, "```mermaid") || strings.Contains(htmlContent, "language-mermaid")
 	if hasMermaid {
 		htmlContent = transformMermaidBlocks(htmlContent)
+	}
+
+	// Transform custom heading IDs: <hN>Title {#my-id}</hN> -> <hN id="my-id">Title</hN>
+	htmlContent = headingIDRegex.ReplaceAllString(htmlContent, `<h$1 id="$3">$2</h$1>`)
+
+	// Transform semantic callout alert blocks: > [!NOTE] / [!TIP] / etc.
+	if strings.Contains(htmlContent, "[!") {
+		htmlContent = transformCallouts(htmlContent)
 	}
 
 	hasMath := strings.Contains(body, "$$") ||
@@ -226,14 +267,31 @@ func processCustomDirectives(content string, cfg *config.Config, contentType Pos
 		line := lines[i]
 		trimmed := strings.TrimSpace(line)
 
+		// Normalize single-line display math: "$$formula$$" -> "$$\nformula\n$$"
+		// Goldmark-MathJax requires opening and closing $$ to be on their own separate lines.
+		if strings.HasPrefix(trimmed, "$$") && strings.HasSuffix(trimmed, "$$") && len(trimmed) > 4 {
+			mathContent := strings.TrimSpace(trimmed[2 : len(trimmed)-2])
+			out = append(out, "$$", mathContent, "$$")
+			i++
+			continue
+		}
+
 		// 1. Gallery Directive: Gallery: img1.png, subfolder/img2.png (Optional Caption)
 		if strings.HasPrefix(trimmed, "Gallery:") {
 			galleryStr := strings.TrimPrefix(trimmed, "Gallery:")
 			imgs := strings.Split(galleryStr, ",")
-			var galleryHTML strings.Builder
-			galleryHTML.WriteString(`<div class="gallery-grid" role="region" aria-label="Image Gallery">`)
-
+			var validImgs []string
 			for _, img := range imgs {
+				if t := strings.TrimSpace(img); t != "" {
+					validImgs = append(validImgs, t)
+				}
+			}
+
+			countClass := fmt.Sprintf("gallery-count-%d", len(validImgs))
+			var galleryHTML strings.Builder
+			galleryHTML.WriteString(fmt.Sprintf(`<div class="gallery-grid %s" role="region" aria-label="Image Gallery">`, countClass))
+
+			for _, img := range validImgs {
 				rawItem := strings.TrimSpace(img)
 				if rawItem == "" {
 					continue
